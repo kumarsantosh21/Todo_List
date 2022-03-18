@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.js": "/Todo_List/static/js/main.fe01aafb.js",
+    "static/media/login_image1.jpg": "/Todo_List/static/media/login_image1.4460d2218e305ed20908.jpg",
+    "static/media/login_image2.webp": "/Todo_List/static/media/login_image2.8cf41890e4e0895dc794.webp",
+    "static/media/login_image3.webp": "/Todo_List/static/media/login_image3.cf570c474fc25e09383d.webp",
+    "static/media/MainLoader.svg": "/Todo_List/static/media/MainLoader.d1aafe77c3f57c155743535d6a557dda.svg",
+    "index.html": "/Todo_List/index.html",
+    "main.fe01aafb.js.map": "/Todo_List/static/js/main.fe01aafb.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.fe01aafb.js"
+  ]
+}
