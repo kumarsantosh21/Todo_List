@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import LoginIcon from "@mui/icons-material/Login";
@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import Grid from "@mui/material/Grid";
 
 const Login = () => {
   const [disable, setDisable] = useState(false);
@@ -20,12 +21,24 @@ const Login = () => {
   const [lockicon, setLockicon] = useState(false);
   const [errormessage, setErrormessage] = useState(false);
   const [click, setClick] = useState(false);
+  const [screenSize, setScreensize] = useState(window.innerWidth);
+
+  // const wi = window.innerWidth;
+  // console.log(wi);
+  // if (wi <= 1300) {
+  //   setWindowwidth(false);
+  // }
+
+  const setDimension = () => {
+    setScreensize(window.innerWidth);
+  };
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: "51px 400px",
-      padding: "0px 50px 40px 50px",
-      boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
+      margin: screenSize >= 1200 ? "51px 400px" : "20px 100px",
+      padding: screenSize >= 1200 ? "0px 50px 40px 50px" : "none",
+      boxShadow:
+        screenSize >= 1200 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
       borderRadius: "10px",
     },
     image: {
@@ -52,7 +65,7 @@ const Login = () => {
         if (!app.currentUser && click) {
           setTimeout(() => {
             setErrormessage(true);
-          }, 500);
+          }, 1000);
         }
       }
     }, 2000);
@@ -64,6 +77,14 @@ const Login = () => {
     setDisable(true);
     setClick(true);
   };
+
+  useEffect(() => {
+    window.addEventListener("resize", setDimension);
+
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [screenSize]);
 
   return (
     <>
@@ -115,28 +136,47 @@ const Login = () => {
             }}
           />
         </Box>
-        <div style={{ display: "flex", marginLeft: "33px", marginTop: "30px" }}>
-          <Button
-            disabled={disable}
-            style={{
-              color: "white",
-              backgroundColor: disable ? " #ffb3ff" : "#b300b3",
-              width: "110px",
-            }}
-            variant="contained"
-            onClick={handleClick}
-            endIcon={<LoginIcon />}
-          >
-            Login
-          </Button>
-          <div className={classes.forgetpassword}>
-            <a
-              style={{ textDecoration: "none", color: "#0000ee" }}
-              href="/restpassword"
-            >
-              Forgot password?
-            </a>
-          </div>
+        <div
+          style={{
+            display: "flex",
+            marginLeft: "33px",
+            marginTop: "30px",
+          }}
+        >
+          <Grid container spacing={0}>
+            <Grid item xs={1}>
+              <LoadingButton
+                disabled={disable}
+                loading={disable}
+                loadingPosition="end"
+                style={{
+                  color: "white",
+                  backgroundColor: disable ? " #ffb3ff" : "#b300b3",
+                  width: "110px",
+                }}
+                variant="contained"
+                onClick={handleClick}
+                endIcon={<LoginIcon />}
+              >
+                Login
+              </LoadingButton>
+            </Grid>
+            <Grid item xs={2}></Grid>
+            <Grid item xs={9}>
+              <div className={classes.forgetpassword}>
+                <a
+                  style={{
+                    textDecoration: "none",
+                    color: "#0000ee",
+                    textAlign: "right",
+                  }}
+                  href="/restpassword"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            </Grid>
+          </Grid>
         </div>
         {errormessage ? (
           <div style={{ display: "flex" }}>
