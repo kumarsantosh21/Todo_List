@@ -1,0 +1,102 @@
+  const [addTo,{ loading, error, data }]  = useQuery(ALL_MOVIES, {
+    variables: { cust: "Lindsay Cowan" },
+    onCompleted: (data) => {
+      console.log(data);
+    },
+  });
+
+  if (loading) {
+    return <div>loading</div>;
+  }
+  if (error) {
+    return <div>encountered an error: {error}</div>;
+  }
+  return <div>{data.customer.name}</div>;
+
+
+
+  const onChangefunc = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+    console.log(values);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  import auth_config from "./auth_config.json";
+import { useAuth0 } from "@auth0/auth0-react";
+function App() {
+  const [name, setName] = React.useState("Mary");
+  const { user, isAuthenticated, loginWithRedirect, logout, error, isLoading } =
+    useAuth0();
+
+  const logoutWithRedirect = () =>
+    logout({
+      returnTo: window.location.origin,
+    });
+
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
+
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  return (
+    <div>
+      <div>working</div>
+      {!isAuthenticated ? (
+        <div color="primary" block onClick={() => loginWithRedirect({})}>
+          Log in
+        </div>
+      ) : null}
+      {isAuthenticated ? (
+        <div color="primary" block onClick={() => logoutWithRedirect()}>
+          Log out {user.name}
+          <div></div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+Another type of Login
+import { Auth0Provider } from "@auth0/auth0-react";
+import config from "./auth_config.json";
+<Auth0Provider {...providerConfig}>
+</Auth0Provider>
+
+const onRedirectCallback = (appState) => {
+  <Link to="/working">
+    <button
+      children={"button"}
+      onClick={() => {
+        console.log("dataapi");
+      }}
+    />
+  </Link>;
+  history.push(
+    appState && appState.returnTo ? appState.returnTo : window.location.pathname
+  );
+};
+const providerConfig = {
+  domain: config.domain,
+  clientId: config.clientId,
+  ...(config.audience ? { audience: config.audience } : null),
+  redirectUri: window.location.origin,
+  onRedirectCallback,
+};

@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable react-hooks/rules-of-hooks */
 
-function App() {
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Must be rendered inside of an ApolloProvider
+function Movies() {
+  let navigate = useNavigate();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div
+        onClick={() => {
+          navigate("/login");
+        }}
+      >
+        Login
+      </div>
+    </>
   );
 }
 
-export default App;
+export default Movies;
