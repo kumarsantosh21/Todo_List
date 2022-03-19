@@ -12,6 +12,7 @@ import {
 } from "@apollo/client";
 import client from "./originpages/Client";
 import Dahboard from "./v1/Dashboard";
+import Register from "./originpages/Register";
 // import { Loading } from "./assets/Loaders";
 // import reportWebVitals from './reportWebVitals';
 
@@ -22,6 +23,7 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Register />} />
           <Route path="/v1/dashboard" element={<Dahboard />} />
         </Routes>
       </BrowserRouter>

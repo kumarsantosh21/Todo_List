@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const Login = () => {
-  const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(true);
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const [personicon, setPersonicon] = useState(false);
@@ -77,7 +77,6 @@ const Login = () => {
       setDisable(false);
     }
   };
-  console.log("outside", valid);
   useEffect(() => {
     window.addEventListener("resize", setDimension);
 
@@ -89,6 +88,7 @@ const Login = () => {
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
+      setDisable(false);
     }, 1000);
   }, [progress]);
 
@@ -119,9 +119,10 @@ const Login = () => {
             sx={{ mr: 1, my: 2 }}
           />
           <TextField
+            required
             disabled={progress}
             fullWidth
-            label="E-Mail*"
+            label="E-Mail"
             type="email"
             variant="outlined"
             name="username"
@@ -140,9 +141,10 @@ const Login = () => {
           />
 
           <TextField
+            required
             disabled={progress}
             fullWidth
-            label="Password*"
+            label="Password"
             type="password"
             variant="outlined"
             name="pass"
