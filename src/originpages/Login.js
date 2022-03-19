@@ -12,6 +12,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Grid from "@mui/material/Grid";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const Login = () => {
   const [disable, setDisable] = useState(false);
@@ -20,14 +21,9 @@ const Login = () => {
   const [personicon, setPersonicon] = useState(false);
   const [lockicon, setLockicon] = useState(false);
   const [errormessage, setErrormessage] = useState(false);
-  const [click, setClick] = useState(false);
   const [screenSize, setScreensize] = useState(window.innerWidth);
-
-  // const wi = window.innerWidth;
-  // console.log(wi);
-  // if (wi <= 1300) {
-  //   setWindowwidth(false);
-  // }
+  const [progress, setProgress] = useState(true);
+  let valid;
 
   const setDimension = () => {
     setScreensize(window.innerWidth);
@@ -40,15 +36,18 @@ const Login = () => {
       boxShadow:
         screenSize >= 1200 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
       borderRadius: "10px",
+      overflow: "hidden",
+      color: "gray",
+      opacity: progress ? "0.3" : "none",
     },
     image: {
-      borderRadius: "20%",
-      background: "white",
       width: "70%",
-      height: "auto",
-      margin: "auto",
+      paddingLeft: "16%",
     },
-    forgetpassword: { lineHeight: "36px", marginLeft: "176px" },
+    forgetpassword: {
+      lineHeight: "36px",
+      marginLeft: "176px",
+    },
 
     signup: {
       textAlign: "right",
@@ -57,27 +56,28 @@ const Login = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   useEffect(() => {
-    setTimeout(() => {
-      if (app.currentUser) {
-        navigate("/v1/dashboard");
-      } else {
-        setDisable(false);
-        if (!app.currentUser && click) {
-          setTimeout(() => {
-            setErrormessage(true);
-          }, 1000);
-        }
-      }
-    }, 2000);
-  }, [disable, navigate, click]);
+    if (app.currentUser) {
+      navigate("/v1/dashboard");
+    }
+  }, []);
 
   // console.log(app.currentUser);
-  const handleClick = () => {
-    getValidAccessToken(username, pass);
+  const handleClick = async () => {
     setDisable(true);
-    setClick(true);
-  };
+    valid = await getValidAccessToken(username, pass);
+    console.log("inside", valid);
 
+    if (app.currentUser && valid !== "error") {
+      setTimeout(() => {
+        navigate("/v1/dashboard");
+      }, 1000);
+    }
+    if (valid === "error") {
+      setErrormessage(true);
+      setDisable(false);
+    }
+  };
+  console.log("outside", valid);
   useEffect(() => {
     window.addEventListener("resize", setDimension);
 
@@ -86,9 +86,25 @@ const Login = () => {
     };
   }, [screenSize]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setProgress(false);
+    }, 1000);
+  }, [progress]);
+
   return (
     <>
       <Stack className={classes.stackstyles} direction="column" spacing={3}>
+        {progress || disable ? (
+          <Box
+            sx={{
+              width: "150%",
+              marginLeft: "-150px",
+            }}
+          >
+            <LinearProgress />
+          </Box>
+        ) : null}
         <img className={classes.image} src={Login3} alt={"Todo"} />
         <div className={classes.signup}>
           Don't have an account?{" "}
@@ -103,6 +119,7 @@ const Login = () => {
             sx={{ mr: 1, my: 2 }}
           />
           <TextField
+            disabled={progress}
             fullWidth
             label="E-Mail*"
             type="email"
@@ -123,6 +140,7 @@ const Login = () => {
           />
 
           <TextField
+            disabled={progress}
             fullWidth
             label="Password*"
             type="password"
@@ -146,8 +164,8 @@ const Login = () => {
           <Grid container spacing={0}>
             <Grid item xs={1}>
               <LoadingButton
-                disabled={disable}
-                loading={disable}
+                disabled={disable || progress}
+                loading={disable || progress}
                 loadingPosition="end"
                 style={{
                   color: "white",

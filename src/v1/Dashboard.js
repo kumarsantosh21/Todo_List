@@ -23,7 +23,8 @@ function Dahboard() {
     );
   }
   if (error) {
-    return <div>encountered an error: {error}</div>;
+    console.log(error);
+    return <div>encountered an error</div>;
   }
   console.log(data);
 
