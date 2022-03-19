@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const Login = () => {
-  const [disable, setDisable] = useState(true);
+  const [disable, setDisable] = useState(false);
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const [personicon, setPersonicon] = useState(false);
@@ -64,6 +64,8 @@ const Login = () => {
   // console.log(app.currentUser);
   const handleClick = async () => {
     setDisable(true);
+    setLockicon(false);
+    setPersonicon(false);
     valid = await getValidAccessToken(username, pass);
     console.log("inside", valid);
 
@@ -88,7 +90,6 @@ const Login = () => {
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
-      setDisable(false);
     }, 1000);
   }, [progress]);
 
@@ -115,7 +116,7 @@ const Login = () => {
 
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <PersonIcon
-            style={{ color: personicon ? "blue" : "none" }}
+            style={{ color: personicon ? "blue" : "" }}
             sx={{ mr: 1, my: 2 }}
           />
           <TextField
@@ -136,7 +137,7 @@ const Login = () => {
         </Box>
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <LockIcon
-            style={{ color: lockicon ? "blue" : "none" }}
+            style={{ color: lockicon ? "blue" : "" }}
             sx={{ mr: 1, my: 2 }}
           />
 
@@ -161,48 +162,47 @@ const Login = () => {
             display: "flex",
             marginLeft: "33px",
             marginTop: "30px",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Grid container spacing={0}>
-            <Grid item xs={1}>
-              <LoadingButton
-                disabled={disable || progress}
-                loading={disable || progress}
-                loadingPosition="end"
-                style={{
-                  color: "white",
-                  backgroundColor: disable ? " #ffb3ff" : "#b300b3",
-                  width: "110px",
-                }}
-                variant="contained"
-                onClick={handleClick}
-                endIcon={<LoginIcon />}
-              >
-                Login
-              </LoadingButton>
-            </Grid>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={9}>
-              <div className={classes.forgetpassword}>
-                <a
-                  style={{
-                    textDecoration: "none",
-                    color: "#0000ee",
-                    textAlign: "right",
-                  }}
-                  href="/restpassword"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </Grid>
-          </Grid>
+          <LoadingButton
+            disabled={disable || progress}
+            loading={disable || progress}
+            loadingPosition="end"
+            style={{
+              color: "white",
+              backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
+              width: "110px",
+            }}
+            variant="contained"
+            onClick={handleClick}
+            endIcon={<LoginIcon />}
+          >
+            Login
+          </LoadingButton>
+
+          <div className={classes.forgetpassword}>
+            <a
+              style={{
+                textDecoration: "none",
+                color: "#0000ee",
+                textAlign: "right",
+              }}
+              href="/restpassword"
+            >
+              Forgot password?
+            </a>
+          </div>
         </div>
         {errormessage ? (
-          <div style={{ display: "flex" }}>
-            <ErrorOutlineIcon sx={{ color: "red", mr: 0, my: -0.4 }} />
+          <div style={{ display: "flex", textAlign: "center" }}>
+            <ErrorOutlineIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
             <div
-              style={{ fontSize: "16px", color: "red", textAlign: "center" }}
+              style={{
+                fontSize: "16px",
+                color: "#d32f2f",
+              }}
             >
               Wrong E-mail or password. Try again or click ‘Forgot password’ to
               reset it.

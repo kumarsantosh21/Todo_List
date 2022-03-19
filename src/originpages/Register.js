@@ -14,15 +14,17 @@ import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Typography from "@mui/material/Typography";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
 const Register = () => {
-  const [disable, setDisable] = useState(true);
+  const [disable, setDisable] = useState(false);
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
+  const [repass, setRepass] = useState("");
   const [personicon, setPersonicon] = useState(false);
   const [lockicon1, setLockicon1] = useState(false);
   const [lockicon2, setLockicon2] = useState(false);
-  const [errormessage, setErrormessage] = useState(false);
+  const [errormessage, setErrormessage] = useState();
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
   let valid;
@@ -57,25 +59,19 @@ const Register = () => {
   });
   const classes = useStyles();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (app.currentUser) {
-      navigate("/v1/dashboard");
-    }
-  }, []);
 
-  // console.log(app.currentUser);
   const handleClick = async () => {
+    if (pass !== repass) {
+      setErrormessage(2);
+    }
     setDisable(true);
+    setLockicon1(false);
+    setLockicon2(false);
+    setPersonicon(false);
     valid = await getValidAccessToken(username, pass);
     console.log("inside", valid);
 
-    if (app.currentUser && valid !== "error") {
-      setTimeout(() => {
-        navigate("/v1/dashboard");
-      }, 1000);
-    }
     if (valid === "error") {
-      setErrormessage(true);
       setDisable(false);
     }
   };
@@ -90,7 +86,6 @@ const Register = () => {
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
-      setDisable(false);
     }, 1000);
   }, [progress]);
 
@@ -114,7 +109,7 @@ const Register = () => {
 
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <PersonIcon
-            style={{ color: personicon ? "blue" : "none" }}
+            style={{ color: personicon ? "blue" : "" }}
             sx={{ mr: 1, my: 2 }}
           />
           <TextField
@@ -136,7 +131,7 @@ const Register = () => {
 
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <LockIcon
-            style={{ color: lockicon1 ? "blue" : "none" }}
+            style={{ color: lockicon1 ? "blue" : "" }}
             sx={{ mr: 1, my: 2 }}
           />
 
@@ -158,7 +153,7 @@ const Register = () => {
         </Box>
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <LockIcon
-            style={{ color: lockicon2 ? "blue" : "none" }}
+            style={{ color: lockicon2 ? "blue" : "" }}
             sx={{ mr: 1, my: 2 }}
           />
 
@@ -171,47 +166,68 @@ const Register = () => {
             variant="outlined"
             name="pass"
             onChange={(e) => {
-              setPass(e.target.value);
+              setRepass(e.target.value);
             }}
             onClick={() => {
               setLockicon2(true);
             }}
           />
         </Box>
+        {/* onClick retun icon colors */}
+        <div style={{ textAlign: "right" }}>
+          <LoadingButton
+            disabled={disable || progress}
+            loading={disable || progress}
+            loadingPosition="end"
+            style={{
+              color: "white",
+              backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
+              width: "130px",
+            }}
+            variant="contained"
+            onClick={handleClick}
+            endIcon={<HowToRegIcon />}
+          >
+            Register
+          </LoadingButton>
+        </div>
 
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
-          <Grid item xs={3.6}>
-            <LoadingButton
-              disabled={disable || progress}
-              loading={disable || progress}
-              loadingPosition="end"
-              style={{
-                color: "white",
-                backgroundColor: disable ? " #ffb3ff" : "#b300b3",
-                width: "130px",
-              }}
-              variant="contained"
-              onClick={handleClick}
-              endIcon={<HowToRegIcon />}
-            >
-              Register
-            </LoadingButton>
-          </Grid>
-        </Grid>
-
-        {errormessage ? (
-          <div style={{ display: "flex" }}>
-            <ErrorOutlineIcon sx={{ color: "red", mr: 0, my: -0.4 }} />
+        {errormessage === 1 ? (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ErrorOutlineIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
             <div
-              style={{ fontSize: "16px", color: "red", textAlign: "center" }}
+              style={{
+                fontSize: "16px",
+                color: "#d32f2f",
+              }}
             >
-              Wrong E-mail or password. Try again or click ‘Forgot password’ to
-              reset it.
+              User already exist.
+            </div>
+          </div>
+        ) : null}
+        {errormessage === 2 ? (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <LockIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
+            <div
+              style={{
+                fontSize: "16px",
+                color: "#d32f2f",
+              }}
+            >
+              Both the passwords should match.
+            </div>
+          </div>
+        ) : null}
+        {errormessage === 3 ? (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <VerifiedUserIcon sx={{ color: "#2e7d32", mr: 0, my: -0.4 }} />
+            <div
+              style={{
+                fontSize: "16px",
+                color: "#2e7d32",
+              }}
+            >
+              Registration Succesful.Click here to redirect to Login page.
             </div>
           </div>
         ) : null}
