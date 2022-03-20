@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import { Login3 } from "../assets";
-import { register } from "./Client";
+import { register } from "./";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
@@ -69,7 +69,7 @@ const Register = () => {
     }
 
     valid = await register(username, pass);
-    console.log("inside", valid);
+    // console.log("inside", valid);
     if (valid === "success") {
       setErrormessage(3);
       setDisable(false);
@@ -186,7 +186,7 @@ const Register = () => {
             label="Re-enter Password"
             type="password"
             variant="outlined"
-            name="pass"
+            name="repass"
             onChange={(e) => {
               setRepass(e.target.value);
             }}
@@ -195,7 +195,6 @@ const Register = () => {
             }}
           />
         </Box>
-        {/* onClick retun icon colors */}
         <div style={{ textAlign: "right" }}>
           <LoadingButton
             disabled={disable || progress}
@@ -207,6 +206,7 @@ const Register = () => {
               width: "130px",
             }}
             variant="contained"
+            type="submit"
             onClick={handleClick}
             endIcon={<HowToRegIcon />}
           >

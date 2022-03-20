@@ -43,7 +43,17 @@ export async function register(username, pass) {
   }
 }
 
-const client = new ApolloClient({
+export async function reset(username) {
+  try {
+    await app.emailPasswordAuth.sendResetPasswordEmail(username);
+    return "success";
+  } catch (error) {
+    console.log(error);
+    return "error";
+  }
+}
+
+const Client = new ApolloClient({
   link: new HttpLink({
     uri: `https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${APP_ID.appid}/graphql`,
 
@@ -56,4 +66,4 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export default client;
+export default Client;

@@ -58,7 +58,7 @@ const Login = () => {
     if (app.currentUser) {
       navigate("/v1/dashboard");
     }
-  }, []);
+  }, [navigate]);
 
   // console.log(app.currentUser);
   const handleClick = async () => {
@@ -182,6 +182,7 @@ const Login = () => {
             variant="contained"
             onClick={handleClick}
             endIcon={<LoginIcon />}
+            type="submit"
           >
             Login
           </LoadingButton>
@@ -193,7 +194,7 @@ const Login = () => {
                 color: "#0000ee",
                 textAlign: "right",
               }}
-              href="/restpassword"
+              href="/resetpassword"
             >
               Forgot password?
             </a>
