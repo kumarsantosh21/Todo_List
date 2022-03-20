@@ -33,6 +33,11 @@ export async function register(username, pass) {
     await app.emailPasswordAuth.registerUser(username, pass);
     return "success";
   } catch (error) {
+    const err = JSON.stringify(error);
+    const errors = err.includes("name already in use");
+    if (errors === true) {
+      return "exists";
+    }
     console.log(error);
     return "error";
   }

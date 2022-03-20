@@ -4,13 +4,11 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import { Login3 } from "../assets";
-import { useNavigate } from "react-router-dom";
-import { app, getValidAccessToken, register } from "./Client";
+import { register } from "./Client";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Typography from "@mui/material/Typography";
@@ -35,10 +33,10 @@ const Register = () => {
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 1200 ? "51px 400px" : "20px 60px",
-      padding: screenSize >= 1200 ? "0px 50px 40px 50px" : "none",
+      margin: screenSize >= 700 ? "3% 28%" : "none",
+      padding: "0% 4% 2% 4%",
       boxShadow:
-        screenSize >= 1200 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
+        screenSize >= 700 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
       borderRadius: "10px",
       overflow: "hidden",
       color: "gray",
@@ -58,7 +56,6 @@ const Register = () => {
     },
   });
   const classes = useStyles();
-  const navigate = useNavigate();
 
   const handleClick = async () => {
     setDisable(true);
@@ -76,9 +73,28 @@ const Register = () => {
     if (valid === "success") {
       setErrormessage(3);
       setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+    if (valid === "exists") {
+      setErrormessage(1);
+      setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
     }
     if (valid === "error") {
       setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
     }
   };
   useEffect(() => {
@@ -215,7 +231,18 @@ const Register = () => {
                 color: "#d32f2f",
               }}
             >
-              User already exist.
+              User account already exist.Please Try Logging in or click{" "}
+              <a
+                style={{
+                  color: "#0000ee",
+                  textDecoration: "none",
+                  fontSize: "18px",
+                }}
+                href="/login"
+              >
+                here
+              </a>{" "}
+              to Reset Password
             </div>
           </div>
         ) : null}

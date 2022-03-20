@@ -11,7 +11,6 @@ import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const Login = () => {
@@ -31,10 +30,10 @@ const Login = () => {
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 1200 ? "51px 400px" : "20px 60px",
-      padding: screenSize >= 1200 ? "0px 50px 40px 50px" : "none",
+      margin: screenSize >= 700 ? "3% 28%" : "none",
+      padding: "0% 4% 2% 4%",
       boxShadow:
-        screenSize >= 1200 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
+        screenSize >= 700 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
       borderRadius: "10px",
       overflow: "hidden",
       color: "gray",
@@ -43,6 +42,7 @@ const Login = () => {
     image: {
       width: "70%",
       paddingLeft: "16%",
+      padding: "5%",
     },
     forgetpassword: {
       lineHeight: "36px",
@@ -77,6 +77,11 @@ const Login = () => {
     if (valid === "error") {
       setErrormessage(true);
       setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
     }
   };
   useEffect(() => {
