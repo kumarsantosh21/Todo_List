@@ -30,7 +30,7 @@ const Login = () => {
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 700 ? "3% 28%" : "none",
+      margin: screenSize >= 700 ? "5% 28%" : "none",
       padding: "0% 4% 2% 4%",
       boxShadow:
         screenSize >= 700 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
@@ -42,7 +42,6 @@ const Login = () => {
     image: {
       width: "70%",
       paddingLeft: "16%",
-      padding: "5%",
     },
     forgetpassword: {
       lineHeight: "36px",
