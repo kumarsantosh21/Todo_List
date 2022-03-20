@@ -10,7 +10,6 @@ import APP_ID from "../auth_mongoconfig.json";
 export const app = new Realm.App(APP_ID.appid);
 
 export async function getValidAccessToken(username, pass) {
-  // await app.emailPasswordAuth.registerUser({ email, password });
   try {
     if (!app.currentUser) {
       await app.logIn(Realm.Credentials.emailPassword(username, pass));
@@ -24,10 +23,21 @@ export async function getValidAccessToken(username, pass) {
       return app.currentUser.accessToken;
     }
   } catch (error) {
-    console.log("client");
+    console.log(error);
     return "error";
   }
 }
+
+export async function register(username, pass) {
+  try {
+    await app.emailPasswordAuth.registerUser(username, pass);
+    return "success";
+  } catch (error) {
+    console.log(error);
+    return "error";
+  }
+}
+
 const client = new ApolloClient({
   link: new HttpLink({
     uri: `https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${APP_ID.appid}/graphql`,

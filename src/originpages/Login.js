@@ -31,7 +31,7 @@ const Login = () => {
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 1200 ? "51px 400px" : "20px 100px",
+      margin: screenSize >= 1200 ? "51px 400px" : "20px 60px",
       padding: screenSize >= 1200 ? "0px 50px 40px 50px" : "none",
       boxShadow:
         screenSize >= 1200 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",

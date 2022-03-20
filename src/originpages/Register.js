@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import { Login3 } from "../assets";
 import { useNavigate } from "react-router-dom";
-import { app, getValidAccessToken } from "./Client";
+import { app, getValidAccessToken, register } from "./Client";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
@@ -35,7 +35,7 @@ const Register = () => {
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 1200 ? "51px 400px" : "20px 100px",
+      margin: screenSize >= 1200 ? "51px 400px" : "20px 60px",
       padding: screenSize >= 1200 ? "0px 50px 40px 50px" : "none",
       boxShadow:
         screenSize >= 1200 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
@@ -61,16 +61,22 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
-    if (pass !== repass) {
-      setErrormessage(2);
-    }
     setDisable(true);
     setLockicon1(false);
     setLockicon2(false);
     setPersonicon(false);
-    valid = await getValidAccessToken(username, pass);
-    console.log("inside", valid);
+    if (pass !== repass) {
+      setErrormessage(2);
+      setDisable(false);
+      return;
+    }
 
+    valid = await register(username, pass);
+    console.log("inside", valid);
+    if (valid === "success") {
+      setErrormessage(3);
+      setDisable(false);
+    }
     if (valid === "error") {
       setDisable(false);
     }
@@ -193,8 +199,16 @@ const Register = () => {
         </div>
 
         {errormessage === 1 ? (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <ErrorOutlineIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ErrorOutlineIcon
+              sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
+            />
             <div
               style={{
                 fontSize: "16px",
@@ -206,8 +220,14 @@ const Register = () => {
           </div>
         ) : null}
         {errormessage === 2 ? (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <LockIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <LockIcon sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }} />
             <div
               style={{
                 fontSize: "16px",
@@ -219,15 +239,34 @@ const Register = () => {
           </div>
         ) : null}
         {errormessage === 3 ? (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <VerifiedUserIcon sx={{ color: "#2e7d32", mr: 0, my: -0.4 }} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <VerifiedUserIcon
+              sx={{ color: "#2e7d32", mr: 1, marginBottom: "1px" }}
+            />
             <div
               style={{
                 fontSize: "16px",
                 color: "#2e7d32",
               }}
             >
-              Registration Succesful.Click here to redirect to Login page.
+              Registration Succesful.Click{" "}
+              <a
+                style={{
+                  color: "#0000ee",
+                  textDecoration: "none",
+                  fontSize: "18px",
+                }}
+                href="/login"
+              >
+                here
+              </a>{" "}
+              to redirect to Login page.
             </div>
           </div>
         ) : null}
