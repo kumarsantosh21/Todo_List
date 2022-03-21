@@ -4,13 +4,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import { Login3 } from "../assets";
-import { reset } from "./";
+import { reset, completepasswordreset } from "./";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LinearProgress from "@mui/material/LinearProgress";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
+import MailIcon from "@mui/icons-material/Mail";
 import Typography from "@mui/material/Typography";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
@@ -25,32 +25,26 @@ function Reset() {
   const [errormessage, setErrormessage] = useState();
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
+  const [count, setCount] = useState(30);
   const [mailandpassword, setMailandpassword] = useState(false);
   let valid;
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+  const tokenId = params.get("tokenId");
+  // for checking whether the link is followed from mail or not
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    console.log(token);
-    const tokenId = params.get("tokenId");
-    console.log(tokenId);
-    if (token) {
+    if (token || tokenId) {
       setMailandpassword(true);
     }
   }, []);
-
-  // if (!token || !tokenId) {
-  //   throw new Error(
-  //     "You can only call resetPassword() if the user followed a confirmation email link"
-  //   );
-  // }
-
+  // assigning screen size
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 700 ? "3% 28%" : "none",
+      margin: screenSize >= 700 ? "5% 28%" : "none",
       padding: "0% 4% 2% 4%",
       boxShadow:
         screenSize >= 700 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
@@ -73,7 +67,7 @@ function Reset() {
     },
   });
   const classes = useStyles();
-
+  // onclick of button
   const handleClick = async () => {
     setDisable(true);
     setLockicon1(false);
@@ -82,38 +76,64 @@ function Reset() {
     if (pass !== newpass) {
       setErrormessage(2);
       setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
       return;
     }
-
+    // followed from mail this click works
+    if (token || tokenId) {
+      console.log(pass, token, tokenId);
+      valid = await completepasswordreset(pass, token, tokenId);
+      if (valid === "success") {
+        setErrormessage(3);
+      }
+      if (valid === "expired") {
+        setErrormessage(1);
+      }
+      if (valid === "error") {
+        setDisable(false);
+      }
+      console.log(valid);
+      setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+    // to get reset mail to user
     valid = await reset(username, pass);
     console.log("in", valid);
     if (valid === "success") {
       setErrormessage(3);
-      setDisable(false);
-      window.scroll({
-        top: 1000,
-        left: 0,
-        behavior: "smooth",
-      });
+      const interval = setInterval(() => {
+        setCount((count) => count - 1);
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        setDisable(false);
+        setCount(30);
+      }, 30000);
     }
-    if (valid === "exists") {
+    if (valid === "notfound") {
       setErrormessage(1);
       setDisable(false);
-      window.scroll({
-        top: 1000,
-        left: 0,
-        behavior: "smooth",
-      });
     }
     if (valid === "error") {
       setDisable(false);
-      window.scroll({
-        top: 1000,
-        left: 0,
-        behavior: "smooth",
-      });
     }
+    window.scroll({
+      top: 1000,
+      left: 0,
+      behavior: "smooth",
+    });
   };
+  // screen witdth checker
   useEffect(() => {
     window.addEventListener("resize", setDimension);
 
@@ -121,7 +141,7 @@ function Reset() {
       window.removeEventListener("resize", setDimension);
     };
   }, [screenSize]);
-
+  // First loader
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
@@ -226,10 +246,10 @@ function Reset() {
             }}
             variant="contained"
             onClick={handleClick}
-            endIcon={<HowToRegIcon />}
+            endIcon={<MailIcon />}
             type="submit"
           >
-            Register
+            Reset
           </LoadingButton>
         </div>
         {errormessage === 1 ? (
@@ -243,25 +263,36 @@ function Reset() {
             <ErrorOutlineIcon
               sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
             />
-            <div
-              style={{
-                fontSize: "16px",
-                color: "#d32f2f",
-              }}
-            >
-              User account already exist.Please Try Logging in or click{" "}
-              <a
+            {!mailandpassword ? (
+              <div
                 style={{
-                  color: "#0000ee",
-                  textDecoration: "none",
-                  fontSize: "18px",
+                  fontSize: "16px",
+                  color: "#d32f2f",
                 }}
-                href="/login"
               >
-                here
-              </a>{" "}
-              to Reset Password
-            </div>
+                User account not found.Check your mail once and retry again.
+              </div>
+            ) : (
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#d32f2f",
+                }}
+              >
+                Your link Expired.Click{" "}
+                <a
+                  style={{
+                    color: "#0000ee",
+                    textDecoration: "none",
+                    fontSize: "18px",
+                  }}
+                  href="/resetpassword"
+                >
+                  here
+                </a>{" "}
+                to redirect to send another mail.
+              </div>
+            )}
           </div>
         ) : null}
         {errormessage === 2 ? (
@@ -300,18 +331,34 @@ function Reset() {
                 color: "#2e7d32",
               }}
             >
-              Registration Succesful.Click{" "}
-              <a
-                style={{
-                  color: "#0000ee",
-                  textDecoration: "none",
-                  fontSize: "18px",
-                }}
-                href="/login"
-              >
-                here
-              </a>{" "}
-              to redirect to Login page.
+              {!mailandpassword ? (
+                <>
+                  <div>
+                    Please check your email inbox for a link to complete the
+                    reset .If you haven't received mail.Try again in {count}.
+                  </div>
+                </>
+              ) : (
+                <div
+                  style={{
+                    fontSize: "16px",
+                    color: "#2e7d32",
+                  }}
+                >
+                  Password Succesfully Changed.Click{" "}
+                  <a
+                    style={{
+                      color: "#0000ee",
+                      textDecoration: "none",
+                      fontSize: "18px",
+                    }}
+                    href="/login"
+                  >
+                    here
+                  </a>{" "}
+                  to redirect to Login page.
+                </div>
+              )}
             </div>
           </div>
         ) : null}

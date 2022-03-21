@@ -8,7 +8,7 @@ import {
 import APP_ID from "../auth_mongoconfig.json";
 
 export const app = new Realm.App(APP_ID.appid);
-
+// For login already exist user
 export async function getValidAccessToken(username, pass) {
   try {
     if (!app.currentUser) {
@@ -27,28 +27,54 @@ export async function getValidAccessToken(username, pass) {
     return "error";
   }
 }
-
+// creating new user
 export async function register(username, pass) {
   try {
     await app.emailPasswordAuth.registerUser(username, pass);
     return "success";
   } catch (error) {
+    console.log(error);
     const err = JSON.stringify(error);
     const errors = err.includes("name already in use");
     if (errors === true) {
       return "exists";
     }
-    console.log(error);
+
     return "error";
   }
 }
-
+// sending mail for resetting password
 export async function reset(username) {
   try {
     await app.emailPasswordAuth.sendResetPasswordEmail(username);
     return "success";
   } catch (error) {
     console.log(error);
+    const err = JSON.stringify(error);
+    const errors = err.includes("user not found");
+    if (errors === true) {
+      return "notfound";
+    }
+    return "error";
+  }
+}
+// resetting password
+export async function completepasswordreset(pass, token, tokenId) {
+  try {
+    await app.emailPasswordAuth.resetPassword({
+      password: pass,
+      token,
+      tokenId,
+    });
+    return "success";
+  } catch (error) {
+    console.log(error);
+    const err = JSON.stringify(error);
+    const errors = err.includes("token is expired");
+    if (errors === true) {
+      return "expired";
+    }
+
     return "error";
   }
 }

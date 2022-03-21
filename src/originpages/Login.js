@@ -23,7 +23,7 @@ const Login = () => {
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
   let valid;
-
+  // assigning screen size
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -53,20 +53,20 @@ const Login = () => {
     },
   });
   const classes = useStyles();
+
   const navigate = useNavigate();
+  //  if user already logged in redirect to dashboard directly
   useEffect(() => {
     if (app.currentUser) {
       navigate("/v1/dashboard");
     }
   }, [navigate]);
-
-  // console.log(app.currentUser);
+  // onclick of button
   const handleClick = async () => {
     setDisable(true);
     setLockicon(false);
     setPersonicon(false);
     valid = await getValidAccessToken(username, pass);
-    console.log("inside", valid);
 
     if (app.currentUser && valid !== "error") {
       setTimeout(() => {
@@ -90,7 +90,7 @@ const Login = () => {
       window.removeEventListener("resize", setDimension);
     };
   }, [screenSize]);
-
+  // first loader
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
@@ -163,7 +163,7 @@ const Login = () => {
         </Box>
         <div
           style={{
-            display: "flex",
+            display: screenSize >= 700 ? "flex" : "",
             marginLeft: "33px",
             marginTop: "30px",
             justifyContent: "space-between",
@@ -192,7 +192,7 @@ const Login = () => {
               style={{
                 textDecoration: "none",
                 color: "#0000ee",
-                textAlign: "right",
+                marginLeft: screenSize >= 700 ? "" : "-175px",
               }}
               href="/resetpassword"
             >

@@ -26,7 +26,7 @@ const Register = () => {
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
   let valid;
-
+  // assigning screen size
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -56,7 +56,7 @@ const Register = () => {
     },
   });
   const classes = useStyles();
-
+  //  onclick button function
   const handleClick = async () => {
     setDisable(true);
     setLockicon1(false);
@@ -67,9 +67,9 @@ const Register = () => {
       setDisable(false);
       return;
     }
-
+    // here users gets registerd
     valid = await register(username, pass);
-    // console.log("inside", valid);
+
     if (valid === "success") {
       setErrormessage(3);
       setDisable(false);
@@ -97,6 +97,7 @@ const Register = () => {
       });
     }
   };
+  // calling function every time screen width changes
   useEffect(() => {
     window.addEventListener("resize", setDimension);
 
@@ -104,7 +105,7 @@ const Register = () => {
       window.removeEventListener("resize", setDimension);
     };
   }, [screenSize]);
-
+  // first loader
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
