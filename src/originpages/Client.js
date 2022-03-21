@@ -79,6 +79,25 @@ export async function completepasswordreset(pass, token, tokenId) {
   }
 }
 
+// google function
+export function gclick() {
+  const redirectUri = "http://localhost:3000/login";
+  const credentials = Realm.Credentials.google(redirectUri);
+  // Calling logIn() opens a Google authentication screen in a new window.
+  app
+    .logIn(credentials)
+    .then((user) => {
+      // The logIn() promise will not resolve until you call `handleAuthRedirect()`
+      // from the new window after the user has successfully authenticated.
+      // console.log(`Logged in with id: ${user.id}`);
+      window.location.reload();
+    })
+    .catch((err) => {
+      console.error(err);
+      console.log("error");
+    });
+}
+
 const Client = new ApolloClient({
   link: new HttpLink({
     uri: `https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${APP_ID.appid}/graphql`,

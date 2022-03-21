@@ -6,6 +6,8 @@ import Client, {
   register,
   reset,
   completepasswordreset,
+  gclick,
+  app,
 } from "./Client";
 export {
   Login,
@@ -16,4 +18,6 @@ export {
   register,
   reset,
   completepasswordreset,
+  gclick,
+  app,
 };
