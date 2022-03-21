@@ -81,7 +81,7 @@ export async function completepasswordreset(pass, token, tokenId) {
 
 // google function
 export function gclick() {
-  const redirectUri = "http://localhost:3000/login";
+  const redirectUri = "https://testingdb-cxxuf.mongodbstitch.com/login";
   const credentials = Realm.Credentials.google(redirectUri);
   // Calling logIn() opens a Google authentication screen in a new window.
   app
