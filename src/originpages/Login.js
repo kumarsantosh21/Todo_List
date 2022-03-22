@@ -100,7 +100,6 @@ const Login = () => {
   // first loader
 
   useEffect(() => {
-    Realm.handleAuthRedirect();
     setTimeout(() => {
       setProgress(false);
     }, 1000);

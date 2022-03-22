@@ -81,7 +81,7 @@ export async function completepasswordreset(pass, token, tokenId) {
 
 // google function
 export function gclick() {
-  const redirectUri = "https://testingdb-cxxuf.mongodbstitch.com/login";
+  const redirectUri = "https://testingdb-cxxuf.mongodbstitch.com/googleauth";
   const credentials = Realm.Credentials.google(redirectUri);
   // Calling logIn() opens a Google authentication screen in a new window.
   app
@@ -94,7 +94,6 @@ export function gclick() {
     })
     .catch((err) => {
       console.error(err);
-      console.log("error");
     });
 }
 
