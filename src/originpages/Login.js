@@ -12,7 +12,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LinearProgress from "@mui/material/LinearProgress";
-import * as Realm from "realm-web";
 import { GoogleImg } from "../assets";
 import Button from "@mui/material/Button";
 
@@ -107,197 +106,200 @@ const Login = () => {
 
   return (
     <>
-      <Stack className={classes.stackstyles} direction="column" spacing={3}>
-        {progress || disable ? (
-          <Box
-            sx={{
-              width: "150%",
-              marginLeft: "-150px",
-            }}
-          >
-            <LinearProgress />
-          </Box>
-        ) : null}
-        <img className={classes.image} src={Login3} alt={"Todo"} />
-        <div className={classes.signup}>
-          Don't have an account?{" "}
-          <a style={{ color: "#0000ee" }} href="/signup">
-            Sign Up
-          </a>
-        </div>
-
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <PersonIcon
-            style={{ color: personicon ? "blue" : "" }}
-            sx={{ mr: 1, my: 2 }}
-          />
-          <TextField
-            required
-            disabled={progress}
-            fullWidth
-            label="E-Mail"
-            type="email"
-            variant="outlined"
-            name="username"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-            onClick={() => {
-              setPersonicon(true);
-            }}
-          />
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <LockIcon
-            style={{ color: lockicon ? "blue" : "" }}
-            sx={{ mr: 1, my: 2 }}
-          />
-
-          <TextField
-            required
-            disabled={progress}
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            name="pass"
-            onChange={(e) => {
-              setPass(e.target.value);
-            }}
-            onClick={() => {
-              setLockicon(true);
-            }}
-          />
-        </Box>
-        <div
-          style={{
-            display: screenSize >= 1100 ? "flex" : "",
-            marginLeft: "33px",
-            marginTop: "30px",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <LoadingButton
-            disabled={disable || progress}
-            loading={disable || progress}
-            loadingPosition="end"
-            style={{
-              color: "white",
-              backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
-              width: screenSize >= 1100 ? "110px" : "100%",
-            }}
-            variant="contained"
-            onClick={handleClick}
-            endIcon={<LoginIcon />}
-            type="submit"
-          >
-            Login
-          </LoadingButton>
-
-          <div className={classes.forgetpassword}>
-            <a
-              style={{
-                textDecoration: "none",
-                color: "#0000ee",
+      <form>
+        <Stack className={classes.stackstyles} direction="column" spacing={3}>
+          {progress || disable ? (
+            <Box
+              sx={{
+                width: "150%",
+                marginLeft: "-150px",
               }}
-              href="/resetpassword"
             >
-              Forgot password?
+              <LinearProgress />
+            </Box>
+          ) : null}
+          <img className={classes.image} src={Login3} alt={"Todo"} />
+          <div className={classes.signup}>
+            Don't have an account?{" "}
+            <a style={{ color: "#0000ee" }} href="/signup">
+              Sign Up
             </a>
           </div>
-        </div>
-        {errormessage ? (
-          <div style={{ display: "flex", textAlign: "center" }}>
-            <ErrorOutlineIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
-            <div
-              style={{
-                fontSize: "16px",
-                color: "#d32f2f",
+
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <PersonIcon
+              style={{ color: personicon ? "blue" : "" }}
+              sx={{ mr: 1, my: 2 }}
+            />
+            <TextField
+              required
+              disabled={progress}
+              fullWidth
+              label="E-Mail"
+              type="email"
+              variant="outlined"
+              name="username"
+              onChange={(e) => {
+                setUsername(e.target.value);
               }}
+              onClick={() => {
+                setPersonicon(true);
+              }}
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <LockIcon
+              style={{ color: lockicon ? "blue" : "" }}
+              sx={{ mr: 1, my: 2 }}
+            />
+
+            <TextField
+              required
+              disabled={progress}
+              fullWidth
+              label="Password"
+              type="password"
+              autoComplete="on"
+              variant="outlined"
+              name="pass"
+              onChange={(e) => {
+                setPass(e.target.value);
+              }}
+              onClick={() => {
+                setLockicon(true);
+              }}
+            />
+          </Box>
+          <div
+            style={{
+              display: screenSize >= 1100 ? "flex" : "",
+              marginLeft: "33px",
+              marginTop: "30px",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <LoadingButton
+              disabled={disable || progress}
+              loading={disable || progress}
+              loadingPosition="end"
+              style={{
+                color: "white",
+                backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
+                width: screenSize >= 1100 ? "110px" : "100%",
+              }}
+              variant="contained"
+              onClick={handleClick}
+              endIcon={<LoginIcon />}
+              type="submit"
             >
-              Wrong E-mail or password. Try again or click ‘Forgot password’ to
-              reset it.
+              Login
+            </LoadingButton>
+
+            <div className={classes.forgetpassword}>
+              <a
+                style={{
+                  textDecoration: "none",
+                  color: "#0000ee",
+                }}
+                href="/resetpassword"
+              >
+                Forgot password?
+              </a>
             </div>
           </div>
-        ) : null}
+          {errormessage ? (
+            <div style={{ display: "flex", textAlign: "center" }}>
+              <ErrorOutlineIcon sx={{ color: "#d32f2f", mr: 0, my: -0.4 }} />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#d32f2f",
+                }}
+              >
+                Wrong E-mail or password. Try again or click ‘Forgot password’
+                to reset it.
+              </div>
+            </div>
+          ) : null}
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            width: "96%",
-            margin: "25px 0px 25px 23px",
-          }}
-        >
           <div
             style={{
-              content: "",
-              flex: "0 1 100%",
-              borderBottom: "1px solid #585858",
-              margin: "0px 10px",
-              transform: "translateY(-50%)",
-            }}
-          />
-          <span
-            style={{
-              fontSize: "16px",
-              lineHeight: "16px",
-              fontWeight: "normal",
-              color: "rgb(93, 108, 116)",
-              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              width: "96%",
+              margin: "25px 0px 25px 23px",
             }}
           >
-            or
-          </span>
-          <div
-            style={{
-              content: "",
-              flex: "0 1 100%",
-              borderBottom: "1px solid #585858",
-              margin: "0px 10px",
-              transform: "translateY(-50%)",
-            }}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid rgb(66, 133, 244)",
-            borderRadius: "4px",
-            marginLeft: "23px",
-            marginTop: "0px",
-          }}
-        >
-          <div
-            onClick={gclick}
-            style={{ flex: "10%", textAlign: "center", cursor: "pointer" }}
-          >
-            <img
-              src={GoogleImg}
-              alt="G_image"
+            <div
               style={{
-                width: "30px",
-                height: "30px",
-                verticalAlign: "-webkit-baseline-middle",
+                content: "",
+                flex: "0 1 100%",
+                borderBottom: "1px solid #585858",
+                margin: "0px 10px",
+                transform: "translateY(-50%)",
+              }}
+            />
+            <span
+              style={{
+                fontSize: "16px",
+                lineHeight: "16px",
+                fontWeight: "normal",
+                color: "rgb(93, 108, 116)",
+                textAlign: "center",
+              }}
+            >
+              or
+            </span>
+            <div
+              style={{
+                content: "",
+                flex: "0 1 100%",
+                borderBottom: "1px solid #585858",
+                margin: "0px 10px",
+                transform: "translateY(-50%)",
               }}
             />
           </div>
-          <Button
-            onClick={gclick}
+          <div
             style={{
-              flex: "90%",
-              color: "white",
-              background: "rgb(66, 133, 244)",
-              textTransform: "none",
-              borderRadius: "unset",
+              display: "flex",
+              alignItems: "center",
+              border: "1px solid rgb(66, 133, 244)",
+              borderRadius: "4px",
+              marginLeft: "23px",
+              marginTop: "0px",
             }}
           >
-            Login in with Google
-          </Button>
-        </div>
-      </Stack>
+            <div
+              onClick={gclick}
+              style={{ flex: "10%", textAlign: "center", cursor: "pointer" }}
+            >
+              <img
+                src={GoogleImg}
+                alt="G_image"
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  verticalAlign: "-webkit-baseline-middle",
+                }}
+              />
+            </div>
+            <Button
+              onClick={gclick}
+              style={{
+                flex: "90%",
+                color: "white",
+                background: "rgb(66, 133, 244)",
+                textTransform: "none",
+                borderRadius: "unset",
+              }}
+            >
+              Login in with Google
+            </Button>
+          </div>
+        </Stack>
+      </form>
     </>
   );
 };

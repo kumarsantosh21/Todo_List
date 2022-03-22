@@ -114,191 +114,195 @@ const Register = () => {
 
   return (
     <>
-      <Stack className={classes.stackstyles} direction="column" spacing={3}>
-        {progress || disable ? (
-          <Box
-            sx={{
-              width: "150%",
-              marginLeft: "-150px",
-            }}
-          >
-            <LinearProgress />
+      <form>
+        <Stack className={classes.stackstyles} direction="column" spacing={3}>
+          {progress || disable ? (
+            <Box
+              sx={{
+                width: "150%",
+                marginLeft: "-150px",
+              }}
+            >
+              <LinearProgress />
+            </Box>
+          ) : null}
+          <img className={classes.image} src={Login3} alt={"Todo"} />
+          <Typography className={classes.signup}>
+            Register your account here{" "}
+          </Typography>
+
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <PersonIcon
+              style={{ color: personicon ? "blue" : "" }}
+              sx={{ mr: 1, my: 2 }}
+            />
+            <TextField
+              required
+              disabled={progress}
+              fullWidth
+              label="E-Mail"
+              type="email"
+              variant="outlined"
+              name="username"
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              onClick={() => {
+                setPersonicon(true);
+              }}
+            />
           </Box>
-        ) : null}
-        <img className={classes.image} src={Login3} alt={"Todo"} />
-        <Typography className={classes.signup}>
-          Register your account here{" "}
-        </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <PersonIcon
-            style={{ color: personicon ? "blue" : "" }}
-            sx={{ mr: 1, my: 2 }}
-          />
-          <TextField
-            required
-            disabled={progress}
-            fullWidth
-            label="E-Mail"
-            type="email"
-            variant="outlined"
-            name="username"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-            onClick={() => {
-              setPersonicon(true);
-            }}
-          />
-        </Box>
-
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <LockIcon
-            style={{ color: lockicon1 ? "blue" : "" }}
-            sx={{ mr: 1, my: 2 }}
-          />
-
-          <TextField
-            required
-            disabled={progress}
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            name="pass"
-            onChange={(e) => {
-              setPass(e.target.value);
-            }}
-            onClick={() => {
-              setLockicon1(true);
-            }}
-          />
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <LockIcon
-            style={{ color: lockicon2 ? "blue" : "" }}
-            sx={{ mr: 1, my: 2 }}
-          />
-
-          <TextField
-            required
-            disabled={progress}
-            fullWidth
-            label="Re-enter Password"
-            type="password"
-            variant="outlined"
-            name="repass"
-            onChange={(e) => {
-              setRepass(e.target.value);
-            }}
-            onClick={() => {
-              setLockicon2(true);
-            }}
-          />
-        </Box>
-        <div style={{ textAlign: "right" }}>
-          <LoadingButton
-            disabled={disable || progress}
-            loading={disable || progress}
-            loadingPosition="end"
-            style={{
-              color: "white",
-              backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
-              width: "130px",
-            }}
-            variant="contained"
-            type="submit"
-            onClick={handleClick}
-            endIcon={<HowToRegIcon />}
-          >
-            Register
-          </LoadingButton>
-        </div>
-
-        {errormessage === 1 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ErrorOutlineIcon
-              sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <LockIcon
+              style={{ color: lockicon1 ? "blue" : "" }}
+              sx={{ mr: 1, my: 2 }}
             />
-            <div
-              style={{
-                fontSize: "16px",
-                color: "#d32f2f",
+
+            <TextField
+              required
+              disabled={progress}
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              autoComplete="off"
+              name="pass"
+              onChange={(e) => {
+                setPass(e.target.value);
               }}
-            >
-              User account already exist.Please Try Logging in or click{" "}
-              <a
-                style={{
-                  color: "#0000ee",
-                  textDecoration: "none",
-                  fontSize: "18px",
-                }}
-                href="/login"
-              >
-                here
-              </a>{" "}
-              to Reset Password
-            </div>
-          </div>
-        ) : null}
-        {errormessage === 2 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <LockIcon sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }} />
-            <div
-              style={{
-                fontSize: "16px",
-                color: "#d32f2f",
+              onClick={() => {
+                setLockicon1(true);
               }}
-            >
-              Both the passwords should match.
-            </div>
-          </div>
-        ) : null}
-        {errormessage === 3 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <VerifiedUserIcon
-              sx={{ color: "#2e7d32", mr: 1, marginBottom: "1px" }}
             />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <LockIcon
+              style={{ color: lockicon2 ? "blue" : "" }}
+              sx={{ mr: 1, my: 2 }}
+            />
+
+            <TextField
+              required
+              disabled={progress}
+              fullWidth
+              label="Re-enter Password"
+              type="password"
+              variant="outlined"
+              autoComplete="off"
+              name="repass"
+              onChange={(e) => {
+                setRepass(e.target.value);
+              }}
+              onClick={() => {
+                setLockicon2(true);
+              }}
+            />
+          </Box>
+          <div style={{ textAlign: "right" }}>
+            <LoadingButton
+              disabled={disable || progress}
+              loading={disable || progress}
+              loadingPosition="end"
+              style={{
+                color: "white",
+                backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
+                width: "130px",
+              }}
+              variant="contained"
+              type="submit"
+              onClick={handleClick}
+              endIcon={<HowToRegIcon />}
+            >
+              Register
+            </LoadingButton>
+          </div>
+
+          {errormessage === 1 ? (
             <div
               style={{
-                fontSize: "16px",
-                color: "#2e7d32",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              Registration Succesful.Click{" "}
-              <a
+              <ErrorOutlineIcon
+                sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
+              />
+              <div
                 style={{
-                  color: "#0000ee",
-                  textDecoration: "none",
-                  fontSize: "18px",
+                  fontSize: "16px",
+                  color: "#d32f2f",
                 }}
-                href="/login"
               >
-                here
-              </a>{" "}
-              to redirect to Login page.
+                User account already exist.Please Try Logging in or click{" "}
+                <a
+                  style={{
+                    color: "#0000ee",
+                    textDecoration: "none",
+                    fontSize: "18px",
+                  }}
+                  href="/login"
+                >
+                  here
+                </a>{" "}
+                to Reset Password
+              </div>
             </div>
-          </div>
-        ) : null}
-      </Stack>
+          ) : null}
+          {errormessage === 2 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LockIcon sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }} />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#d32f2f",
+                }}
+              >
+                Both the passwords should match.
+              </div>
+            </div>
+          ) : null}
+          {errormessage === 3 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <VerifiedUserIcon
+                sx={{ color: "#2e7d32", mr: 1, marginBottom: "1px" }}
+              />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#2e7d32",
+                }}
+              >
+                Registration Succesful.Click{" "}
+                <a
+                  style={{
+                    color: "#0000ee",
+                    textDecoration: "none",
+                    fontSize: "18px",
+                  }}
+                  href="/login"
+                >
+                  here
+                </a>{" "}
+                to redirect to Login page.
+              </div>
+            </div>
+          ) : null}
+        </Stack>
+      </form>
     </>
   );
 };

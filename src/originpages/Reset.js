@@ -85,7 +85,7 @@ function Reset() {
     }
     // followed from mail this click works
     if (token || tokenId) {
-      console.log(pass, token, tokenId);
+      // console.log(pass, token, tokenId);
       valid = await completepasswordreset(pass, token, tokenId);
       if (valid === "success") {
         setErrormessage(3);
@@ -96,7 +96,7 @@ function Reset() {
       if (valid === "error") {
         setDisable(false);
       }
-      console.log(valid);
+      // console.log(valid);
       setDisable(false);
       window.scroll({
         top: 1000,
@@ -107,7 +107,7 @@ function Reset() {
     }
     // to get reset mail to user
     valid = await reset(username, pass);
-    console.log("in", valid);
+    // console.log("in", valid);
     if (valid === "success") {
       setErrormessage(3);
       const interval = setInterval(() => {
@@ -150,219 +150,224 @@ function Reset() {
 
   return (
     <>
-      <Stack className={classes.stackstyles} direction="column" spacing={3}>
-        {progress || disable ? (
-          <Box
-            sx={{
-              width: "150%",
-              marginLeft: "-150px",
-            }}
-          >
-            <LinearProgress />
-          </Box>
-        ) : null}
-        <img className={classes.image} src={Login3} alt={"Todo"} />
-        <Typography className={classes.signup}>Reset your password </Typography>
-        {!mailandpassword ? (
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <PersonIcon
-              style={{ color: personicon ? "blue" : "" }}
-              sx={{ mr: 1, my: 2 }}
-            />
-            <TextField
-              required
-              disabled={progress}
-              fullWidth
-              label="E-Mail"
-              type="email"
-              variant="outlined"
-              name="username"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-              onClick={() => {
-                setPersonicon(true);
-              }}
-            />
-          </Box>
-        ) : null}
-        {mailandpassword ? (
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <LockIcon
-              style={{ color: lockicon1 ? "blue" : "" }}
-              sx={{ mr: 1, my: 2 }}
-            />
-
-            <TextField
-              required
-              disabled={progress}
-              fullWidth
-              label="New Password"
-              type="password"
-              variant="outlined"
-              name="pass"
-              onChange={(e) => {
-                setPass(e.target.value);
-              }}
-              onClick={() => {
-                setLockicon1(true);
-              }}
-            />
-          </Box>
-        ) : null}
-        {mailandpassword ? (
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <LockIcon
-              style={{ color: lockicon2 ? "blue" : "" }}
-              sx={{ mr: 1, my: 2 }}
-            />
-
-            <TextField
-              required
-              disabled={progress}
-              fullWidth
-              label="Re-Password"
-              type="password"
-              variant="outlined"
-              name="newpass"
-              onChange={(e) => {
-                setNewpass(e.target.value);
-              }}
-              onClick={() => {
-                setLockicon2(true);
-              }}
-            />
-          </Box>
-        ) : null}
-        <div style={{ textAlign: "right" }}>
-          <LoadingButton
-            disabled={disable || progress}
-            loading={disable || progress}
-            loadingPosition="end"
-            style={{
-              color: "white",
-              backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
-              width: "130px",
-            }}
-            variant="contained"
-            onClick={handleClick}
-            endIcon={<MailIcon />}
-            type="submit"
-          >
-            Reset
-          </LoadingButton>
-        </div>
-        {errormessage === 1 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ErrorOutlineIcon
-              sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
-            />
-            {!mailandpassword ? (
-              <div
-                style={{
-                  fontSize: "16px",
-                  color: "#d32f2f",
-                }}
-              >
-                User account not found.Check your mail once and retry again.
-              </div>
-            ) : (
-              <div
-                style={{
-                  fontSize: "16px",
-                  color: "#d32f2f",
-                }}
-              >
-                Your link Expired.Click{" "}
-                <a
-                  style={{
-                    color: "#0000ee",
-                    textDecoration: "none",
-                    fontSize: "18px",
-                  }}
-                  href="/resetpassword"
-                >
-                  here
-                </a>{" "}
-                to redirect to send another mail.
-              </div>
-            )}
-          </div>
-        ) : null}
-        {errormessage === 2 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <LockIcon sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }} />
-            <div
-              style={{
-                fontSize: "16px",
-                color: "#d32f2f",
+      <form>
+        <Stack className={classes.stackstyles} direction="column" spacing={3}>
+          {progress || disable ? (
+            <Box
+              sx={{
+                width: "150%",
+                marginLeft: "-150px",
               }}
             >
-              Both the passwords should match.
-            </div>
+              <LinearProgress />
+            </Box>
+          ) : null}
+          <img className={classes.image} src={Login3} alt={"Todo"} />
+          <Typography className={classes.signup}>
+            Reset your password{" "}
+          </Typography>
+          {!mailandpassword ? (
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <PersonIcon
+                style={{ color: personicon ? "blue" : "" }}
+                sx={{ mr: 1, my: 2 }}
+              />
+              <TextField
+                required
+                disabled={progress}
+                fullWidth
+                label="E-Mail"
+                type="email"
+                variant="outlined"
+                name="username"
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
+                onClick={() => {
+                  setPersonicon(true);
+                }}
+              />
+            </Box>
+          ) : null}
+          {mailandpassword ? (
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <LockIcon
+                style={{ color: lockicon1 ? "blue" : "" }}
+                sx={{ mr: 1, my: 2 }}
+              />
+
+              <TextField
+                required
+                disabled={progress}
+                fullWidth
+                label="New Password"
+                type="password"
+                variant="outlined"
+                name="pass"
+                onChange={(e) => {
+                  setPass(e.target.value);
+                }}
+                onClick={() => {
+                  setLockicon1(true);
+                }}
+              />
+            </Box>
+          ) : null}
+          {mailandpassword ? (
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <LockIcon
+                style={{ color: lockicon2 ? "blue" : "" }}
+                sx={{ mr: 1, my: 2 }}
+              />
+
+              <TextField
+                required
+                disabled={progress}
+                fullWidth
+                label="Re-Password"
+                type="password"
+                variant="outlined"
+                name="newpass"
+                onChange={(e) => {
+                  setNewpass(e.target.value);
+                }}
+                onClick={() => {
+                  setLockicon2(true);
+                }}
+              />
+            </Box>
+          ) : null}
+          <div style={{ textAlign: "right" }}>
+            <LoadingButton
+              disabled={disable || progress}
+              loading={disable || progress}
+              loadingPosition="end"
+              style={{
+                color: "white",
+                backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
+                width: "130px",
+              }}
+              variant="contained"
+              onClick={handleClick}
+              endIcon={<MailIcon />}
+              type="submit"
+            >
+              Reset
+            </LoadingButton>
           </div>
-        ) : null}
-        {errormessage === 3 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <VerifiedUserIcon
-              sx={{ color: "#2e7d32", mr: 1, marginBottom: "1px" }}
-            />
+          {errormessage === 1 ? (
             <div
               style={{
-                fontSize: "16px",
-                color: "#2e7d32",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
+              <ErrorOutlineIcon
+                sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
+              />
               {!mailandpassword ? (
-                <>
-                  <div>
-                    Please check your email inbox for a link to complete the
-                    reset .If you haven't received mail.Try again in {count}.
-                  </div>
-                </>
+                <div
+                  style={{
+                    fontSize: "16px",
+                    color: "#d32f2f",
+                  }}
+                >
+                  User account not found.Please type your mail correctly and try
+                  again.
+                </div>
               ) : (
                 <div
                   style={{
                     fontSize: "16px",
-                    color: "#2e7d32",
+                    color: "#d32f2f",
                   }}
                 >
-                  Password Succesfully Changed.Click{" "}
+                  Your link Expired.Click{" "}
                   <a
                     style={{
                       color: "#0000ee",
                       textDecoration: "none",
                       fontSize: "18px",
                     }}
-                    href="/login"
+                    href="/resetpassword"
                   >
                     here
                   </a>{" "}
-                  to redirect to Login page.
+                  to redirect to send another mail.
                 </div>
               )}
             </div>
-          </div>
-        ) : null}
-      </Stack>
+          ) : null}
+          {errormessage === 2 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LockIcon sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }} />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#d32f2f",
+                }}
+              >
+                Both the passwords should match.
+              </div>
+            </div>
+          ) : null}
+          {errormessage === 3 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <VerifiedUserIcon
+                sx={{ color: "#2e7d32", mr: 1, marginBottom: "1px" }}
+              />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#2e7d32",
+                }}
+              >
+                {!mailandpassword ? (
+                  <>
+                    <div>
+                      Please check your email inbox for a link to complete the
+                      reset .If you haven't received mail.Try again in {count}.
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    style={{
+                      fontSize: "16px",
+                      color: "#2e7d32",
+                    }}
+                  >
+                    Password Succesfully Changed.Click{" "}
+                    <a
+                      style={{
+                        color: "#0000ee",
+                        textDecoration: "none",
+                        fontSize: "18px",
+                      }}
+                      href="/login"
+                    >
+                      here
+                    </a>{" "}
+                    to redirect to Login page.
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : null}
+        </Stack>
+      </form>
     </>
   );
 }
