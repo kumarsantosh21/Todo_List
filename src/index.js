@@ -10,7 +10,14 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import Dahboard from "./v1/Dashboard";
-import { Client, Login, Register, Reset, GoogleAuth } from "./originpages";
+import {
+  Client,
+  Login,
+  Register,
+  Reset,
+  ResetConfirmation,
+  GoogleAuth,
+} from "./originpages";
 // import { Loading } from "./assets/Loaders";
 // import reportWebVitals from './reportWebVitals';
 
@@ -23,6 +30,7 @@ ReactDOM.render(
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/resetpassword" element={<Reset />} />
+          <Route path="/resetconfirmation" element={<ResetConfirmation />} />
           <Route path="/googleauth" element={<GoogleAuth />} />
           <Route path="/v1/dashboard" element={<Dahboard />} />
         </Routes>

@@ -69,7 +69,8 @@ const Login = () => {
   }, [navigate]);
 
   // onclick of button
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     setDisable(true);
     setLockicon(false);
     setPersonicon(false);
@@ -106,6 +107,16 @@ const Login = () => {
     }, 1000);
   }, [progress]);
 
+  const errors = {
+    formail:
+      username !== "" &&
+      !username.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      ),
+  };
+  const helpers = {
+    formail: errors.formail ? "Please provide valid email" : "",
+  };
   return (
     <>
       <form>
@@ -128,14 +139,25 @@ const Login = () => {
             </a>
           </div>
 
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <PersonIcon
-              style={{ color: personicon ? "blue" : "" }}
-              sx={{ mr: 1, my: 2 }}
+              style={{
+                color: personicon ? "blue" : "",
+                alignSelf: "center",
+                marginRight: "8px",
+              }}
             />
             <TextField
               required
               disabled={progress}
+              error={errors.formail}
+              helperText={helpers.formail}
               fullWidth
               label="E-Mail"
               type="email"
@@ -144,15 +166,27 @@ const Login = () => {
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
-              onClick={() => {
+              onFocus={() => {
                 setPersonicon(true);
+              }}
+              onBlur={() => {
+                setPersonicon(false);
               }}
             />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <LockIcon
-              style={{ color: lockicon ? "blue" : "" }}
-              sx={{ mr: 1, my: 2 }}
+              style={{
+                color: lockicon ? "blue" : "",
+                alignSelf: "center",
+                marginRight: "8px",
+              }}
             />
 
             <TextField
@@ -167,8 +201,11 @@ const Login = () => {
               onChange={(e) => {
                 setPass(e.target.value);
               }}
-              onClick={() => {
+              onFocus={() => {
                 setLockicon(true);
+              }}
+              onBlur={() => {
+                setLockicon(false);
               }}
             />
           </Box>
@@ -182,12 +219,25 @@ const Login = () => {
             }}
           >
             <LoadingButton
-              disabled={disable || progress}
+              disabled={
+                disable ||
+                progress ||
+                username === "" ||
+                pass === "" ||
+                errors.formail
+              }
               loading={disable || progress}
               loadingPosition="end"
               style={{
                 color: "white",
-                backgroundColor: disable || progress ? " #ffb3ff" : "#b300b3",
+                backgroundColor:
+                  disable ||
+                  progress ||
+                  username === "" ||
+                  pass === "" ||
+                  errors.formail
+                    ? " #ffb3ff"
+                    : "#b300b3",
                 width: screenSize >= 1100 ? "110px" : "100%",
               }}
               variant="contained"

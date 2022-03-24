@@ -4,45 +4,43 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import { Login3 } from "../assets";
-import { register } from "./";
+import { completepasswordreset } from "./";
 import Box from "@mui/material/Box";
-import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LinearProgress from "@mui/material/LinearProgress";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
+import MailIcon from "@mui/icons-material/Mail";
 import Typography from "@mui/material/Typography";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
-const Register = () => {
+function ResetConfirmation() {
   const [disable, setDisable] = useState(false);
-  const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
-  const [repass, setRepass] = useState("");
-  const [personicon, setPersonicon] = useState(false);
+  const [newpass, setNewpass] = useState("");
   const [lockicon1, setLockicon1] = useState(false);
   const [lockicon2, setLockicon2] = useState(false);
   const [errormessage, setErrormessage] = useState();
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
+  const [mailandpassword, setMailandpassword] = useState(false);
   const [errorhandler, setErrorhandler] = useState(false);
-
   let valid;
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+  const tokenId = params.get("tokenId");
 
   // for validation
 
   const errors = {
-    formail:
-      username !== "" &&
-      !username.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      ),
     forpass: pass !== "" && pass.length < 6,
   };
-  const helpers = {
-    formail: errors.formail ? "Please provide valid email" : "",
-  };
 
+  // for checking whether the link is followed from mail or not
+  useEffect(() => {
+    if (token || tokenId) {
+      setMailandpassword(true);
+    }
+  }, [token, tokenId]);
   // assigning screen size
   const setDimension = () => {
     setScreensize(window.innerWidth);
@@ -50,7 +48,7 @@ const Register = () => {
 
   const useStyles = makeStyles({
     stackstyles: {
-      margin: screenSize >= 700 ? "3% 28%" : "none",
+      margin: screenSize >= 700 ? "5% 28%" : "none",
       padding: "0% 4% 2% 4%",
       boxShadow:
         screenSize >= 700 ? "4px 16px 44px rgb(3 23 111 / 20%)" : "none",
@@ -82,14 +80,13 @@ const Register = () => {
     },
   });
   const classes = useStyles();
-  //  onclick button function
+  // onclick of button
   const handleClick = async (e) => {
     e.preventDefault();
     setDisable(true);
     setLockicon1(false);
     setLockicon2(false);
-    setPersonicon(false);
-    if (pass !== repass) {
+    if (pass !== newpass) {
       setErrormessage(2);
       setDisable(false);
       window.scroll({
@@ -99,11 +96,20 @@ const Register = () => {
       });
       return;
     }
-    // here users gets registerd
-    valid = await register(username, pass);
-
-    if (valid === "success") {
-      setErrormessage(3);
+    // followed from mail this click works
+    if (token || tokenId) {
+      // console.log(pass, token, tokenId);
+      valid = await completepasswordreset(pass, token, tokenId);
+      if (valid === "success") {
+        setErrormessage(3);
+      }
+      if (valid === "expired") {
+        setErrormessage(1);
+      }
+      if (valid === "error") {
+        setDisable(false);
+      }
+      // console.log(valid);
       setDisable(false);
       window.scroll({
         top: 1000,
@@ -111,30 +117,8 @@ const Register = () => {
         behavior: "smooth",
       });
     }
-    if (valid === "exists") {
-      setErrormessage(1);
-      setDisable(false);
-      window.scroll({
-        top: 1000,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-    if (valid === "error") {
-      setDisable(false);
-      window.scroll({
-        top: 1000,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-    window.scroll({
-      top: 1000,
-      left: 0,
-      behavior: "smooth",
-    });
   };
-  // calling function every time screen width changes
+  // screen witdth checker
   useEffect(() => {
     window.addEventListener("resize", setDimension);
 
@@ -142,7 +126,7 @@ const Register = () => {
       window.removeEventListener("resize", setDimension);
     };
   }, [screenSize]);
-  // first loader
+  // First loader
   useEffect(() => {
     setTimeout(() => {
       setProgress(false);
@@ -165,81 +149,49 @@ const Register = () => {
           ) : null}
           <img className={classes.image} src={Login3} alt={"Todo"} />
           <Typography className={classes.signup}>
-            Register your account here{" "}
+            Reset your password{" "}
           </Typography>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <PersonIcon
-              style={{
-                color: personicon ? "blue" : "",
-                alignSelf: "center",
-                marginRight: "8px",
+          {mailandpassword ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
-            <TextField
-              required
-              disabled={progress}
-              fullWidth
-              label="E-Mail"
-              type="email"
-              error={errors.formail}
-              helperText={helpers.formail}
-              variant="outlined"
-              name="username"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-              onFocus={() => {
-                setPersonicon(true);
-              }}
-              onBlur={() => {
-                setPersonicon(false);
-              }}
-            />
-          </Box>
+            >
+              <LockIcon
+                style={{
+                  color: lockicon1 ? "blue" : "",
+                  alignSelf: "center",
+                  marginRight: "8px",
+                }}
+              />
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <LockIcon
-              style={{
-                color: lockicon1 ? "blue" : "",
-                alignSelf: "center",
-                marginRight: "8px",
-              }}
-            />
-
-            <TextField
-              required
-              disabled={progress}
-              fullWidth
-              label="Password"
-              type="password"
-              error={errors.forpass}
-              variant="outlined"
-              autoComplete="off"
-              name="pass"
-              onChange={(e) => {
-                setPass(e.target.value);
-              }}
-              onFocus={() => {
-                setLockicon1(true);
-              }}
-              onBlur={() => {
-                setLockicon1(false);
-              }}
-            />
-          </Box>
+              <TextField
+                required
+                disabled={progress}
+                fullWidth
+                error={errors.forpass}
+                label="New Password"
+                type="password"
+                variant="outlined"
+                autoComplete="on"
+                name="pass"
+                onChange={(e) => {
+                  setPass(e.target.value);
+                }}
+                onFocus={() => {
+                  setLockicon1(true);
+                  setErrorhandler(true);
+                }}
+                onBlur={() => {
+                  setLockicon1(false);
+                  setErrorhandler(false);
+                }}
+              />
+            </Box>
+          ) : null}
 
           {errorhandler && pass !== "" ? (
             <div style={{ marginLeft: "20%" }}>
@@ -258,52 +210,52 @@ const Register = () => {
             </div>
           ) : null}
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <LockIcon
-              style={{
-                color: lockicon2 ? "blue" : "",
-                alignSelf: "center",
-                marginRight: "8px",
+          {mailandpassword ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
+            >
+              <LockIcon
+                style={{
+                  color: lockicon2 ? "blue" : "",
+                  alignSelf: "center",
+                  marginRight: "8px",
+                }}
+              />
 
-            <TextField
-              required
-              disabled={progress}
-              fullWidth
-              label="Re-enter Password"
-              type="password"
-              error={errors.forpass}
-              variant="outlined"
-              autoComplete="off"
-              name="repass"
-              onChange={(e) => {
-                setRepass(e.target.value);
-              }}
-              onFocus={() => {
-                setLockicon2(true);
-              }}
-              onBlur={() => {
-                setLockicon2(false);
-              }}
-            />
-          </Box>
+              <TextField
+                required
+                disabled={progress}
+                fullWidth
+                label="Re-Password"
+                type="password"
+                variant="outlined"
+                autoComplete="on"
+                name="newpass"
+                onChange={(e) => {
+                  setNewpass(e.target.value);
+                }}
+                onFocus={() => {
+                  setLockicon2(true);
+                }}
+                onBlur={() => {
+                  setLockicon2(false);
+                }}
+              />
+            </Box>
+          ) : null}
+
           <div style={{ textAlign: "right" }}>
             <LoadingButton
               disabled={
                 disable ||
                 progress ||
                 pass === "" ||
-                repass === "" ||
-                errors.forpass ||
-                username === "" ||
-                errors.formail
+                newpass === "" ||
+                errors.forpass
               }
               loading={disable || progress}
               loadingPosition="end"
@@ -313,23 +265,20 @@ const Register = () => {
                   disable ||
                   progress ||
                   pass === "" ||
-                  repass === "" ||
-                  errors.forpass ||
-                  username === "" ||
-                  errors.formail
+                  newpass === "" ||
+                  errors.forpass
                     ? " #ffb3ff"
                     : "#b300b3",
                 width: "130px",
               }}
               variant="contained"
-              type="submit"
               onClick={handleClick}
-              endIcon={<HowToRegIcon />}
+              endIcon={<MailIcon />}
+              type="submit"
             >
-              Register
+              Reset
             </LoadingButton>
           </div>
-
           {errormessage === 1 ? (
             <div
               style={{
@@ -341,24 +290,25 @@ const Register = () => {
               <ErrorOutlineIcon
                 sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
               />
+
               <div
                 style={{
                   fontSize: "16px",
                   color: "#d32f2f",
                 }}
               >
-                User account already exist.Please Try Logging in or click{" "}
+                Your link Expired.Click{" "}
                 <a
                   style={{
                     color: "#0000ee",
                     textDecoration: "none",
                     fontSize: "18px",
                   }}
-                  href="/login"
+                  href="/resetpassword"
                 >
                   here
                 </a>{" "}
-                to Reset Password
+                to redirect to send another mail.
               </div>
             </div>
           ) : null}
@@ -398,18 +348,25 @@ const Register = () => {
                   color: "#2e7d32",
                 }}
               >
-                Registration Succesful.Click{" "}
-                <a
+                <div
                   style={{
-                    color: "#0000ee",
-                    textDecoration: "none",
-                    fontSize: "18px",
+                    fontSize: "16px",
+                    color: "#2e7d32",
                   }}
-                  href="/login"
                 >
-                  here
-                </a>{" "}
-                to redirect to Login page.
+                  Password Succesfully Changed.Click{" "}
+                  <a
+                    style={{
+                      color: "#0000ee",
+                      textDecoration: "none",
+                      fontSize: "18px",
+                    }}
+                    href="/login"
+                  >
+                    here
+                  </a>{" "}
+                  to redirect to Login page.
+                </div>
               </div>
             </div>
           ) : null}
@@ -417,6 +374,5 @@ const Register = () => {
       </form>
     </>
   );
-};
-
-export default Register;
+}
+export default ResetConfirmation;
