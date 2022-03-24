@@ -281,7 +281,6 @@ const Register = () => {
               fullWidth
               label="Re-enter Password"
               type="password"
-              error={errors.forpass}
               variant="outlined"
               autoComplete="off"
               name="repass"
