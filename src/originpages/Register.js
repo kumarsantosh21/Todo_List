@@ -234,9 +234,11 @@ const Register = () => {
               }}
               onFocus={() => {
                 setLockicon1(true);
+                setErrorhandler(true);
               }}
               onBlur={() => {
                 setLockicon1(false);
+                setErrorhandler(false);
               }}
             />
           </Box>
