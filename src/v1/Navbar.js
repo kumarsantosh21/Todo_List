@@ -1,3 +1,11 @@
 import React from "react";
-const Navbar = () => {};
+import { DaImg } from "../assets";
+const Navbar = () => {
+  return (
+    <>
+      <div>image</div>
+      <img src={DaImg} alt="Todo" />;
+    </>
+  );
+};
 export default Navbar;
