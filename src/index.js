@@ -10,7 +10,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import Dahboard from "./v1/Dashboard";
-import Navbar from "./v1/Navbar";
+import Navbar from "./v1/Navbar/Navbar";
 import {
   Client,
   Login,
