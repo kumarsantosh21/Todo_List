@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 // import { styled } from "@mui/material/styles";
-const NavButton = () => {
+const NavButton = ({ Buttonname }) => {
   // const ButtonSty = styled("Button")(({ theme }) => ({}));
   const ButtonStyle = {
     color: "black",
@@ -16,7 +16,7 @@ const NavButton = () => {
   return (
     <>
       <Button sx={ButtonStyle} variant="text">
-        Dashboard
+        {Buttonname}
       </Button>
     </>
   );
