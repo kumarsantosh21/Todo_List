@@ -5,12 +5,14 @@ import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import NavButtonMapper from "./NavButtonMapper";
 import NavIcon from "./NavIcons";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const useStyles = makeStyles({
     appbarsy: {},
   });
 
   const classes = useStyles();
+  const navigate = useNavigate();
   return (
     <>
       <AppBar
@@ -38,6 +40,9 @@ const Navbar = () => {
             marginLeft: "2%",
             marginRight: "15px",
             cursor: "pointer",
+          }}
+          onClick={() => {
+            navigate("/v1/dashboard");
           }}
         >
           <img src={DaImg} alt="Todo" style={{}} />
