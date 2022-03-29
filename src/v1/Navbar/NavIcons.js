@@ -1,9 +1,9 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-
+import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,7 +12,7 @@ const NavIcon = () => {
   const [open, setOpen] = React.useState(false);
 
   const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+    setOpen(!open);
   };
 
   const handleClose = () => {
@@ -28,22 +28,10 @@ const NavIcon = () => {
     }
   }
 
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      // anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
-  const IconStyle = {
-    // "&:hover": {
-    //   color: "rgb(94, 53, 177)",
-    //   background: "rgb(237, 231, 246)",
-    // },
-  };
+  const IconStyle = {};
   const ButtonIconStyle = {
+    borderRadius: "6px",
+    color: open ? "rgb(94, 53, 177)" : "",
     "&:hover": {
       color: "rgb(94, 53, 177)",
       background: "rgb(237, 231, 246)",
@@ -51,13 +39,16 @@ const NavIcon = () => {
   };
   const MenuStyle = {
     position: "fixed",
-    marginLeft: "77%",
-    marginTop: "80px",
+    marginLeft: "83%",
+    marginTop: "95px",
     background: "white",
     borderRadius: "6px",
     boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
     padding: "15px",
-    width: "250px",
+    width: "13%",
+    overflowX: "hidden",
+    maxHeight: "150px",
+    overflowY: "auto",
   };
   const MenuListStyle = {
     borderRadius: "6px",
@@ -84,12 +75,18 @@ const NavIcon = () => {
               autoFocusItem={open}
               onKeyDown={handleListKeyDown}
               sx={MenuStyle}
+              selected={true}
             >
               <MenuItem onClick={handleClose} sx={MenuListStyle}>
-                <div>san</div>
+                <Avatar sx={{ width: 24, height: 24, marginRight: "13px" }}>
+                  A
+                </Avatar>{" "}
+                Account
               </MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleClose} sx={MenuListStyle}>
+                <LogoutIcon sx={{ marginRight: "13px" }} />
+                Logout
+              </MenuItem>
             </MenuList>
           </ClickAwayListener>
         </Paper>

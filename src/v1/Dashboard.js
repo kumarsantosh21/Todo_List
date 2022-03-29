@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { app } from "../originpages/Client";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../assets/Loaders";
+import Navbar from "./Navbar/Navbar";
 
 const CUSTOMER = gql`
   query {
@@ -31,6 +32,7 @@ function Dahboard() {
   return (
     <>
       {app.currentUser ? <div>{data.customer.name}</div> : null}
+      <Navbar />
       <div
         onClick={() => {
           app.currentUser.logOut();

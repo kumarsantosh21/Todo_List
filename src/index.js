@@ -34,6 +34,7 @@ ReactDOM.render(
           <Route path="/resetconfirmation" element={<ResetConfirmation />} />
           <Route path="/googleauth" element={<GoogleAuth />} />
           <Route path="/v1/dashboard" element={<Dahboard />} />
+          <Route path="/v1/experimentzone" element={<Dahboard />} />
           <Route path="/v1/navbar" element={<Navbar />} />
         </Routes>
       </BrowserRouter>
