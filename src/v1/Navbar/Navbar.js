@@ -1,19 +1,16 @@
 import React from "react";
 import { DaImg } from "../../assets";
 import AppBar from "@mui/material/AppBar";
-import { makeStyles } from "@mui/styles";
+// import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import NavButtonMapper from "./NavButtonMapper";
 import NavIcon from "./NavIcons";
 import { useNavigate } from "react-router-dom";
 import SettingsIcon from "../SettingsIcon";
-const Navbar = () => {
-  const useStyles = makeStyles({
-    appbarsy: {},
-  });
 
-  const classes = useStyles();
+const Navbar = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <AppBar
@@ -59,6 +56,9 @@ const Navbar = () => {
         </div>
         <SettingsIcon />
       </AppBar>
+      {/* <div style={{ fontSize: "30px", marginTop: "200px" }}>
+        {data.customer.name}
+      </div> */}
     </>
   );
 };

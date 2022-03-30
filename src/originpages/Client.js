@@ -18,7 +18,7 @@ export async function getValidAccessToken(username, pass) {
       // valid, we refresh the user's custom data which also refreshes their access token.
       await app.currentUser.refreshCustomData();
       console.log(app.currentUser.accessToken);
-      console.log(app.currentUser);
+      console.log(app.currentUser._profile.data.email);
 
       return app.currentUser.accessToken;
     }

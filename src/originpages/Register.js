@@ -355,7 +355,7 @@ const Register = () => {
                     textDecoration: "none",
                     fontSize: "18px",
                   }}
-                  href="/login"
+                  href="/resetpassword"
                 >
                   here
                 </a>{" "}

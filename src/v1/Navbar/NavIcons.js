@@ -8,15 +8,26 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import { app } from "../../originpages";
+import { useNavigate } from "react-router-dom";
 const NavIcon = () => {
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate();
   const handleToggle = () => {
     setOpen(!open);
   };
 
+  const handleCloseLogout = () => {
+    setOpen(false);
+    app.currentUser.logOut();
+    navigate("/login");
+    window.location.reload();
+  };
   const handleClose = () => {
     setOpen(false);
+    app.currentUser.logOut();
+    navigate("/login");
+    window.location.reload();
   };
 
   function handleListKeyDown(event) {
@@ -77,13 +88,18 @@ const NavIcon = () => {
               sx={MenuStyle}
               selected={true}
             >
-              <MenuItem onClick={handleClose} sx={MenuListStyle}>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                }}
+                sx={MenuListStyle}
+              >
                 <Avatar sx={{ width: 24, height: 24, marginRight: "13px" }}>
                   A
                 </Avatar>{" "}
                 Account
               </MenuItem>
-              <MenuItem onClick={handleClose} sx={MenuListStyle}>
+              <MenuItem onClick={handleCloseLogout} sx={MenuListStyle}>
                 <LogoutIcon sx={{ marginRight: "13px" }} />
                 Logout
               </MenuItem>
