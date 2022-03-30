@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import NavButtonMapper from "./NavButtonMapper";
 import NavIcon from "./NavIcons";
 import { useNavigate } from "react-router-dom";
+import SettingsIcon from "../SettingsIcon";
 const Navbar = () => {
   const useStyles = makeStyles({
     appbarsy: {},
@@ -56,6 +57,7 @@ const Navbar = () => {
         <div style={{ flex: "15%", textAlign: "right", marginRight: "30px" }}>
           <NavIcon />
         </div>
+        <SettingsIcon />
       </AppBar>
     </>
   );
