@@ -7,6 +7,7 @@ import Collapse from "@mui/material/Collapse";
 import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
 import { app } from "../originpages/Client";
 import { useLazyQuery, useMutation } from "@apollo/client";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 import Slide from "@mui/material/Slide";
 
@@ -53,6 +54,7 @@ const CreateNewTodo = () => {
     const newme = [...message, text];
     console.log("newme", newme);
     setNewmessage(newme);
+    setState(false);
   };
   const floatingStyle = {
     background: "white",
@@ -69,72 +71,69 @@ const CreateNewTodo = () => {
       boxShadow: "none",
     },
   };
+  const handleClose = () => {
+    console.log("onclickaway");
+    setState(false);
+  };
   return (
     <>
-      <div style={{ display: "flex", position: "fixed", width: "100%" }}>
-        {" "}
-        <div
-          style={{
-            display: "table-column",
-          }}
-        >
-          <div>
-            <Fab
-              color="primary"
-              variant="extended"
-              sx={{ ...floatingStyle, height: "none" }}
-              onClick={() => {
-                setState(!state);
-              }}
-            >
-              Add New List <AddIcon sx={{ marginLeft: "5px" }} />
-            </Fab>
+      {/* Add add button down right side and after add close testfeild and refresh the todo messages list back side */}
+      <ClickAwayListener onClickAway={handleClose}>
+        <div style={{ display: "flex", position: "fixed", width: "100%" }}>
+          {" "}
+          <div style={{}}>
+            <div>
+              <Fab
+                color="primary"
+                variant="extended"
+                sx={{ ...floatingStyle, height: "none" }}
+                onClick={() => {
+                  setState(!state);
+                }}
+              >
+                Add New List <AddIcon sx={{ marginLeft: "5px" }} />
+              </Fab>
+            </div>
           </div>
-        </div>
-        <Slide direction="left" in={state} mountOnEnter unmountOnExit>
-          <div
-            style={{
-              border: "2px solid rgb(94, 53, 177)",
-              color: "rgb(94, 53, 177)",
-              background: "white",
-              borderRadius: "6px",
-              zIndex: "1",
-              width: "700px",
-              padding: "5px 16px",
-              marginLeft: "8%",
-            }}
-          >
-            <IconButton
-              onClick={handleClick}
-              sx={{
-                borderRadius: "6px",
+          <Slide direction="left" in={state} mountOnEnter unmountOnExit>
+            <div
+              style={{
+                border: "2px solid rgb(94, 53, 177)",
                 color: "rgb(94, 53, 177)",
-                "&:hover": {
-                  background: "rgb(237, 231, 246)",
-                },
+                background: "white",
+                borderRadius: "6px",
+                zIndex: "1",
+                width: "680px",
+                padding: "5px 16px",
+                marginLeft: "8%",
               }}
             >
-              Add <AddIcon sx={{ marginLeft: "5px" }} />
-            </IconButton>
-            <TextField
-              variant="standard"
-              rows={10}
-              fullWidth
-              multiline
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-              sx={{
-                input: {
-                  color: "red",
-                  background: "green",
-                },
-              }}
-              InputProps={{ disableUnderline: true }}
-            />
-          </div>
-        </Slide>
-      </div>
+              <IconButton
+                onClick={handleClick}
+                sx={{
+                  borderRadius: "6px",
+                  color: "rgb(94, 53, 177)",
+                  "&:hover": {
+                    background: "rgb(237, 231, 246)",
+                  },
+                }}
+              >
+                Add <AddIcon sx={{ marginLeft: "5px" }} />
+              </IconButton>
+              <TextField
+                variant="standard"
+                rows={10}
+                fullWidth
+                multiline
+                onChange={(e) => {
+                  setText(e.target.value);
+                }}
+                InputProps={{ disableUnderline: true }}
+              />
+            </div>
+          </Slide>
+        </div>
+      </ClickAwayListener>
     </>
   );
 };
