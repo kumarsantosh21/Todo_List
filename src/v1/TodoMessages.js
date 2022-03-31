@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 
 const TodoMessages = ({ messagetext }) => {
   const ButtonIconStyle = {
+    // zIndex: "1",
     borderRadius: "6px",
     "&:hover": {
       color: "rgb(94, 53, 177)",
@@ -15,15 +16,17 @@ const TodoMessages = ({ messagetext }) => {
   return (
     <>
       <div
+        disabled
         style={{
           padding: "20px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex: "1",
         }}
       >
-        <div style={{ flex: "85%", textAlign: "left" }}>{messagetext}</div>
+        <div style={{ flex: "85%", textAlign: "left", cursor: "text" }}>
+          {messagetext}
+        </div>
         <div
           style={{
             display: "flex",

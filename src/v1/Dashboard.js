@@ -11,7 +11,7 @@ import {
   GET_MESSAGES,
 } from "./graphql";
 import TodoMessagesMapping from "./TodoMessagesMapping";
-import TodoMessages from "./TodoMessages";
+import CreateNewTodo from "./CreateNewTodo";
 function Dahboard() {
   const navigate = useNavigate();
   const [skeleton, setSkeleton] = React.useState();
@@ -57,7 +57,7 @@ function Dahboard() {
     variables: {
       datas: {
         username: userData,
-        message: ["A", "B", "SAMPLE DATA"],
+        message: [],
       },
     },
   });
@@ -104,10 +104,10 @@ function Dahboard() {
   return (
     <>
       <Navbar />
-
+      <CreateNewTodo />
       <div
         style={{
-          margin: "200px",
+          margin: "200px 200px 200px 250px",
           borderRadius: "10px",
           boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
           overflow: "hidden",
