@@ -29,7 +29,7 @@ function Dahboard() {
       setSkeleton(incomingdata);
     },
   });
-  // Fetching messages of the if user exists
+  // Fetching messages of the user if user exists
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: app.currentUser._profile.data.email,

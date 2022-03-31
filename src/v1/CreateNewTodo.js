@@ -4,11 +4,56 @@ import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
+import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
+import { app } from "../originpages/Client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 
 import Slide from "@mui/material/Slide";
 
 const CreateNewTodo = () => {
   const [state, setState] = React.useState(false);
+  const [message, setMessage] = React.useState();
+  const [newmessage, setNewmessage] = React.useState();
+  const [text, setText] = React.useState();
+
+  const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
+    variables: {
+      usernam: app.currentUser._profile.data.email,
+    },
+    onCompleted: (mesdata) => {
+      console.log("mesdatacreatenewtoso", mesdata.data[0].message);
+
+      const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
+
+      setMessage(data);
+      console.log(message);
+    },
+  });
+
+  const [UPDATE_MESSAGES] = useMutation(UPDATE_USER_MESSAGES, {
+    variables: {
+      username: app.currentUser._profile.data.email,
+      updates: {
+        message: newmessage,
+      },
+    },
+  });
+
+  React.useEffect(() => {
+    MESSAGES();
+  }, [MESSAGES]);
+
+  React.useEffect(() => {
+    if (newmessage !== undefined) {
+      UPDATE_MESSAGES();
+    }
+  }, [newmessage, UPDATE_MESSAGES]);
+
+  const handleClick = () => {
+    const newme = [...message, text];
+    console.log("newme", newme);
+    setNewmessage(newme);
+  };
   const floatingStyle = {
     background: "white",
     borderRadius: "6px",
@@ -60,6 +105,7 @@ const CreateNewTodo = () => {
             }}
           >
             <IconButton
+              onClick={handleClick}
               sx={{
                 borderRadius: "6px",
                 color: "rgb(94, 53, 177)",
@@ -75,6 +121,9 @@ const CreateNewTodo = () => {
               rows={10}
               fullWidth
               multiline
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
               sx={{
                 input: {
                   color: "red",
