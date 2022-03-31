@@ -1,9 +1,8 @@
-import { GET_USERS } from "./queries";
-import { UPDATE_USERS } from "./mutations";
+import { GET_USERS, GET_MESSAGES } from "./queries";
+import { UPDATE_USERS, INSERT_NEW_USER_FOR_DATA } from "./mutations";
 
 // Mutations
+export { UPDATE_USERS, INSERT_NEW_USER_FOR_DATA };
 
-export { UPDATE_USERS };
 // Queries
-
-export { GET_USERS };
+export { GET_USERS, GET_MESSAGES };

@@ -1,2 +1,2 @@
-import { UPDATE_USERS } from "./dashboard";
-export { UPDATE_USERS };
+import { UPDATE_USERS, INSERT_NEW_USER_FOR_DATA } from "./dashboard";
+export { UPDATE_USERS, INSERT_NEW_USER_FOR_DATA };

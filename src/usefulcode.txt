@@ -27,6 +27,15 @@
 
 
 
+// console.log("Welcome to Programiz!");
+// let a={}
+// let b={}
+// let c=[{san:{message:["hello","jollo"]}},{"sant":{message:["hello","jollo"]}},{a:"s"},a,b]
+// const ab="ab.oj"
+// console.log(ab.split(".").join(""))
+// console.log(c.find(a => a.sant.message[1]))
+// const x=c.find(a => a.sant)
+// console.log(x.sant.message[1])
 
 
 

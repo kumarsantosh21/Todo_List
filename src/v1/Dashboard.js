@@ -4,12 +4,22 @@ import { app } from "../originpages/Client";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../assets/Loaders";
 import Navbar from "./Navbar/Navbar";
-import { GET_USERS, UPDATE_USERS } from "./graphql";
-
+import {
+  GET_USERS,
+  UPDATE_USERS,
+  INSERT_NEW_USER_FOR_DATA,
+  GET_MESSAGES,
+} from "./graphql";
+import TodoMessagesMapping from "./TodoMessagesMapping";
+import TodoMessages from "./TodoMessages";
 function Dahboard() {
   const navigate = useNavigate();
   const [skeleton, setSkeleton] = React.useState();
   const [newData, setNewData] = React.useState();
+  const [userData, setUserData] = React.useState();
+  const [message, setMessage] = React.useState();
+
+  // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
     onCompleted: (data) => {
       // console.log("oncomplete", data);
@@ -19,11 +29,35 @@ function Dahboard() {
       setSkeleton(incomingdata);
     },
   });
-  const [ADDTO] = useMutation(UPDATE_USERS, {
+  // Fetching messages of the if user exists
+  const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
+    variables: {
+      usernam: app.currentUser._profile.data.email,
+    },
+    onCompleted: (mesdata) => {
+      console.log("mesdata", mesdata.data[0].message);
+
+      const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
+
+      setMessage(data);
+      console.log(message);
+    },
+  });
+  // update user if the user logins for the first time
+  const [UPDATEUSERS] = useMutation(UPDATE_USERS, {
     variables: {
       cloud: "mongo",
       updates: {
         user: newData,
+      },
+    },
+  });
+  // inserting data for the first time user login
+  const [INSERT_USER_FOR_DATA] = useMutation(INSERT_NEW_USER_FOR_DATA, {
+    variables: {
+      datas: {
+        username: userData,
+        message: ["A", "B", "SAMPLE DATA"],
       },
     },
   });
@@ -34,14 +68,23 @@ function Dahboard() {
       if (!name.includes(app.currentUser._profile.data.email)) {
         const db = [...name, app.currentUser._profile.data.email];
         setNewData(db);
+        setUserData(app.currentUser._profile.data.email);
+      } else {
+        MESSAGES();
       }
     }
-  }, [skeleton, Fetc]);
+  }, [skeleton, Fetc, MESSAGES]);
   React.useEffect(() => {
     if (newData !== undefined) {
-      ADDTO();
+      UPDATEUSERS();
     }
-  }, [newData, ADDTO]);
+  }, [newData, UPDATEUSERS]);
+
+  React.useEffect(() => {
+    if (userData !== undefined) {
+      INSERT_USER_FOR_DATA();
+    }
+  }, [userData, INSERT_USER_FOR_DATA]);
 
   if (loading) {
     return (
@@ -57,20 +100,26 @@ function Dahboard() {
   // console.log(data);
   // console.log("skeleton", skeleton);
   // console.log("outsidenew", newData);
+  // console.log("message", message);
   return (
     <>
       <Navbar />
+
+      <div
+        style={{
+          margin: "200px",
+          borderRadius: "10px",
+          boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
+          overflow: "hidden",
+        }}
+      >
+        <div>
+          {message !== undefined ? (
+            <TodoMessagesMapping messa={message} />
+          ) : null}
+        </div>
+      </div>
     </>
   );
 }
 export default Dahboard;
-
-// console.log("Welcome to Programiz!");
-// let a={}
-// let b={}
-// let c=[{san:{message:["hello","jollo"]}},{"sant":{message:["hello","jollo"]}},{a:"s"},a,b]
-// const ab="ab.oj"
-// console.log(ab.split(".").join(""))
-// console.log(c.find(a => a.sant.message[1]))
-// const x=c.find(a => a.sant)
-// console.log(x.sant.message[1])

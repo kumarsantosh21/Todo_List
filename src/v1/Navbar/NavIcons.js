@@ -25,9 +25,6 @@ const NavIcon = () => {
   };
   const handleClose = () => {
     setOpen(false);
-    app.currentUser.logOut();
-    navigate("/login");
-    window.location.reload();
   };
 
   function handleListKeyDown(event) {

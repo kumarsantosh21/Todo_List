@@ -1,2 +1,2 @@
-import { GET_USERS } from "./dashboard";
-export { GET_USERS };
+import { GET_USERS, GET_MESSAGES } from "./dashboard";
+export { GET_USERS, GET_MESSAGES };
