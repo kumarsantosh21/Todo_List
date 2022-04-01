@@ -10,8 +10,9 @@ import {
   INSERT_NEW_USER_FOR_DATA,
   GET_MESSAGES,
 } from "./graphql";
-import TodoMessagesMapping from "./TodoMessagesMapping";
 import CreateNewTodo from "./CreateNewTodo";
+import MessageLoader from "./MessageLoader";
+import TodoMessagesMapping from "./TodoMessagesMapping";
 function Dahboard() {
   const navigate = useNavigate();
   const [skeleton, setSkeleton] = React.useState();
@@ -35,12 +36,12 @@ function Dahboard() {
       usernam: app.currentUser._profile.data.email,
     },
     onCompleted: (mesdata) => {
-      console.log("mesdata", mesdata.data[0].message);
+      // console.log("mesdata", mesdata.data[0].message);
 
       const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
 
       setMessage(data);
-      console.log(message);
+      // console.log(message);
     },
   });
   // update user if the user logins for the first time
@@ -116,7 +117,9 @@ function Dahboard() {
         <div>
           {message !== undefined ? (
             <TodoMessagesMapping messa={message} />
-          ) : null}
+          ) : (
+            <MessageLoader />
+          )}
         </div>
       </div>
     </>

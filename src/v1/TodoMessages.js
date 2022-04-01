@@ -12,7 +12,7 @@ const TodoMessages = ({ messagetext }) => {
       background: "rgb(237, 231, 246)",
     },
   };
-  console.log("sep", messagetext);
+  // console.log("sep", messagetext);
   return (
     <>
       <div
@@ -35,10 +35,22 @@ const TodoMessages = ({ messagetext }) => {
             textAlign: "right",
           }}
         >
-          <IconButton sx={ButtonIconStyle}>
+          <IconButton
+            id={messagetext}
+            sx={ButtonIconStyle}
+            onClick={(e) => {
+              console.log(e.currentTarget.id);
+            }}
+          >
             <EditIcon />
           </IconButton>
-          <IconButton sx={ButtonIconStyle}>
+          <IconButton
+            id={messagetext}
+            sx={ButtonIconStyle}
+            onClick={(e) => {
+              console.log(e.currentTarget.id);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </div>

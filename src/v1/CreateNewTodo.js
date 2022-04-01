@@ -22,12 +22,12 @@ const CreateNewTodo = () => {
       usernam: app.currentUser._profile.data.email,
     },
     onCompleted: (mesdata) => {
-      console.log("mesdatacreatenewtoso", mesdata.data[0].message);
+      // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
 
       const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
 
       setMessage(data);
-      console.log(message);
+      // console.log(message);
     },
   });
 
@@ -40,22 +40,27 @@ const CreateNewTodo = () => {
     },
   });
 
+  const handleClick = () => {
+    setState(false);
+    const newme = [...message, text];
+    // console.log("newme", newme);
+    setNewmessage(newme);
+  };
+
   React.useEffect(() => {
     MESSAGES();
   }, [MESSAGES]);
 
   React.useEffect(() => {
-    if (newmessage !== undefined) {
-      UPDATE_MESSAGES();
-    }
-  }, [newmessage, UPDATE_MESSAGES]);
+    const test = async () => {
+      if (newmessage !== undefined) {
+        await UPDATE_MESSAGES();
+        MESSAGES();
+      }
+    };
+    test();
+  }, [newmessage, UPDATE_MESSAGES, MESSAGES]);
 
-  const handleClick = () => {
-    const newme = [...message, text];
-    console.log("newme", newme);
-    setNewmessage(newme);
-    setState(false);
-  };
   const floatingStyle = {
     background: "white",
     borderRadius: "6px",
@@ -72,12 +77,11 @@ const CreateNewTodo = () => {
     },
   };
   const handleClose = () => {
-    console.log("onclickaway");
+    // console.log("onclickaway");
     setState(false);
   };
   return (
     <>
-      {/* Add add button down right side and after add close testfeild and refresh the todo messages list back side */}
       <ClickAwayListener onClickAway={handleClose}>
         <div style={{ display: "flex", position: "fixed", width: "100%" }}>
           {" "}
@@ -108,18 +112,6 @@ const CreateNewTodo = () => {
                 marginLeft: "8%",
               }}
             >
-              <IconButton
-                onClick={handleClick}
-                sx={{
-                  borderRadius: "6px",
-                  color: "rgb(94, 53, 177)",
-                  "&:hover": {
-                    background: "rgb(237, 231, 246)",
-                  },
-                }}
-              >
-                Add <AddIcon sx={{ marginLeft: "5px" }} />
-              </IconButton>
               <TextField
                 variant="standard"
                 rows={10}
@@ -130,6 +122,21 @@ const CreateNewTodo = () => {
                 }}
                 InputProps={{ disableUnderline: true }}
               />
+              <IconButton
+                onClick={handleClick}
+                sx={{
+                  marginLeft: "590px",
+                  marginBottom: "10px",
+                  border: "1px solid rgb(94, 53, 177)",
+                  borderRadius: "6px",
+                  color: "rgb(94, 53, 177)",
+                  "&:hover": {
+                    background: "rgb(237, 231, 246)",
+                  },
+                }}
+              >
+                Add <AddIcon sx={{ marginLeft: "5px" }} />
+              </IconButton>
             </div>
           </Slide>
         </div>

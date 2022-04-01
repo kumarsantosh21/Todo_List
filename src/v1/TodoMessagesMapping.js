@@ -2,9 +2,8 @@ import React from "react";
 import TodoMessages from "./TodoMessages";
 
 const TodoMessagesMapper = ({ messa }) => {
-  console.log("map", messa);
   const messagedata = messa;
-  console.log("map", messa);
+  // console.log("map", messa);
 
   const Todoblock = messagedata.map((data) => {
     return (
