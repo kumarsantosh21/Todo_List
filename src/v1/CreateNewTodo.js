@@ -8,7 +8,6 @@ import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
 import { app } from "../originpages/Client";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-
 import Slide from "@mui/material/Slide";
 
 const CreateNewTodo = () => {
@@ -45,6 +44,7 @@ const CreateNewTodo = () => {
     const newme = [...message, text];
     // console.log("newme", newme);
     setNewmessage(newme);
+    setText();
   };
 
   React.useEffect(() => {
@@ -80,10 +80,25 @@ const CreateNewTodo = () => {
     // console.log("onclickaway");
     setState(false);
   };
+  React.useEffect(() => {
+    if (state === true) {
+      document.getElementById("total").style.display = "none";
+    } else {
+      document.getElementById("total").style.display = "";
+    }
+  }, [state]);
+
   return (
     <>
       <ClickAwayListener onClickAway={handleClose}>
-        <div style={{ display: "flex", position: "fixed", width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            position: "fixed",
+            width: "100%",
+            marginTop: state ? "200px" : "",
+          }}
+        >
           {" "}
           <div style={{}}>
             <div>
@@ -113,6 +128,7 @@ const CreateNewTodo = () => {
               }}
             >
               <TextField
+                autoFocus
                 variant="standard"
                 rows={10}
                 fullWidth
@@ -120,13 +136,18 @@ const CreateNewTodo = () => {
                 onChange={(e) => {
                   setText(e.target.value);
                 }}
-                InputProps={{ disableUnderline: true }}
+                InputProps={{
+                  disableUnderline: true,
+                  sx: { color: "rgb(94, 53, 177)" },
+                }}
               />
               <IconButton
                 onClick={handleClick}
                 sx={{
-                  marginLeft: "590px",
-                  marginBottom: "10px",
+                  height: "40px",
+                  width: "90px",
+                  marginLeft: "585px",
+                  marginBottom: "15px",
                   border: "1px solid rgb(94, 53, 177)",
                   borderRadius: "6px",
                   color: "rgb(94, 53, 177)",

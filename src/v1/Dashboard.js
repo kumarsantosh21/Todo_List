@@ -107,6 +107,7 @@ function Dahboard() {
       <Navbar />
       <CreateNewTodo />
       <div
+        id="total"
         style={{
           margin: "200px 200px 200px 250px",
           borderRadius: "10px",

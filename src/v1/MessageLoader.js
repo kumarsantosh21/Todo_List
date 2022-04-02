@@ -55,7 +55,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "90%",
+            flex: "87%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -64,6 +64,16 @@ const MessageLoader = () => {
             overflow: "hidden",
             margin: "20px",
             textAlign: "left",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "3%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
           }}
         ></div>
         <div
@@ -143,7 +153,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "90%",
+            flex: "87%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -152,6 +162,16 @@ const MessageLoader = () => {
             overflow: "hidden",
             margin: "20px",
             textAlign: "left",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "3%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
           }}
         ></div>
         <div
