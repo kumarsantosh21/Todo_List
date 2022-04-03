@@ -7,11 +7,14 @@ import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
 import TextField from "@mui/material/TextField";
 import { app } from "../originpages/Client";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import Zoom from "@mui/material/Zoom";
+import Tooltip from "@mui/material/Tooltip";
 import Slide from "@mui/material/Slide";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
 const TodoMessages = ({ messagetext }) => {
-  const [state, setState] = React.useState(false);
+  const [state, setState] = React.useState(1);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
   const [text, setText] = React.useState();
@@ -81,7 +84,6 @@ const TodoMessages = ({ messagetext }) => {
     }
   };
   const handleEdit = (e) => {
-    // setState(!state);
     //  using dom to apply styles is best as far now
     document.getElementById(e.currentTarget.id + "text").disabled = false;
     const okiconid = document.getElementById(e.currentTarget.id + "ok");
@@ -111,12 +113,53 @@ const TodoMessages = ({ messagetext }) => {
   };
 
   const clickAwayClose = () => {
-    setState(false);
+    // setState(false);
   };
 
-  // React.useEffect((e) => {
+  const TooltipColor = styled(({ className, ...props }) => (
+    <Tooltip
+      {...props}
+      componentsProps={{ tooltip: { className: className } }}
+    />
+  ))(`
+      color:rgb(94, 53, 177) ;
+      background: rgb(237, 231, 246);
+      font-size:12px;
+      font-weight:bold;
+     
+  `);
+  const rowscount = () => {
+    console.log("length", messagetext.length);
+    if (messagetext.length < 93) {
+      return 1;
+    } else if (messagetext.length < 93 * 2) {
+      return 3;
+    } else if (messagetext.length < 93 * 3) {
+      return 3;
+    } else if (messagetext.length < 93 * 4) {
+      return 4;
+    } else if (messagetext.length < 93 * 5) {
+      return 5;
+    }
+  };
+  React.useEffect(() => {
+    console.log("length", messagetext.length);
 
-  // }, []);
+    if (messagetext.length < 93) {
+      setState(1);
+    } else if (messagetext.length < 93 * 2) {
+      setState(2);
+    } else if (messagetext.length < 93 * 3) {
+      setState(3);
+    } else if (messagetext.length < 93 * 4) {
+      setState(4);
+    } else if (messagetext.length < 93 * 5) {
+      setState(5);
+    } else {
+      setState(6);
+    }
+  }, [state, messagetext]);
+  console.log("state", state);
   return (
     <>
       <div
@@ -135,7 +178,7 @@ const TodoMessages = ({ messagetext }) => {
             fullWidth
             disabled
             multiline
-            rows={messagetext.length < 5 ? 2 : 1}
+            rows={state}
             variant="standard"
             defaultValue={messagetext}
             onChange={(e) => {
@@ -161,6 +204,16 @@ const TodoMessages = ({ messagetext }) => {
             textAlign: "right",
           }}
         >
+          {/* <TooltipColor
+            sx={{
+              "& .MuiTooltip-arrow": {
+                color: "rgb(237, 231, 246)",
+              },
+            }}
+            arrow
+            title="Click to Save"
+            TransitionComponent={Zoom}
+          > */}
           <IconButton
             id={messagetext + "ok"}
             // disabled
@@ -169,20 +222,43 @@ const TodoMessages = ({ messagetext }) => {
           >
             <BookmarkAddedIcon />
           </IconButton>
-          <IconButton
-            id={messagetext}
-            sx={ButtonIconStyle}
-            onClick={handleEdit}
+          {/* </TooltipColor> */}
+          <TooltipColor
+            sx={{
+              "& .MuiTooltip-arrow": {
+                color: "rgb(237, 231, 246)",
+              },
+            }}
+            arrow
+            title="Edit"
+            TransitionComponent={Zoom}
           >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            id={messagetext}
-            sx={ButtonIconStyle}
-            onClick={handleDelete}
+            <IconButton
+              id={messagetext}
+              sx={ButtonIconStyle}
+              onClick={handleEdit}
+            >
+              <EditIcon />
+            </IconButton>
+          </TooltipColor>
+          <TooltipColor
+            sx={{
+              "& .MuiTooltip-arrow": {
+                color: "rgb(237, 231, 246)",
+              },
+            }}
+            arrow
+            title="Delete"
+            TransitionComponent={Zoom}
           >
-            <DeleteIcon />
-          </IconButton>
+            <IconButton
+              id={messagetext}
+              sx={ButtonIconStyle}
+              onClick={handleDelete}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </TooltipColor>
         </div>
       </div>
     </>
