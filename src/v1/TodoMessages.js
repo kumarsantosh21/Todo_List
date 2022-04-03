@@ -86,14 +86,14 @@ const TodoMessages = ({ messagetext }) => {
   const handleEdit = (e) => {
     //  using dom to apply styles is best as far now
     document.getElementById(e.currentTarget.id + "text").disabled = false;
+    const text = document.getElementById(e.currentTarget.id + "text");
+    text.focus();
+    text.select();
     const okiconid = document.getElementById(e.currentTarget.id + "ok");
     // console.log("okiconid", okiconid);
     okiconid.style.display = "unset";
     // console.log("okiconid", okiconid);
     // console.log(e.currentTarget.id);
-    const text = document.getElementById(e.currentTarget.id + "text");
-    text.focus();
-    text.select();
   };
   const handleOk = (e) => {
     // slicing added id
@@ -128,20 +128,7 @@ const TodoMessages = ({ messagetext }) => {
       font-weight:bold;
      
   `);
-  const rowscount = () => {
-    console.log("length", messagetext.length);
-    if (messagetext.length < 93) {
-      return 1;
-    } else if (messagetext.length < 93 * 2) {
-      return 3;
-    } else if (messagetext.length < 93 * 3) {
-      return 3;
-    } else if (messagetext.length < 93 * 4) {
-      return 4;
-    } else if (messagetext.length < 93 * 5) {
-      return 5;
-    }
-  };
+
   React.useEffect(() => {
     console.log("length", messagetext.length);
 
@@ -216,7 +203,6 @@ const TodoMessages = ({ messagetext }) => {
           > */}
           <IconButton
             id={messagetext + "ok"}
-            // disabled
             sx={{ ...ButtonIconStyle, display: "none", margin: "0px" }}
             onClick={handleOk}
           >
