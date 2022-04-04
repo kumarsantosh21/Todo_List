@@ -18,6 +18,7 @@ import {
   Reset,
   ResetConfirmation,
   GoogleAuth,
+  EmailConfirmation,
 } from "./originpages";
 // import { Loading } from "./assets/Loaders";
 // import reportWebVitals from './reportWebVitals';
@@ -32,10 +33,12 @@ ReactDOM.render(
           <Route path="/signup" element={<Register />} />
           <Route path="/resetpassword" element={<Reset />} />
           <Route path="/resetconfirmation" element={<ResetConfirmation />} />
+          <Route path="/emailconfirmation" element={<EmailConfirmation />} />
           <Route path="/googleauth" element={<GoogleAuth />} />
           <Route path="/v1/dashboard" element={<Dahboard />} />
           <Route path="/v1/experimentzone" element={<Dahboard />} />
           <Route path="/v1/navbar" element={<Navbar />} />
+          <Route path="/emailconfirmation" element={<Navbar />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@mui/styles";
 import { Login3 } from "../assets";
-import { register } from "./";
+import { register, resendmail } from "./";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
@@ -26,7 +26,9 @@ const Register = () => {
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
   const [errorhandler, setErrorhandler] = useState(false);
-
+  const [restate, setRestate] = useState();
+  const [count, setCount] = useState(30);
+  const [redisable, setRedisable] = useState();
   let valid;
 
   // for validation
@@ -85,6 +87,7 @@ const Register = () => {
   //  onclick button function
   const handleClick = async (e) => {
     e.preventDefault();
+    setRestate();
     setDisable(true);
     setLockicon1(false);
     setLockicon2(false);
@@ -122,6 +125,65 @@ const Register = () => {
     }
     if (valid === "error") {
       setDisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+    window.scroll({
+      top: 1000,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+  // onClick Resend
+  const ClickResend = async (e) => {
+    e.preventDefault();
+    setErrormessage();
+
+    setRedisable(true);
+
+    // here users resend email for confirmation
+    const check = await resendmail(username);
+    if (check === "success") {
+      setRestate(1);
+
+      const interval = setInterval(() => {
+        setCount((count) => count - 1);
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        setCount(30);
+        setRedisable(false);
+      }, 30000);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+    if (check === "not found") {
+      setRestate(2);
+      setRedisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+    if (check === "already") {
+      setRestate(3);
+      setRedisable(false);
+      window.scroll({
+        top: 1000,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+    if (valid === "error") {
+      setRedisable(false);
       window.scroll({
         top: 1000,
         left: 0,
@@ -330,7 +392,106 @@ const Register = () => {
               Register
             </LoadingButton>
           </div>
-
+          <div style={{ textAlign: "right" }}>
+            <LoadingButton
+              disabled={errors.formail || username === "" || redisable}
+              loading={redisable}
+              style={{
+                color: "white",
+                backgroundColor:
+                  username === "" || errors.formail || redisable
+                    ? " #ffb3ff"
+                    : "#b300b3",
+              }}
+              loadingPosition="end"
+              variant="contained"
+              onClick={ClickResend}
+              endIcon={<HowToRegIcon />}
+            >
+              Resend Confirmation Email
+            </LoadingButton>
+          </div>
+          {restate === 1 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <VerifiedUserIcon
+                sx={{ color: "#2e7d32", mr: 1, marginBottom: "1px" }}
+              />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#2e7d32",
+                }}
+              >
+                Please check your email inbox for a link to complete the Email
+                Confirmation .If you haven't received mail.Try again in {count}.
+              </div>
+            </div>
+          ) : null}
+          {restate === 2 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ErrorOutlineIcon
+                sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
+              />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#d32f2f",
+                }}
+              >
+                User not found.Try Registering your account.
+              </div>
+            </div>
+          ) : null}
+          {restate === 3 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ErrorOutlineIcon
+                sx={{ color: "#d32f2f", mr: 1, marginBottom: "1px" }}
+              />
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#d32f2f",
+                }}
+              >
+                User account alredy confirmed.Click{" "}
+                <a
+                  style={{
+                    textDecoration: "none",
+                    color: "#0000ee",
+                  }}
+                  href="/login"
+                >
+                  here
+                </a>{" "}
+                to redirect to Login page.
+              </div>
+            </div>
+          ) : null}
+          <div style={{ textAlign: "center" }}>
+            <Typography>
+              For Resend Confirmation email you need to type email only and
+              password will be old password when you registerd your account in
+              past.{" "}
+            </Typography>
+          </div>
           {errormessage === 1 ? (
             <div
               style={{
@@ -399,18 +560,7 @@ const Register = () => {
                   color: "#2e7d32",
                 }}
               >
-                Registration Succesful.Click{" "}
-                <a
-                  style={{
-                    color: "#0000ee",
-                    textDecoration: "none",
-                    fontSize: "18px",
-                  }}
-                  href="/login"
-                >
-                  here
-                </a>{" "}
-                to redirect to Login page.
+                Registration Successful.Check your inbox for Confirmation Email.
               </div>
             </div>
           ) : null}

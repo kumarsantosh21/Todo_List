@@ -43,6 +43,46 @@ export async function register(username, pass) {
     return "error";
   }
 }
+// Mail Confirmation
+export async function mailconfirmation(token, tokenId) {
+  try {
+    await app.emailPasswordAuth.confirmUser(token, tokenId);
+    console.log("success");
+    return "success";
+  } catch (error) {
+    console.log(error);
+    const err = JSON.stringify(error);
+    const expired = err.includes("expired");
+    if (expired === true) {
+      return "expired";
+    }
+
+    return "error";
+  }
+}
+
+// Resend Mail for Confirmation
+export async function resendmail(email) {
+  try {
+    await app.emailPasswordAuth.resendConfirmationEmail(email);
+    console.log("success");
+    return "success";
+  } catch (error) {
+    console.log(error);
+    const err = JSON.stringify(error);
+    const user = err.includes("not found");
+    const userconf = err.includes("already confirmed");
+    console.log(userconf);
+    if (user === true) {
+      return "not found";
+    }
+    if (userconf === true) {
+      return "already";
+    }
+
+    return "error";
+  }
+}
 // sending mail for resetting password
 export async function reset(username) {
   try {

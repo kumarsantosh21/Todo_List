@@ -3,6 +3,7 @@ import Register from "./Register";
 import Reset from "./Reset";
 import ResetConfirmation from "./ResetConfirmation";
 import GoogleAuth from "./GoogleAuth";
+import EmailConfirmation from "./EmailConfirmation";
 import Client, {
   getValidAccessToken,
   register,
@@ -10,6 +11,8 @@ import Client, {
   completepasswordreset,
   gclick,
   app,
+  mailconfirmation,
+  resendmail,
 } from "./Client";
 export {
   Login,
@@ -24,4 +27,7 @@ export {
   gclick,
   app,
   GoogleAuth,
+  EmailConfirmation,
+  mailconfirmation,
+  resendmail,
 };
