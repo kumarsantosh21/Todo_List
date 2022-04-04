@@ -13,7 +13,7 @@ import SingleMessageLoader from "./SingleMessageLoader";
 import { styled } from "@mui/material/styles";
 
 const TodoMessages = ({ messagetext }) => {
-  const [state, setState] = React.useState(1);
+  const [state, setState] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
   const [text, setText] = React.useState();
@@ -180,6 +180,33 @@ const TodoMessages = ({ messagetext }) => {
             fullWidth
             disabled
             multiline
+            sx={{
+              "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+                backgroundColor: "white",
+                width: "10px",
+              },
+              "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+                borderRadius: 8,
+                backgroundColor: "rgb(237, 231, 246)",
+                minHeight: 24,
+                border: "none",
+              },
+              "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
+                {
+                  // backgroundColor: "red",
+                },
+              "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
+                {
+                  // backgroundColor: "red",
+                },
+              "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
+                {
+                  backgroundColor: "rgb(94, 53, 177)",
+                },
+              "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
+                // backgroundColor: "#2b2b2b",
+              },
+            }}
             rows={state}
             variant="standard"
             defaultValue={messagetext}

@@ -10,6 +10,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import Dahboard from "./v1/Dashboard";
+import ExperimentZone from "./v1/Experiment Zone/ExperimentZone";
 import Navbar from "./v1/Navbar/Navbar";
 import {
   Client,
@@ -36,7 +37,7 @@ ReactDOM.render(
           <Route path="/emailconfirmation" element={<EmailConfirmation />} />
           <Route path="/googleauth" element={<GoogleAuth />} />
           <Route path="/v1/dashboard" element={<Dahboard />} />
-          <Route path="/v1/experimentzone" element={<Dahboard />} />
+          <Route path="/v1/experimentzone" element={<ExperimentZone />} />
           <Route path="/v1/navbar" element={<Navbar />} />
           <Route path="/emailconfirmation" element={<Navbar />} />
         </Routes>
