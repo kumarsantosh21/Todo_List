@@ -9,6 +9,7 @@ import { app } from "../originpages/Client";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Slide from "@mui/material/Slide";
+import MessageLoader from "./MessageLoader";
 
 const CreateNewTodo = () => {
   const [state, setState] = React.useState(false);
@@ -90,7 +91,18 @@ const CreateNewTodo = () => {
   if (loading) {
     return (
       <>
-        <div>loading</div>
+        <div
+          style={{
+            margin: "200px 200px 200px 250px",
+            borderRadius: "10px",
+            boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
+            overflow: "hidden",
+          }}
+        >
+          <div>
+            <MessageLoader />
+          </div>
+        </div>
       </>
     );
   }
@@ -102,7 +114,7 @@ const CreateNewTodo = () => {
             display: "flex",
             position: "fixed",
             width: "100%",
-            marginTop: state ? "200px" : "",
+            marginTop: state ? "192px" : "",
           }}
         >
           {" "}
