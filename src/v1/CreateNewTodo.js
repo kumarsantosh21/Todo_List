@@ -161,6 +161,7 @@ const CreateNewTodo = () => {
               />
               <IconButton
                 onClick={handleClick}
+                disabled={text === undefined || text === ""}
                 sx={{
                   height: "40px",
                   width: "90px",
