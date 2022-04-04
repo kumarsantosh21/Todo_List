@@ -30,7 +30,7 @@ const CreateNewTodo = () => {
     },
   });
 
-  const [UPDATE_MESSAGES] = useMutation(UPDATE_USER_MESSAGES, {
+  const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
     variables: {
       username: app.currentUser._profile.data.email,
       updates: {
@@ -87,7 +87,13 @@ const CreateNewTodo = () => {
       document.getElementById("total").style.display = "";
     }
   }, [state]);
-
+  if (loading) {
+    return (
+      <>
+        <div>loading</div>
+      </>
+    );
+  }
   return (
     <>
       <ClickAwayListener onClickAway={handleClose}>

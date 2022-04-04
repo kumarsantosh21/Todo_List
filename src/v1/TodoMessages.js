@@ -9,9 +9,8 @@ import { app } from "../originpages/Client";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
-import Slide from "@mui/material/Slide";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import SingleMessageLoader from "./SingleMessageLoader";
+import { styled } from "@mui/material/styles";
 
 const TodoMessages = ({ messagetext }) => {
   const [state, setState] = React.useState(1);
@@ -32,7 +31,7 @@ const TodoMessages = ({ messagetext }) => {
     },
   });
 
-  const [UPDATE_MESSAGES] = useMutation(UPDATE_USER_MESSAGES, {
+  const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
     variables: {
       username: app.currentUser._profile.data.email,
       updates: {
@@ -40,6 +39,7 @@ const TodoMessages = ({ messagetext }) => {
       },
     },
   });
+
   React.useEffect(() => {
     MESSAGES();
   }, [MESSAGES]);
@@ -132,21 +132,36 @@ const TodoMessages = ({ messagetext }) => {
   React.useEffect(() => {
     console.log("length", messagetext.length);
 
-    if (messagetext.length < 93) {
+    if (messagetext.length < 80) {
       setState(1);
-    } else if (messagetext.length < 93 * 2) {
+    } else if (messagetext.length < 80 * 2) {
       setState(2);
-    } else if (messagetext.length < 93 * 3) {
+    } else if (messagetext.length < 80 * 3) {
       setState(3);
-    } else if (messagetext.length < 93 * 4) {
+    } else if (messagetext.length < 80 * 4) {
       setState(4);
-    } else if (messagetext.length < 93 * 5) {
+    } else if (messagetext.length < 80 * 5) {
       setState(5);
-    } else {
+    } else if (messagetext.length < 80 * 6) {
       setState(6);
+    } else if (messagetext.length < 80 * 7) {
+      setState(7);
+    } else if (messagetext.length < 80 * 8) {
+      setState(8);
+    } else if (messagetext.length < 80 * 9) {
+      setState(9);
+    } else {
+      setState(10);
     }
   }, [state, messagetext]);
   console.log("state", state);
+  if (loading) {
+    return (
+      <>
+        <SingleMessageLoader />
+      </>
+    );
+  }
   return (
     <>
       <div
