@@ -12,7 +12,7 @@ const SingleMessageLoader = () => {
       >
         <div
           style={{
-            flex: "90%",
+            flex: "80%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -25,31 +25,41 @@ const SingleMessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "2%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
-            margin: "20px",
+            margin: "20px 15px",
             background: "rgb(94, 53, 177)",
           }}
         ></div>
         <div
           style={{
-            flex: "2%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
-            margin: "20px",
+            margin: "20px 15px",
             background: "rgb(94, 53, 177)",
           }}
         ></div>
         <div
           style={{
-            flex: "2%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
-            margin: "20px",
+            margin: "20px 15px",
+            background: "rgb(94, 53, 177)",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "2.5%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px 15px",
             background: "rgb(94, 53, 177)",
           }}
         ></div>

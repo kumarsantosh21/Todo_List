@@ -113,7 +113,6 @@ const CreateNewTodo = () => {
           style={{
             display: "flex",
             position: "fixed",
-            width: "100%",
             marginTop: state ? "192px" : "",
           }}
         >

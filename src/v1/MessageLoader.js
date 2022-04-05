@@ -11,7 +11,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "90%",
+            flex: "80%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -24,7 +24,7 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -34,7 +34,17 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -43,9 +53,7 @@ const MessageLoader = () => {
           }}
         ></div>
       </div>
-
       <hr />
-
       <div
         style={{
           display: "flex",
@@ -55,7 +63,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "87%",
+            flex: "80%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -68,27 +76,37 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
             margin: "20px",
             background: "rgb(94, 53, 177)",
           }}
-        ></div>
+        ></div>{" "}
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
             margin: "20px",
             background: "rgb(94, 53, 177)",
           }}
-        ></div>
+        ></div>{" "}
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
+          }}
+        ></div>{" "}
+        <div
+          style={{
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -97,9 +115,7 @@ const MessageLoader = () => {
           }}
         ></div>
       </div>
-
       <hr />
-
       <div
         style={{
           display: "flex",
@@ -109,7 +125,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "90%",
+            flex: "80%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -122,7 +138,7 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -132,7 +148,17 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -141,9 +167,7 @@ const MessageLoader = () => {
           }}
         ></div>
       </div>
-
       <hr />
-
       <div
         style={{
           display: "flex",
@@ -153,7 +177,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "87%",
+            flex: "80%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -166,27 +190,37 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
             margin: "20px",
             background: "rgb(94, 53, 177)",
           }}
-        ></div>
+        ></div>{" "}
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
             margin: "20px",
             background: "rgb(94, 53, 177)",
           }}
-        ></div>
+        ></div>{" "}
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
+          }}
+        ></div>{" "}
+        <div
+          style={{
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -195,9 +229,7 @@ const MessageLoader = () => {
           }}
         ></div>
       </div>
-
-      <hr />
-
+      <hr />{" "}
       <div
         style={{
           display: "flex",
@@ -207,7 +239,7 @@ const MessageLoader = () => {
       >
         <div
           style={{
-            flex: "90%",
+            flex: "80%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -220,7 +252,7 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",
@@ -230,7 +262,17 @@ const MessageLoader = () => {
         ></div>
         <div
           style={{
-            flex: "3%",
+            flex: "2.5%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "2.5%",
             borderRadius: "6px",
             width: "5px",
             height: "20px",

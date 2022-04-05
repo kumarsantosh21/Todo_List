@@ -12,13 +12,17 @@ import Tooltip from "@mui/material/Tooltip";
 import SingleMessageLoader from "./SingleMessageLoader";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import { styled } from "@mui/material/styles";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const TodoMessages = ({ messagetext }) => {
-  const [state, setState] = React.useState(3);
+  const [expand, setExpand] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
   const [text, setText] = React.useState();
   const [copy, setCopy] = React.useState("Copy to Clipboard");
+  const [dis, setDis] = React.useState(true);
 
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -89,12 +93,14 @@ const TodoMessages = ({ messagetext }) => {
   const handleEdit = (e) => {
     //  using dom to apply styles is best as far now
     document.getElementById(e.currentTarget.id + "text").disabled = false;
+    document.getElementById(e.currentTarget.id + "ok").disabled = false;
+    setDis(false);
     const text = document.getElementById(e.currentTarget.id + "text");
     text.focus();
     text.select();
-    const okiconid = document.getElementById(e.currentTarget.id + "ok");
+    // const okiconid = document.getElementById(e.currentTarget.id + "ok");
     // console.log("okiconid", okiconid);
-    okiconid.style.display = "unset";
+    // okiconid.style.display = "unset";
     // console.log("okiconid", okiconid);
     // console.log(e.currentTarget.id);
   };
@@ -105,17 +111,22 @@ const TodoMessages = ({ messagetext }) => {
     // console.log(presentValue);
     let valuesNow = message;
     // finding index where to change our to do  message text
-    const index = message.indexOf(presentValue);
+    if (text === undefined) {
+      setDis(true);
+    } else {
+      const index = message.indexOf(presentValue);
 
-    if (index !== -1) {
-      valuesNow[index] = text;
+      if (index !== -1) {
+        valuesNow[index] = text;
+      }
+      console.log(valuesNow);
+      // updating query with the present values
+      setNewmessage(valuesNow);
     }
-    // console.log(valuesNow);
-    // updating query with the present values
-    setNewmessage(valuesNow);
   };
   const handleCopy = (e) => {
     // slicing added id
+
     const presentid = e.currentTarget.id;
     const presentValue = presentid.slice(0, presentid.length - 4);
     console.log("copy", presentValue);
@@ -135,8 +146,12 @@ const TodoMessages = ({ messagetext }) => {
     );
   };
 
-  const clickAwayClose = () => {
-    // setState(false);
+  const expandMoreorLess = () => {
+    if (expand === 3) {
+      setExpand(undefined);
+    } else {
+      setExpand(3);
+    }
   };
 
   const TooltipColor = styled(({ className, ...props }) => (
@@ -152,32 +167,6 @@ const TodoMessages = ({ messagetext }) => {
      
   `);
 
-  React.useEffect(() => {
-    // console.log("length", messagetext.length);
-
-    if (messagetext.length < 80) {
-      setState(1);
-    } else if (messagetext.length < 80 * 2) {
-      setState(2);
-    } else if (messagetext.length < 80 * 3) {
-      setState(3);
-    } else if (messagetext.length < 80 * 4) {
-      setState(4);
-    } else if (messagetext.length < 80 * 5) {
-      setState(5);
-    } else if (messagetext.length < 80 * 6) {
-      setState(6);
-    } else if (messagetext.length < 80 * 7) {
-      setState(7);
-    } else if (messagetext.length < 80 * 8) {
-      setState(8);
-    } else if (messagetext.length < 80 * 9) {
-      setState(9);
-    } else {
-      setState(10);
-    }
-  }, [state, messagetext]);
-  // console.log("state", state);
   if (loading) {
     return (
       <>
@@ -197,54 +186,25 @@ const TodoMessages = ({ messagetext }) => {
         }}
       >
         <div style={{ flex: "80%", textAlign: "left", cursor: "text" }}>
-          <TextField
+          <TextareaAutosize
             id={messagetext + "text"}
-            autoFocus
-            fullWidth
-            disabled
-            multiline
-            sx={{
-              "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
-                backgroundColor: "white",
-                width: "10px",
-              },
-              "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
-                borderRadius: 8,
-                backgroundColor: "rgb(237, 231, 246)",
-                minHeight: 24,
-                border: "none",
-              },
-              "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
-                {
-                  // backgroundColor: "red",
-                },
-              "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
-                {
-                  // backgroundColor: "red",
-                },
-              "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
-                {
-                  backgroundColor: "rgb(94, 53, 177)",
-                },
-              "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
-                // backgroundColor: "#2b2b2b",
-              },
+            disabled={dis}
+            style={{
+              background: "white",
+              color: "rgb(94, 53, 177)",
+              width: "100%",
+              border: "none",
+              // overflow: "auto",
+              outline: "none",
+              resize: "none",
+              fontFamily: "revert",
+              fontSize: "16px",
+              cursor: "text",
             }}
-            rows={state}
-            variant="standard"
+            maxRows={expand}
             defaultValue={messagetext}
             onChange={(e) => {
               setText(e.target.value);
-              // console.log(e.target.value);
-            }}
-            InputProps={{
-              disableUnderline: true,
-              sx: {
-                "& .MuiInputBase-input.Mui-disabled": {
-                  WebkitTextFillColor: "rgb(94, 53, 177)",
-                  cursor: "text",
-                },
-              },
             }}
           />
         </div>
@@ -256,7 +216,8 @@ const TodoMessages = ({ messagetext }) => {
             textAlign: "right",
           }}
         >
-          {/* <TooltipColor
+          <TooltipColor
+            disabled={dis}
             sx={{
               "& .MuiTooltip-arrow": {
                 color: "rgb(237, 231, 246)",
@@ -265,15 +226,41 @@ const TodoMessages = ({ messagetext }) => {
             arrow
             title="Click to Save"
             TransitionComponent={Zoom}
-          > */}
-          <IconButton
-            id={messagetext + "ok"}
-            sx={{ ...ButtonIconStyle, display: "none", margin: "0px" }}
-            onClick={handleOk}
           >
-            <BookmarkAddedIcon />
-          </IconButton>
-          {/* </TooltipColor> */}
+            <IconButton
+              id={messagetext + "ok"}
+              sx={{
+                ...ButtonIconStyle,
+                //  display: "none",
+                margin: "0px",
+              }}
+              onClick={handleOk}
+            >
+              <BookmarkAddedIcon />
+            </IconButton>
+          </TooltipColor>
+
+          <TooltipColor
+            id={messagetext + "tool"}
+            sx={{
+              "& .MuiTooltip-arrow": {
+                color: "rgb(237, 231, 246)",
+              },
+            }}
+            arrow
+            title={
+              expand === 3 ? "Click to Expand More" : "Click to Expand Less"
+            }
+            TransitionComponent={Zoom}
+          >
+            <IconButton
+              id={messagetext + "copy"}
+              sx={ButtonIconStyle}
+              onClick={expandMoreorLess}
+            >
+              {expand === 3 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+            </IconButton>
+          </TooltipColor>
 
           <TooltipColor
             id={messagetext + "tool"}
