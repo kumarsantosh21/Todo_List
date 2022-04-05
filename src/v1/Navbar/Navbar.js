@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import NavButtonMapper from "./NavButtonMapper";
 import NavIcon from "./NavIcons";
 import { useNavigate } from "react-router-dom";
-import SettingsIcon from "../SettingsIcon";
+import SettingsIcon from "./SettingsIcon";
 
 const Navbar = () => {
   const navigate = useNavigate();

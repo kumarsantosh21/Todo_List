@@ -10,6 +10,7 @@ import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
 import SingleMessageLoader from "./SingleMessageLoader";
+import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import { styled } from "@mui/material/styles";
 
 const TodoMessages = ({ messagetext }) => {
@@ -17,6 +18,8 @@ const TodoMessages = ({ messagetext }) => {
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
   const [text, setText] = React.useState();
+  const [copy, setCopy] = React.useState("Copy to Clipboard");
+
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: app.currentUser._profile.data.email,
@@ -99,7 +102,7 @@ const TodoMessages = ({ messagetext }) => {
     // slicing added id
     const presentid = e.currentTarget.id;
     const presentValue = presentid.slice(0, presentid.length - 2);
-    console.log(presentValue);
+    // console.log(presentValue);
     let valuesNow = message;
     // finding index where to change our to do  message text
     const index = message.indexOf(presentValue);
@@ -110,6 +113,26 @@ const TodoMessages = ({ messagetext }) => {
     // console.log(valuesNow);
     // updating query with the present values
     setNewmessage(valuesNow);
+  };
+  const handleCopy = (e) => {
+    // slicing added id
+    const presentid = e.currentTarget.id;
+    const presentValue = presentid.slice(0, presentid.length - 4);
+    console.log("copy", presentValue);
+    navigator.clipboard.writeText(presentValue).then(
+      function () {
+        setCopy("Copied!");
+        setTimeout(() => {
+          setCopy("Copy to Clipboard");
+        }, 8000);
+      },
+      function () {
+        setCopy("Failed to Copy!");
+        setTimeout(() => {
+          setCopy("Copy to Clipboard");
+        }, 8000);
+      }
+    );
   };
 
   const clickAwayClose = () => {
@@ -130,7 +153,7 @@ const TodoMessages = ({ messagetext }) => {
   `);
 
   React.useEffect(() => {
-    console.log("length", messagetext.length);
+    // console.log("length", messagetext.length);
 
     if (messagetext.length < 80) {
       setState(1);
@@ -154,7 +177,7 @@ const TodoMessages = ({ messagetext }) => {
       setState(10);
     }
   }, [state, messagetext]);
-  console.log("state", state);
+  // console.log("state", state);
   if (loading) {
     return (
       <>
@@ -212,7 +235,7 @@ const TodoMessages = ({ messagetext }) => {
             defaultValue={messagetext}
             onChange={(e) => {
               setText(e.target.value);
-              console.log(e.target.value);
+              // console.log(e.target.value);
             }}
             InputProps={{
               disableUnderline: true,
@@ -251,6 +274,27 @@ const TodoMessages = ({ messagetext }) => {
             <BookmarkAddedIcon />
           </IconButton>
           {/* </TooltipColor> */}
+
+          <TooltipColor
+            id={messagetext + "tool"}
+            sx={{
+              "& .MuiTooltip-arrow": {
+                color: "rgb(237, 231, 246)",
+              },
+            }}
+            arrow
+            title={copy}
+            TransitionComponent={Zoom}
+          >
+            <IconButton
+              id={messagetext + "copy"}
+              sx={ButtonIconStyle}
+              onClick={handleCopy}
+            >
+              <ContentPasteGoIcon />
+            </IconButton>
+          </TooltipColor>
+
           <TooltipColor
             sx={{
               "& .MuiTooltip-arrow": {

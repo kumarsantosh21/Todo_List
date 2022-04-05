@@ -12,7 +12,7 @@ const SingleMessageLoader = () => {
       >
         <div
           style={{
-            flex: "80%",
+            flex: "90%",
             width: "auto",
             height: "15px",
             background: "lightgray",
@@ -21,6 +21,16 @@ const SingleMessageLoader = () => {
             overflow: "hidden",
             margin: "20px",
             textAlign: "left",
+          }}
+        ></div>
+        <div
+          style={{
+            flex: "2%",
+            borderRadius: "6px",
+            width: "5px",
+            height: "20px",
+            margin: "20px",
+            background: "rgb(94, 53, 177)",
           }}
         ></div>
         <div
