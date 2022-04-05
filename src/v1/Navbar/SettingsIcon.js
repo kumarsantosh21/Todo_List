@@ -2,6 +2,8 @@ import React from "react";
 import SettinIcon from "@mui/icons-material/Settings";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 const Keyframes = styled("span")({
   "@keyframes spin": {
@@ -12,6 +14,7 @@ const Keyframes = styled("span")({
 });
 
 const SettingsIcon = () => {
+  const [open, setOpen] = React.useState(false);
   const ButtonSettingsIconStyle = {
     color: "rgb(94, 53, 177)",
     background: "rgb(237, 231, 246)",
@@ -29,7 +32,12 @@ const SettingsIcon = () => {
   };
   return (
     <>
-      <IconButton sx={ButtonSettingsIconStyle} onClick={() => {}}>
+      <IconButton
+        sx={ButtonSettingsIconStyle}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
         {" "}
         <Keyframes>
           <div
@@ -43,6 +51,17 @@ const SettingsIcon = () => {
           </div>
         </Keyframes>
       </IconButton>
+      <SwipeableDrawer
+        anchor={"right"}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        // onClose={toggleDrawer(anchor, false)}
+        // onOpen={toggleDrawer(anchor, true)}
+      >
+        <div style={{ width: "450px" }}>Development in progress...</div>
+      </SwipeableDrawer>
     </>
   );
 };
