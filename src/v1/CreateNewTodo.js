@@ -1,6 +1,7 @@
 import React from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
@@ -10,12 +11,15 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Slide from "@mui/material/Slide";
 import MessageLoader from "./MessageLoader";
+import Backdrop from "@mui/material/Backdrop";
+import Typography from "@mui/material/Typography";
 
 const CreateNewTodo = () => {
   const [state, setState] = React.useState(false);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
   const [text, setText] = React.useState();
+  const [backdrop, setBackdrop] = React.useState();
 
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -41,11 +45,16 @@ const CreateNewTodo = () => {
   });
 
   const handleClick = () => {
-    setState(false);
-    const newme = [...message, text];
-    // console.log("newme", newme);
-    setNewmessage(newme);
-    setText();
+    const repeated = message.filter((word) => word === text);
+    if (repeated.length > 0) {
+      setBackdrop(true);
+    } else {
+      const newme = [...message, text];
+      // console.log("newme", newme);
+      setNewmessage(newme);
+      setText();
+      setState(false);
+    }
   };
 
   React.useEffect(() => {
@@ -113,7 +122,7 @@ const CreateNewTodo = () => {
           style={{
             display: "flex",
             position: "fixed",
-            marginTop: state ? "192px" : "",
+            marginTop: state ? "192px" : "30px",
           }}
         >
           {" "}
@@ -139,9 +148,9 @@ const CreateNewTodo = () => {
                 background: "white",
                 borderRadius: "6px",
                 zIndex: "1",
-                width: "680px",
+                width: "780px",
                 padding: "5px 16px",
-                marginLeft: "8%",
+                marginLeft: "18%",
               }}
             >
               <TextField
@@ -187,28 +196,98 @@ const CreateNewTodo = () => {
                   sx: { color: "rgb(94, 53, 177)" },
                 }}
               />
-              <IconButton
-                onClick={handleClick}
-                disabled={text === undefined || text === ""}
-                sx={{
-                  height: "40px",
-                  width: "90px",
-                  marginLeft: "585px",
-                  marginBottom: "15px",
-                  border: "1px solid rgb(94, 53, 177)",
-                  borderRadius: "6px",
-                  color: "rgb(94, 53, 177)",
-                  "&:hover": {
-                    background: "rgb(237, 231, 246)",
-                  },
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
                 }}
               >
-                Add <AddIcon sx={{ marginLeft: "5px" }} />
-              </IconButton>
+                <IconButton
+                  onClick={handleClick}
+                  disabled={text === undefined || text === ""}
+                  sx={{
+                    height: "40px",
+                    width: "90px",
+                    // marginLeft: "585px",
+                    marginRight: "10px",
+                    marginBottom: "15px",
+                    border: "1px solid rgb(94, 53, 177)",
+                    borderRadius: "6px",
+                    color: "rgb(94, 53, 177)",
+                    "&:hover": {
+                      background: "rgb(237, 231, 246)",
+                    },
+                  }}
+                >
+                  Add <AddIcon sx={{ marginLeft: "5px" }} />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    setState(false);
+                  }}
+                  sx={{
+                    height: "40px",
+                    width: "100px",
+                    // marginLeft: "585px",
+                    marginRight: "10px",
+                    marginBottom: "15px",
+                    border: "1px solid rgb(94, 53, 177)",
+                    borderRadius: "6px",
+                    color: "rgb(94, 53, 177)",
+                    "&:hover": {
+                      background: "rgb(237, 231, 246)",
+                    },
+                  }}
+                >
+                  Close <CloseIcon sx={{ marginLeft: "5px" }} />
+                </IconButton>
+              </div>
             </div>
           </Slide>
         </div>
       </ClickAwayListener>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdrop}
+        onClick={() => {
+          setBackdrop(false);
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200px",
+            width: "500px",
+            background: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <div>
+            {" "}
+            <Typography
+              sx={{
+                color: "rgb(94, 53, 177)",
+                fontSize: "20px",
+                textAlign: "center",
+              }}
+            >
+              Repeated messages are not allowed to Add
+            </Typography>
+            <div
+              style={{
+                color: "black",
+                textAlign: "center",
+                paddingTop: "15px",
+              }}
+            >
+              Click anywhere to close Dialogue Box
+            </div>
+          </div>
+        </div>
+      </Backdrop>
     </>
   );
 };

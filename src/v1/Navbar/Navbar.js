@@ -27,7 +27,7 @@ const Navbar = () => {
           marginTop: "20px",
           boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
           height: "85px",
-          backdropFilter: "blur(20px)",
+          backdropFilter: "blur(10px)",
           zIndex: "1",
         }}
       >

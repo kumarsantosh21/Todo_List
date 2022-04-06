@@ -4,6 +4,7 @@ import { app } from "../originpages/Client";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../assets/Loaders";
 import Navbar from "./Navbar/Navbar";
+import Footer from "./Navbar/Footer";
 import {
   GET_USERS,
   UPDATE_USERS,
@@ -13,6 +14,7 @@ import {
 import CreateNewTodo from "./CreateNewTodo";
 import MessageLoader from "./MessageLoader";
 import TodoMessagesMapping from "./TodoMessagesMapping";
+
 function Dahboard() {
   const navigate = useNavigate();
   const [skeleton, setSkeleton] = React.useState();
@@ -102,6 +104,7 @@ function Dahboard() {
   // console.log("skeleton", skeleton);
   // console.log("outsidenew", newData);
   // console.log("message", message);
+
   return (
     <>
       {" "}
@@ -110,7 +113,7 @@ function Dahboard() {
       <div
         id="total"
         style={{
-          margin: "200px 200px 200px 250px",
+          margin: "170px 200px 150px 250px",
           borderRadius: "10px",
           boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
           overflow: "hidden",
@@ -124,6 +127,7 @@ function Dahboard() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

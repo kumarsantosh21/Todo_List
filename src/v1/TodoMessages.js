@@ -4,7 +4,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
-import TextField from "@mui/material/TextField";
 import { app } from "../originpages/Client";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Zoom from "@mui/material/Zoom";
@@ -15,6 +14,8 @@ import { styled } from "@mui/material/styles";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Backdrop from "@mui/material/Backdrop";
+import Typography from "@mui/material/Typography";
 
 const TodoMessages = ({ messagetext }) => {
   const [expand, setExpand] = React.useState(3);
@@ -23,6 +24,7 @@ const TodoMessages = ({ messagetext }) => {
   const [text, setText] = React.useState();
   const [copy, setCopy] = React.useState("Copy to Clipboard");
   const [dis, setDis] = React.useState(true);
+  const [backdrop, setBackdrop] = React.useState();
 
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -105,23 +107,33 @@ const TodoMessages = ({ messagetext }) => {
     // console.log(e.currentTarget.id);
   };
   const handleOk = (e) => {
-    // slicing added id
     const presentid = e.currentTarget.id;
     const presentValue = presentid.slice(0, presentid.length - 2);
     // console.log(presentValue);
-    let valuesNow = message;
-    // finding index where to change our to do  message text
-    if (text === undefined) {
-      setDis(true);
-    } else {
-      const index = message.indexOf(presentValue);
 
-      if (index !== -1) {
-        valuesNow[index] = text;
+    let valuesNow = message;
+    // slicing added id
+    const repeated = message.filter((word) => word === text);
+    if (
+      repeated.length > 0 &&
+      message.indexOf(presentValue) !== message.indexOf(text)
+    ) {
+      setBackdrop(true);
+    } else {
+      // finding index where to change our to do  message text
+      if (text === undefined) {
+        setDis(true);
+      } else {
+        const index = message.indexOf(presentValue);
+
+        if (index !== -1) {
+          valuesNow[index] = text;
+        }
+        console.log(valuesNow);
+        // updating query with the present values
+        setNewmessage(valuesNow);
+        setDis(true);
       }
-      console.log(valuesNow);
-      // updating query with the present values
-      setNewmessage(valuesNow);
     }
   };
   const handleCopy = (e) => {
@@ -181,11 +193,11 @@ const TodoMessages = ({ messagetext }) => {
         style={{
           padding: "20px",
           display: "flex",
-          alignItems: "center",
+          alignItems: expand === 3 ? "center" : "flex-start",
           justifyContent: "center",
         }}
       >
-        <div style={{ flex: "80%", textAlign: "left", cursor: "text" }}>
+        <div style={{ flex: "70%", textAlign: "left", cursor: "text" }}>
           <TextareaAutosize
             id={messagetext + "text"}
             disabled={dis}
@@ -212,12 +224,12 @@ const TodoMessages = ({ messagetext }) => {
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            flex: "20%",
+            flex: "25%",
             textAlign: "right",
           }}
         >
           <TooltipColor
-            disabled={dis}
+            disabled={dis || text === ""}
             sx={{
               "& .MuiTooltip-arrow": {
                 color: "rgb(237, 231, 246)",
@@ -320,6 +332,47 @@ const TodoMessages = ({ messagetext }) => {
           </TooltipColor>
         </div>
       </div>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdrop}
+        onClick={() => {
+          setBackdrop(false);
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200px",
+            width: "500px",
+            background: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <div>
+            {" "}
+            <Typography
+              sx={{
+                color: "rgb(94, 53, 177)",
+                fontSize: "20px",
+                textAlign: "center",
+              }}
+            >
+              Repeated messages are not allowed to Add
+            </Typography>
+            <div
+              style={{
+                color: "black",
+                textAlign: "center",
+                paddingTop: "15px",
+              }}
+            >
+              Click anywhere to close Dialogue Box
+            </div>
+          </div>
+        </div>
+      </Backdrop>
     </>
   );
 };
