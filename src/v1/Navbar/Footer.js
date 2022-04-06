@@ -31,10 +31,46 @@ const Footer = () => {
             </Typography>
           </div>
           <div>
-            <Tooltips title="Contact Email" icon={<ContactMailIcon />} />
-            <Tooltips title="Github" icon={<GitHubIcon />} />
-            <Tooltips title="LinkedIn" icon={<LinkedInIcon />} />
-            <Tooltips title="Share" icon={<ShareIcon />} />
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=santoorvlss4321@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Tooltips title="Contact Email" icon={<ContactMailIcon />} />
+            </a>
+            <a
+              href="https://github.com/santoorvlss"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Tooltips title="Github" icon={<GitHubIcon />} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/bommepalli-santosh-kumar-reddy/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Tooltips title="LinkedIn" icon={<LinkedInIcon />} />
+            </a>
+
+            <Tooltips
+              title="Share"
+              icon={<ShareIcon />}
+              onClick={async () => {
+                const shareData = {
+                  title: "Todo List",
+                  text: "Store everything like notepad but Online and More features!",
+                  url: "https://testingdb-cxxuf.mongodbstitch.com/",
+                  //   files: [],
+                };
+
+                try {
+                  await navigator.share(shareData);
+                } catch (err) {
+                  console.log(err);
+                }
+              }}
+            />
           </div>
         </div>
       </div>

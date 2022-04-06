@@ -26,7 +26,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(237, 231, 246)" }}
+            sx={{ background: "rgb(237, 231, 246)", borderRadius: "8px" }}
             height="25px"
             animation={animation}
           />
@@ -42,7 +42,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -58,7 +58,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -74,7 +74,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -103,7 +103,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(237, 231, 246)" }}
+            sx={{ background: "rgb(237, 231, 246)", borderRadius: "8px" }}
             height="25px"
             animation={animation}
           />
@@ -119,7 +119,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -135,7 +135,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -151,7 +151,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -167,7 +167,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -196,7 +196,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(237, 231, 246)" }}
+            sx={{ background: "rgb(237, 231, 246)", borderRadius: "8px" }}
             height="25px"
             animation={animation}
           />
@@ -212,7 +212,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -228,7 +228,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -244,7 +244,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -273,7 +273,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(237, 231, 246)" }}
+            sx={{ background: "rgb(237, 231, 246)", borderRadius: "8px" }}
             height="25px"
             animation={animation}
           />
@@ -289,7 +289,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -305,7 +305,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -321,7 +321,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />
@@ -337,7 +337,7 @@ const MessageLoader = () => {
         >
           <Skeleton
             variant="text"
-            sx={{ background: "rgb(94, 53, 177)" }}
+            sx={{ background: "rgb(94, 53, 177)", borderRadius: "6px" }}
             height="35px"
             animation={animation}
           />

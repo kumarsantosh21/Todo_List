@@ -16,6 +16,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const TodoMessages = ({ messagetext }) => {
   const [expand, setExpand] = React.useState(3);
@@ -290,7 +291,11 @@ const TodoMessages = ({ messagetext }) => {
               sx={ButtonIconStyle}
               onClick={handleCopy}
             >
-              <ContentPasteGoIcon />
+              {copy === "Copy to Clipboard" ? (
+                <ContentPasteGoIcon />
+              ) : (
+                <CheckCircleOutlineIcon />
+              )}
             </IconButton>
           </TooltipColor>
 
