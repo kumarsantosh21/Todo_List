@@ -14,6 +14,7 @@ import {
 import CreateNewTodo from "./CreateNewTodo";
 import MessageLoader from "./MessageLoader";
 import TodoMessagesMapping from "./TodoMessagesMapping";
+import TextField from "@mui/material/TextField";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function Dahboard() {
   const [newData, setNewData] = React.useState();
   const [userData, setUserData] = React.useState();
   const [message, setMessage] = React.useState();
+  const [title, setTitle] = React.useState();
 
   // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
@@ -41,9 +43,11 @@ function Dahboard() {
       // console.log("mesdata", mesdata.data[0].message);
 
       const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
+      const title = JSON.parse(JSON.stringify(mesdata.data[0].title));
 
       setMessage(data);
       // console.log(message);
+      setTitle(title);
     },
   });
   // update user if the user logins for the first time
@@ -61,6 +65,7 @@ function Dahboard() {
       datas: {
         username: userData,
         message: [],
+        title: [],
       },
     },
   });
@@ -121,7 +126,7 @@ function Dahboard() {
       >
         <div>
           {message !== undefined ? (
-            <TodoMessagesMapping messa={message} />
+            <TodoMessagesMapping messa={message} title={title} />
           ) : (
             <MessageLoader />
           )}
