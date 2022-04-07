@@ -23,6 +23,9 @@ function Dahboard() {
   const [userData, setUserData] = React.useState();
   const [message, setMessage] = React.useState();
   const [title, setTitle] = React.useState();
+  const [searchtext, setSearchtext] = React.useState();
+  const [searchtitles, setSearchtitles] = React.useState();
+  const [searchmessages, setSearchmessages] = React.useState();
 
   // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
@@ -46,8 +49,10 @@ function Dahboard() {
       const title = JSON.parse(JSON.stringify(mesdata.data[0].title));
 
       setMessage(data);
+      setSearchmessages(data);
       // console.log(message);
       setTitle(title);
+      setSearchtitles(title);
     },
   });
   // update user if the user logins for the first time
@@ -94,6 +99,31 @@ function Dahboard() {
     }
   }, [userData, INSERT_USER_FOR_DATA]);
 
+  React.useEffect(() => {
+    if (searchtext !== undefined) {
+      const searches = title.filter((words) => words.includes(searchtext));
+      setTitle(searches);
+
+      let sertest = [];
+      // finding indexes so we can use messages
+      for (let j = 0; j < searches.length; j++) {
+        sertest = [
+          ...sertest,
+          title.findIndex((element) => element === searches[j]),
+        ];
+      }
+      let filmessages = [];
+      // finding messages with indexes
+      for (let i = 0; i < message.length; i++) {
+        console.log(sertest, sertest.includes(i), message[i]);
+        if (sertest.includes(i)) {
+          filmessages = [...filmessages, message[i]];
+        }
+      }
+
+      setMessage(filmessages);
+    }
+  }, [searchtext, searchtitles, searchmessages]);
   if (loading) {
     return (
       <div>
@@ -112,9 +142,9 @@ function Dahboard() {
 
   return (
     <>
-      {" "}
       <Navbar />
       <CreateNewTodo />
+
       <div
         id="total"
         style={{
@@ -124,6 +154,17 @@ function Dahboard() {
           overflow: "hidden",
         }}
       >
+        {" "}
+        <TextField
+          fullWidth
+          sx={{}}
+          variant="standard"
+          onChange={(e) => {
+            setTitle(searchtitles);
+            setMessage(searchmessages);
+            setSearchtext(e.target.value);
+          }}
+        />
         <div>
           {message !== undefined ? (
             <TodoMessagesMapping messa={message} title={title} />
@@ -132,6 +173,7 @@ function Dahboard() {
           )}
         </div>
       </div>
+
       <Footer />
     </>
   );
