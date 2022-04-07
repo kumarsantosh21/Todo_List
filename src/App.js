@@ -77,7 +77,7 @@ function App() {
                   sx={{ ...ButtonStyle, border: "none" }}
                   variant="standard"
                 >
-                  HELP
+                  Help
                 </Button>
               </a>
             </div>

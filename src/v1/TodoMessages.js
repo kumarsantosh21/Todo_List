@@ -148,13 +148,13 @@ const TodoMessages = ({ messagetext }) => {
         setCopy("Copied!");
         setTimeout(() => {
           setCopy("Copy to Clipboard");
-        }, 8000);
+        }, 5000);
       },
       function () {
         setCopy("Failed to Copy!");
         setTimeout(() => {
           setCopy("Copy to Clipboard");
-        }, 8000);
+        }, 5000);
       }
     );
   };
