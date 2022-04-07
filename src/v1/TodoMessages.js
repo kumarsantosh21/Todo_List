@@ -18,7 +18,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-const TodoMessages = ({ messagetext }) => {
+const TodoMessages = ({ messagetext, title }) => {
   const [expand, setExpand] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
@@ -26,7 +26,8 @@ const TodoMessages = ({ messagetext }) => {
   const [copy, setCopy] = React.useState("Copy to Clipboard");
   const [dis, setDis] = React.useState(true);
   const [backdrop, setBackdrop] = React.useState();
-
+  const [titles, setTitles] = React.useState();
+  const [newtitle, setNewtitle] = React.useState();
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: app.currentUser._profile.data.email,
@@ -35,9 +36,11 @@ const TodoMessages = ({ messagetext }) => {
       // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
 
       const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
+      const tit = JSON.parse(JSON.stringify(mesdata.data[0].title));
 
       setMessage(data);
       // console.log(message);
+      setTitles(tit);
     },
   });
 
@@ -46,6 +49,7 @@ const TodoMessages = ({ messagetext }) => {
       username: app.currentUser._profile.data.email,
       updates: {
         message: newmessage,
+        title: newtitle,
       },
     },
   });
@@ -75,6 +79,7 @@ const TodoMessages = ({ messagetext }) => {
   const handleDelete = (e) => {
     // console.log(e.currentTarget.id);
     // placing not deleted words in array
+    const index = message.indexOf(e.currentTarget.id);
     const notdeleted = message.filter((word) => word !== e.currentTarget.id);
     // if array consits ids more than 2  we should only delete one
     const repeated = message.filter((word) => word === e.currentTarget.id);
@@ -88,6 +93,11 @@ const TodoMessages = ({ messagetext }) => {
       const notdeletedvalues = [...notdeleted, ...repeatedvaluearray];
       setNewmessage(notdeletedvalues);
     } else {
+      if (index !== -1) {
+        const deletedtitle = titles[index];
+        const notdeletedtitle = titles.filter((word) => word !== deletedtitle);
+        setNewtitle(notdeletedtitle);
+      }
       // if id is unique then no need of above logic
       const notdeletedvalues = [...notdeleted];
       setNewmessage(notdeletedvalues);
@@ -199,6 +209,11 @@ const TodoMessages = ({ messagetext }) => {
         }}
       >
         <div style={{ flex: "70%", textAlign: "left", cursor: "text" }}>
+          <Typography
+            sx={{ marginBottom: "10px", fontWeight: "bold", fontSize: "18px" }}
+          >
+            {title}
+          </Typography>
           <TextareaAutosize
             id={messagetext + "text"}
             disabled={dis}

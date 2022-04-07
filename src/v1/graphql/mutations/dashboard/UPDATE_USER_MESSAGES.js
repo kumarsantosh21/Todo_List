@@ -5,6 +5,7 @@ export const UPDATE_USER_MESSAGES = gql`
     updateOneDatum(query: { username: $username }, set: $updates) {
       username
       message
+      title
     }
   }
 `;

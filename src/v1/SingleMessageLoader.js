@@ -13,6 +13,7 @@ const SingleMessageLoader = () => {
       >
         <div
           style={{
+            display: "table",
             flex: "80%",
             width: "auto",
             height: "25px",
@@ -24,13 +25,56 @@ const SingleMessageLoader = () => {
             textAlign: "left",
           }}
         >
-          <Skeleton
-            variant="text"
-            sx={{ background: "rgb(237, 231, 246)", borderRadius: "8px" }}
-            height="25px"
-            animation={animation}
-          />
+          <div
+            style={
+              {
+                // flex: "80%",
+                // width: "auto",
+                // height: "25px",
+                // // background: "lightgray",
+                // borderRadius: "8px",
+                // marginTop: "10px",
+                // overflow: "hidden",
+                // margin: "20px",
+                // textAlign: "left",
+              }
+            }
+          >
+            <Skeleton
+              variant="text"
+              sx={{
+                background: "rgb(237, 231, 246)",
+                borderRadius: "8px",
+                width: "45%",
+              }}
+              height="25px"
+              animation={animation}
+            />
+          </div>
+          <div
+            style={
+              {
+                // flex: "80%",
+                // width: "auto",
+                // height: "25px",
+                // // background: "lightgray",
+                // borderRadius: "8px",
+                // marginTop: "10px",
+                // overflow: "hidden",
+                // margin: "20px",
+                // textAlign: "left",
+              }
+            }
+          >
+            <Skeleton
+              variant="text"
+              sx={{ background: "rgb(237, 231, 246)", borderRadius: "8px" }}
+              height="25px"
+              animation={animation}
+            />
+          </div>
         </div>
+
         <div
           style={{
             flex: "2.5%",

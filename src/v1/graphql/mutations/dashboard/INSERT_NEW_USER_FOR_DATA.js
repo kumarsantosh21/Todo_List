@@ -6,6 +6,7 @@ export const INSERT_NEW_USER_FOR_DATA = gql`
       _id
       username
       message
+      title
     }
   }
 `;

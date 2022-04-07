@@ -4,7 +4,6 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
 import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
 import { app } from "../originpages/Client";
 import { useLazyQuery, useMutation } from "@apollo/client";
@@ -20,6 +19,9 @@ const CreateNewTodo = () => {
   const [newmessage, setNewmessage] = React.useState();
   const [text, setText] = React.useState();
   const [backdrop, setBackdrop] = React.useState();
+  const [title, setTitle] = React.useState();
+  const [newtitle, setNewtitle] = React.useState();
+  const [titletext, setTitletext] = React.useState();
 
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -29,8 +31,10 @@ const CreateNewTodo = () => {
       // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
 
       const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
+      const title = JSON.parse(JSON.stringify(mesdata.data[0].title));
 
       setMessage(data);
+      setTitle(title);
       // console.log(message);
     },
   });
@@ -40,18 +44,23 @@ const CreateNewTodo = () => {
       username: app.currentUser._profile.data.email,
       updates: {
         message: newmessage,
+        title: newtitle,
       },
     },
   });
 
   const handleClick = () => {
+    const titrepeated = title.filter((word) => word === titletext);
     const repeated = message.filter((word) => word === text);
-    if (repeated.length > 0) {
+    if (repeated.length > 0 || titrepeated.length > 0) {
       setBackdrop(true);
     } else {
+      const newtit = [...title, titletext];
       const newme = [...message, text];
       // console.log("newme", newme);
       setNewmessage(newme);
+      setNewtitle(newtit);
+
       setText();
       setState(false);
     }
@@ -149,17 +158,31 @@ const CreateNewTodo = () => {
                 borderRadius: "6px",
                 zIndex: "1",
                 width: "780px",
-                padding: "5px 16px",
+                padding: "10px 16px 5px 16px",
                 marginLeft: "18%",
               }}
             >
               <TextField
                 autoFocus
+                placeholder="Title"
+                variant="standard"
+                fullWidth
+                onChange={(e) => {
+                  setTitletext(e.target.value);
+                }}
+                InputProps={{
+                  // disableUnderline: true,
+                  sx: { color: "black", fontWeight: "bold" },
+                }}
+              />
+              <TextField
+                placeholder="Message"
                 variant="standard"
                 rows={10}
                 fullWidth
                 multiline
                 sx={{
+                  marginTop: "5px",
                   "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
                     backgroundColor: "white",
                     width: "10px",
@@ -205,7 +228,12 @@ const CreateNewTodo = () => {
               >
                 <IconButton
                   onClick={handleClick}
-                  disabled={text === undefined || text === ""}
+                  disabled={
+                    text === undefined ||
+                    text === "" ||
+                    titletext === undefined ||
+                    titletext === ""
+                  }
                   sx={{
                     height: "40px",
                     width: "90px",
@@ -260,7 +288,7 @@ const CreateNewTodo = () => {
             justifyContent: "center",
             alignItems: "center",
             height: "200px",
-            width: "500px",
+            width: "550px",
             background: "white",
             borderRadius: "10px",
           }}
@@ -274,7 +302,7 @@ const CreateNewTodo = () => {
                 textAlign: "center",
               }}
             >
-              Repeated messages are not allowed to Add
+              Repeated Title and Messages are not allowed to Add
             </Typography>
             <div
               style={{

@@ -6,6 +6,7 @@ export const GET_MESSAGES = gql`
       _id
       username
       message
+      title
     }
   }
 `;
