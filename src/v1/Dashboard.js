@@ -28,6 +28,7 @@ function Dahboard() {
   const [searchtitles, setSearchtitles] = React.useState();
   const [searchmessages, setSearchmessages] = React.useState();
   const [searchiconcolor, setSearchiconcolor] = React.useState("");
+  const [createto, setCreateto] = React.useState(false);
 
   // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
@@ -47,8 +48,8 @@ function Dahboard() {
     onCompleted: (mesdata) => {
       // console.log("mesdata", mesdata.data[0].message);
 
-      const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
-      const title = JSON.parse(JSON.stringify(mesdata.data[0].title));
+      const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
+      const title = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
 
       setMessage(data);
       setSearchmessages(data);
@@ -86,6 +87,7 @@ function Dahboard() {
         setUserData(app.currentUser._profile.data.email);
       } else {
         MESSAGES();
+        setCreateto(true);
       }
     }
   }, [skeleton, Fetc, MESSAGES]);
@@ -96,9 +98,14 @@ function Dahboard() {
   }, [newData, UPDATEUSERS]);
 
   React.useEffect(() => {
-    if (userData !== undefined) {
-      INSERT_USER_FOR_DATA();
-    }
+    const load = async () => {
+      if (userData !== undefined) {
+        await INSERT_USER_FOR_DATA();
+        setCreateto(true);
+        window.location.reload();
+      }
+    };
+    load();
   }, [userData, INSERT_USER_FOR_DATA]);
 
   React.useEffect(() => {
@@ -156,7 +163,7 @@ function Dahboard() {
   return (
     <>
       <Navbar />
-      <CreateNewTodo />
+      {createto ? <CreateNewTodo /> : null}
 
       <div
         id="total"

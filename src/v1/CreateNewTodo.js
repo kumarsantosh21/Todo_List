@@ -30,8 +30,8 @@ const CreateNewTodo = () => {
     onCompleted: (mesdata) => {
       // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
 
-      const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
-      const title = JSON.parse(JSON.stringify(mesdata.data[0].title));
+      const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
+      const title = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
 
       setMessage(data);
       setTitle(title);

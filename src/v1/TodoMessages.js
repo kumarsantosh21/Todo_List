@@ -35,8 +35,8 @@ const TodoMessages = ({ messagetext, title }) => {
     onCompleted: (mesdata) => {
       // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
 
-      const data = JSON.parse(JSON.stringify(mesdata.data[0].message));
-      const tit = JSON.parse(JSON.stringify(mesdata.data[0].title));
+      const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
+      const tit = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
 
       setMessage(data);
       // console.log(message);
