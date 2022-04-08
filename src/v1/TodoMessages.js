@@ -140,7 +140,7 @@ const TodoMessages = ({ messagetext, title }) => {
         if (index !== -1) {
           valuesNow[index] = text;
         }
-        console.log(valuesNow);
+        // console.log(valuesNow);
         // updating query with the present values
         setNewmessage(valuesNow);
         setDis(true);
@@ -152,7 +152,7 @@ const TodoMessages = ({ messagetext, title }) => {
 
     const presentid = e.currentTarget.id;
     const presentValue = presentid.slice(0, presentid.length - 4);
-    console.log("copy", presentValue);
+    // console.log("copy", presentValue);
     navigator.clipboard.writeText(presentValue).then(
       function () {
         setCopy("Copied!");

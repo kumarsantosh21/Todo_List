@@ -17,8 +17,8 @@ export async function getValidAccessToken(username, pass) {
       // An already logged in user's access token might be stale. To guarantee that the token is
       // valid, we refresh the user's custom data which also refreshes their access token.
       await app.currentUser.refreshCustomData();
-      console.log(app.currentUser.accessToken);
-      console.log(app.currentUser._profile.data.email);
+      // console.log(app.currentUser.accessToken);
+      // console.log(app.currentUser._profile.data.email);
 
       return app.currentUser.accessToken;
     }
@@ -47,7 +47,7 @@ export async function register(username, pass) {
 export async function mailconfirmation(token, tokenId) {
   try {
     await app.emailPasswordAuth.confirmUser(token, tokenId);
-    console.log("success");
+    // console.log("success");
     return "success";
   } catch (error) {
     console.log(error);
@@ -65,7 +65,7 @@ export async function mailconfirmation(token, tokenId) {
 export async function resendmail(email) {
   try {
     await app.emailPasswordAuth.resendConfirmationEmail(email);
-    console.log("success");
+    // console.log("success");
     return "success";
   } catch (error) {
     console.log(error);

@@ -12,7 +12,7 @@ export default function EmailConfirmation() {
       let valid;
       if (token || tokenId) {
         valid = await mailconfirmation(token, tokenId);
-        console.log(valid);
+        // console.log(valid);
         if (valid === "success") {
           setState(1);
         }

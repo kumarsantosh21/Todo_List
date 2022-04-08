@@ -103,7 +103,10 @@ function Dahboard() {
 
   React.useEffect(() => {
     if (searchtext !== undefined) {
-      const searches = title.filter((words) => words.includes(searchtext));
+      const searches = searchtitles.filter((words) =>
+        words.includes(searchtext)
+      );
+
       setTitle(searches);
 
       let sertest = [];
@@ -111,21 +114,29 @@ function Dahboard() {
       for (let j = 0; j < searches.length; j++) {
         sertest = [
           ...sertest,
-          title.findIndex((element) => element === searches[j]),
+          searchtitles.findIndex((element) => element === searches[j]),
         ];
       }
       let filmessages = [];
       // finding messages with indexes
-      for (let i = 0; i < message.length; i++) {
-        console.log(sertest, sertest.includes(i), message[i]);
+      for (let i = 0; i < searchmessages.length; i++) {
+        // console.log(sertest, sertest.includes(i), searchmessages[i]);
         if (sertest.includes(i)) {
-          filmessages = [...filmessages, message[i]];
+          filmessages = [...filmessages, searchmessages[i]];
         }
       }
 
       setMessage(filmessages);
+
+      // console.log("insidesearchtext", searchtext);
+      // console.log("insidetitle", title);
+      // console.log("insidemessages", message);
     }
-  }, [searchtext, searchtitles, searchmessages]);
+  }, [searchtext, searchtitles]);
+  // console.log("outsidesearchtext", searchtext);
+  // console.log("outsidetitle", title);
+  // console.log("outsidemessages", message);
+
   if (loading) {
     return (
       <div>
