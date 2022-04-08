@@ -127,6 +127,20 @@ function App() {
                 transition: "transform 0.05s linear",
               }}
             >
+              {/* <div
+                style={{
+                  background: "inherit",
+                  content: "",
+                  display: "block",
+                  position: "absolute",
+                  left: "144px",
+                  top: "247px",
+                  width: "80%",
+                  height: "60%",
+                  zIndex: "-1",
+                  filter: "blur(55px)",
+                }}
+              ></div> */}
               <h2
                 style={{
                   transform: "translateZ(80px)",

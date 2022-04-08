@@ -15,6 +15,7 @@ import CreateNewTodo from "./CreateNewTodo";
 import MessageLoader from "./MessageLoader";
 import TodoMessagesMapping from "./TodoMessagesMapping";
 import TextField from "@mui/material/TextField";
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -154,17 +155,48 @@ function Dahboard() {
           overflow: "hidden",
         }}
       >
-        {" "}
-        <TextField
-          fullWidth
-          sx={{}}
-          variant="standard"
-          onChange={(e) => {
-            setTitle(searchtitles);
-            setMessage(searchmessages);
-            setSearchtext(e.target.value);
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "20px 10px 10px",
           }}
-        />
+        >
+          <div
+            style={{ textAlign: "center", flex: "5%", padding: "10px 20px" }}
+          >
+            <ContentPasteSearchIcon
+              sx={{ fontSize: "40px", cursor: "pointer" }}
+              onClick={() => {
+                document.getElementById("searchfieldtextfield").focus();
+              }}
+            />
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              flex: "95%",
+              padding: "10px 20px 20px",
+            }}
+          >
+            {" "}
+            <TextField
+              id="searchfieldtextfield"
+              autoFocus
+              fullWidth
+              sx={{}}
+              placeholder="Search Title..."
+              variant="standard"
+              onChange={(e) => {
+                setTitle(searchtitles);
+                setMessage(searchmessages);
+                setSearchtext(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
         <div>
           {message !== undefined ? (
             <TodoMessagesMapping messa={message} title={title} />

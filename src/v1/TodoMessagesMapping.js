@@ -10,7 +10,8 @@ const TodoMessagesMapper = ({ messa, title }) => {
 
     return (
       <>
-        {messagedata[0] === data ? null : <hr />}
+        {/* {messagedata[0] === data ? null : <hr />} */}
+        <hr />
         <TodoMessages key={data} messagetext={data} title={titles} />
       </>
     );
