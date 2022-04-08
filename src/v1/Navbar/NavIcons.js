@@ -20,7 +20,7 @@ const NavIcon = () => {
   const handleCloseLogout = () => {
     setOpen(false);
     app.currentUser.logOut();
-    navigate("/login");
+    navigate("/");
     window.location.reload();
   };
   const handleClose = () => {
