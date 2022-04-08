@@ -27,6 +27,7 @@ function Dahboard() {
   const [searchtext, setSearchtext] = React.useState();
   const [searchtitles, setSearchtitles] = React.useState();
   const [searchmessages, setSearchmessages] = React.useState();
+  const [searchiconcolor, setSearchiconcolor] = React.useState("");
 
   // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
@@ -167,7 +168,11 @@ function Dahboard() {
             style={{ textAlign: "center", flex: "5%", padding: "10px 20px" }}
           >
             <ContentPasteSearchIcon
-              sx={{ fontSize: "40px", cursor: "pointer" }}
+              sx={{
+                fontSize: "40px",
+                cursor: "pointer",
+                color: searchiconcolor,
+              }}
               onClick={() => {
                 document.getElementById("searchfieldtextfield").focus();
               }}
@@ -192,6 +197,12 @@ function Dahboard() {
                 setTitle(searchtitles);
                 setMessage(searchmessages);
                 setSearchtext(e.target.value);
+              }}
+              onFocus={() => {
+                setSearchiconcolor("rgb(94, 53, 177)");
+              }}
+              onBlur={() => {
+                setSearchiconcolor("");
               }}
             />
           </div>
