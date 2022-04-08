@@ -202,7 +202,7 @@ function Dahboard() {
               autoFocus
               fullWidth
               sx={{}}
-              placeholder="Search Title..."
+              placeholder="Search Title...  (* Case Sensitive)"
               variant="standard"
               onChange={(e) => {
                 setTitle(searchtitles);
