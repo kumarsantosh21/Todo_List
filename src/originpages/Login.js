@@ -269,7 +269,19 @@ const Login = () => {
                 }}
               >
                 Wrong E-mail or password. Try again or click ‘Forgot password’
-                to reset it.
+                to reset it. Or You might forgot to confirm your mail, check
+                inbox. If link expired in the mail box click{" "}
+                <a
+                  style={{
+                    color: "#0000ee",
+                    textDecoration: "none",
+                    fontSize: "18px",
+                  }}
+                  href="/signup"
+                >
+                  here
+                </a>{" "}
+                to redirect to send Confirmation Email.
               </div>
             </div>
           ) : null}
