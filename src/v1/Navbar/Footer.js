@@ -6,11 +6,22 @@ import ContactMailIcon from "@mui/icons-material/ContactMail";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import ShareIcon from "@mui/icons-material/Share";
 const Footer = () => {
+  const [screenSize, setScreensize] = React.useState(window.innerWidth);
+  const setDimension = () => {
+    setScreensize(window.innerWidth);
+  };
+  React.useEffect(() => {
+    window.addEventListener("resize", setDimension);
+
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [screenSize]);
   return (
     <>
       <div
         style={{
-          position: "fixed",
+          position: screenSize >= 1050 ? "fixed" : "",
           width: "100%",
           bottom: 0,
           background: "white",

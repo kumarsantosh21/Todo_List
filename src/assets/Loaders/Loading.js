@@ -4,7 +4,7 @@ const Loading = () => {
   return (
     <>
       <img
-        style={{ width: "25%", marginLeft: "37%", marginTop: "8%" }}
+        style={{ width: "25%", marginLeft: "37%", marginTop: "10%" }}
         src={MainLoader}
         alt="loader"
       />

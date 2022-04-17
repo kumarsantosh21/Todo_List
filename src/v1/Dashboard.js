@@ -29,6 +29,10 @@ function Dahboard() {
   const [searchmessages, setSearchmessages] = React.useState();
   const [searchiconcolor, setSearchiconcolor] = React.useState("");
   const [createto, setCreateto] = React.useState(false);
+  const [screenSize, setScreensize] = React.useState(window.innerWidth);
+  const setDimension = () => {
+    setScreensize(window.innerWidth);
+  };
 
   // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
@@ -58,6 +62,15 @@ function Dahboard() {
       setSearchtitles(title);
     },
   });
+
+  React.useEffect(() => {
+    window.addEventListener("resize", setDimension);
+
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [screenSize]);
+
   // update user if the user logins for the first time
   const [UPDATEUSERS] = useMutation(UPDATE_USERS, {
     variables: {
@@ -163,17 +176,21 @@ function Dahboard() {
   return (
     <>
       <Navbar />
-      {createto ? <CreateNewTodo /> : null}
+      {createto && screenSize >= 1050 ? <CreateNewTodo /> : null}
 
       <div
         id="total"
         style={{
-          margin: "170px 200px 150px 250px",
+          margin:
+            screenSize >= 1050
+              ? "170px 200px 150px 250px"
+              : "170px 20px 150px 20px",
           borderRadius: "10px",
           boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
           overflow: "hidden",
         }}
       >
+        {createto && screenSize < 1050 ? <CreateNewTodo /> : null}
         <div
           style={{
             display: "flex",
@@ -203,7 +220,6 @@ function Dahboard() {
               padding: "10px 20px 20px",
             }}
           >
-            {" "}
             <TextField
               id="searchfieldtextfield"
               autoFocus
