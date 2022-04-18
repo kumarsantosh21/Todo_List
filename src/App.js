@@ -8,6 +8,17 @@ import { DaImg } from "./assets";
 
 // Must be rendered inside of an ApolloProvider
 function App() {
+  const [screenSize, setScreensize] = React.useState(window.innerWidth);
+  const setDimension = () => {
+    setScreensize(window.innerWidth);
+  };
+  React.useEffect(() => {
+    window.addEventListener("resize", setDimension);
+
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [screenSize]);
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
   let navigate = useNavigate();
@@ -36,12 +47,12 @@ function App() {
             position: "fixed",
             background: "white",
             boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
-            height: "80px",
+            height: screenSize < 1050 ? "fit-content" : "80px",
             borderRadius: "10px",
-            width: "96%",
+            width: screenSize < 1050 ? "fit-content" : "96%",
             marginLeft: "2%",
 
-            display: "flex",
+            display: screenSize < 1050 ? "grid" : "flex",
             justifyContent: "space-between",
             alignItems: "center",
           }}
@@ -61,12 +72,13 @@ function App() {
           </div>
           <div
             style={{
-              display: "flex",
+              display: screenSize < 1050 ? "grid" : "flex",
               justifyContent: "flex-end",
               alignItems: "center",
+              margin: screenSize < 1050 ? "40px" : "",
             }}
           >
-            <div>
+            <div style={{ textAlign: "center" }}>
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=santoorvlss4321@gmail.com"
                 target="_blank"
@@ -82,7 +94,11 @@ function App() {
               </a>
             </div>
             <Button
-              sx={ButtonStyle}
+              sx={{
+                ...ButtonStyle,
+                border:
+                  screenSize < 1050 ? "none" : "1px solid rgb(94, 53, 177)",
+              }}
               variant="standard"
               onClick={() => {
                 navigate("/login");
@@ -91,7 +107,11 @@ function App() {
               Login
             </Button>
             <Button
-              sx={ButtonStyle}
+              sx={{
+                ...ButtonStyle,
+                border:
+                  screenSize < 1050 ? "none" : "1px solid rgb(94, 53, 177)",
+              }}
               variant="standard"
               onClick={() => {
                 navigate("/signup");
@@ -101,33 +121,34 @@ function App() {
             </Button>
           </div>
         </div>
-        <div>
-          <div
-            style={{
-              position: "relative",
-
-              marginLeft: "15%",
-              perspective: "1000px",
-            }}
-          >
+        {screenSize >= 1050 ? (
+          <div>
             <div
               style={{
-                padding: "50px",
-                position: "absolute",
-                background: `url(${DaImg})`,
-                backgroundRepeat: "no-repeat",
-                transformStyle: "preserve-3d",
-                transform: "rotateX(" + x + "deg) rotateY(" + y + "deg)",
-                backgroundPositionX: "center",
-                backgroundPositionY: "center",
-                backgroundSize: "contain",
-                width: "70%",
-                height: "75vh",
-                marginTop: "8%",
-                transition: "transform 0.05s linear",
+                position: "relative",
+
+                marginLeft: "15%",
+                perspective: "1000px",
               }}
             >
-              {/* <div
+              <div
+                style={{
+                  padding: "50px",
+                  position: "absolute",
+                  background: `url(${DaImg})`,
+                  backgroundRepeat: "no-repeat",
+                  transformStyle: "preserve-3d",
+                  transform: "rotateX(" + x + "deg) rotateY(" + y + "deg)",
+                  backgroundPositionX: "center",
+                  backgroundPositionY: "center",
+                  backgroundSize: "contain",
+                  width: "70%",
+                  height: "75vh",
+                  marginTop: "8%",
+                  transition: "transform 0.05s linear",
+                }}
+              >
+                {/* <div
                 style={{
                   background: "inherit",
                   content: "",
@@ -141,32 +162,33 @@ function App() {
                   filter: "blur(55px)",
                 }}
               ></div> */}
-              <h2
-                style={{
-                  transform: "translateZ(80px)",
-                  position: "absolute",
-                  fontWeight: "bold",
-                  fontSize: "80px",
-                  marginLeft: "90px",
-                }}
-              >
-                Todo List
-              </h2>
-              <div
-                style={{
-                  transform: "translateZ(50px)",
-                  position: "absolute",
-                  fontWeight: "bold",
-                  fontSize: "30px",
-                  marginTop: "220px",
-                  marginLeft: "450px",
-                }}
-              >
-                Stores data like notepad but in Cloud and Many features.
+                <h2
+                  style={{
+                    transform: "translateZ(80px)",
+                    position: "absolute",
+                    fontWeight: "bold",
+                    fontSize: "80px",
+                    marginLeft: "90px",
+                  }}
+                >
+                  Todo List
+                </h2>
+                <div
+                  style={{
+                    transform: "translateZ(50px)",
+                    position: "absolute",
+                    fontWeight: "bold",
+                    fontSize: "30px",
+                    marginTop: "220px",
+                    marginLeft: "450px",
+                  }}
+                >
+                  Stores data like notepad but in Cloud and Many features.
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </>
   );
