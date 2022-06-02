@@ -14,6 +14,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LinearProgress from "@mui/material/LinearProgress";
 import { GoogleImg } from "../assets";
 import Button from "@mui/material/Button";
+import checkundefinednull from "../v1/validators/checkundefinednull";
 
 const Login = () => {
   const [disable, setDisable] = useState(false);
@@ -67,6 +68,21 @@ const Login = () => {
     }
   }, [navigate]);
 
+  // for reading mail and password from url link
+  const params = new URLSearchParams(window.location.search);
+  const urlmail = params.get("mail");
+  const urlpassword = params.get("pwd");
+  // console.log(urlmail, urlpassword);
+
+  useEffect(() => {
+    if (!checkundefinednull(urlmail)) {
+      setUsername(urlmail);
+    }
+    if (!checkundefinednull(urlpassword)) {
+      setPass(urlpassword);
+    }
+  }, [urlmail, urlpassword]);
+
   // onclick of button
   const handleClick = async (e) => {
     e.preventDefault();
@@ -107,15 +123,14 @@ const Login = () => {
   }, [progress]);
 
   const errors = {
-    formail:
-      username !== "" &&
-      !username.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      ),
+    formail: !username?.match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    ),
   };
   const helpers = {
-    formail: errors.formail ? "Please provide valid email" : "",
+    formail: errors?.formail ? "Please provide valid email" : "",
   };
+  // console.log(username, pass);
   return (
     <>
       <form>
@@ -155,15 +170,27 @@ const Login = () => {
             <TextField
               required
               disabled={progress}
-              error={errors.formail}
-              helperText={helpers.formail}
+              error={!checkundefinednull(username) ? errors.formail : null}
+              helperText={
+                !checkundefinednull(username) ? helpers.formail : null
+              }
               fullWidth
               label="E-Mail"
               type="email"
               variant="outlined"
+              defaultValue={urlmail}
               name="username"
               onChange={(e) => {
                 setUsername(e.target.value);
+                if (!checkundefinednull(e.target.value)) {
+                  window.history.pushState(
+                    {},
+                    "",
+                    `login?mail=${e.target.value}`
+                  );
+                } else {
+                  window.history.pushState({}, "", "login");
+                }
               }}
               onFocus={() => {
                 setPersonicon(true);
@@ -196,6 +223,7 @@ const Login = () => {
               type="password"
               autoComplete="on"
               variant="outlined"
+              defaultValue={urlpassword}
               name="pass"
               onChange={(e) => {
                 setPass(e.target.value);
@@ -221,8 +249,8 @@ const Login = () => {
               disabled={
                 disable ||
                 progress ||
-                username === "" ||
-                pass === "" ||
+                checkundefinednull(username) ||
+                checkundefinednull(pass) ||
                 errors.formail
               }
               loading={disable || progress}
@@ -232,8 +260,8 @@ const Login = () => {
                 backgroundColor:
                   disable ||
                   progress ||
-                  username === "" ||
-                  pass === "" ||
+                  checkundefinednull(username) ||
+                  checkundefinednull(pass) ||
                   errors.formail
                     ? " #ffb3ff"
                     : "#b300b3",

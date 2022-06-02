@@ -1,2 +1,3 @@
 import Loading from "./Loading";
-export { Loading };
+import NoResults from "./NoResults";
+export { Loading, NoResults };

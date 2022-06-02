@@ -66,8 +66,8 @@ const CreateNewTodo = () => {
     if (repeated.length > 0 || titrepeated.length > 0) {
       setBackdrop(true);
     } else {
-      const newtit = [...title, titletext];
-      const newme = [...message, text];
+      const newtit = [titletext, ...title];
+      const newme = [text, ...message];
       // console.log("newme", newme);
       setNewmessage(newme);
       setNewtitle(newtit);

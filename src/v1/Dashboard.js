@@ -2,7 +2,7 @@ import React from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { app } from "../originpages/Client";
 import { useNavigate } from "react-router-dom";
-import { Loading } from "../assets/Loaders";
+import { NoResults, Loading } from "../assets/Loaders";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Navbar/Footer";
 import {
@@ -16,6 +16,7 @@ import MessageLoader from "./MessageLoader";
 import TodoMessagesMapping from "./TodoMessagesMapping";
 import TextField from "@mui/material/TextField";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import checkundefinednull from "./validators/checkundefinednull";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ function Dahboard() {
   // Fetching messages of the user if user exists
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
-      usernam: app.currentUser._profile.data.email,
+      usernam: app?.currentUser?._profile?.data?.email,
     },
     onCompleted: (mesdata) => {
       // console.log("mesdata", mesdata.data[0].message);
@@ -94,10 +95,10 @@ function Dahboard() {
     Fetc();
     if (skeleton !== undefined) {
       const name = skeleton.user_name.user;
-      if (!name.includes(app.currentUser._profile.data.email)) {
-        const db = [...name, app.currentUser._profile.data.email];
+      if (!name.includes(app?.currentUser?._profile?.data?.email)) {
+        const db = [...name, app?.currentUser?._profile?.data?.email];
         setNewData(db);
-        setUserData(app.currentUser._profile.data.email);
+        setUserData(app?.currentUser?._profile?.data?.email);
       } else {
         MESSAGES();
         setCreateto(true);
@@ -120,18 +121,25 @@ function Dahboard() {
     };
     load();
   }, [userData, INSERT_USER_FOR_DATA]);
-
+  // autofill search word if present in url
+  const params = new URLSearchParams(window.location.search);
+  let searchValue = params.get("searchKey");
   React.useEffect(() => {
-    if (searchtext !== undefined) {
-      const searches = searchtitles.filter((words) =>
-        words.includes(searchtext)
+    if (!checkundefinednull(searchValue)) {
+      setSearchtext(searchValue);
+    }
+  }, []);
+  React.useEffect(() => {
+    if (!checkundefinednull(searchtext)) {
+      const searches = searchtitles?.filter((words) =>
+        words?.includes(searchtext)
       );
 
       setTitle(searches);
 
       let sertest = [];
       // finding indexes so we can use messages
-      for (let j = 0; j < searches.length; j++) {
+      for (let j = 0; j < searches?.length; j++) {
         sertest = [
           ...sertest,
           searchtitles.findIndex((element) => element === searches[j]),
@@ -139,7 +147,7 @@ function Dahboard() {
       }
       let filmessages = [];
       // finding messages with indexes
-      for (let i = 0; i < searchmessages.length; i++) {
+      for (let i = 0; i < searchmessages?.length; i++) {
         // console.log(sertest, sertest.includes(i), searchmessages[i]);
         if (sertest.includes(i)) {
           filmessages = [...filmessages, searchmessages[i]];
@@ -224,13 +232,24 @@ function Dahboard() {
               id="searchfieldtextfield"
               autoFocus
               fullWidth
-              sx={{}}
+              InputProps={{
+                // disableUnderline: true,
+                sx: { color: "black", fontWeight: "bold" },
+              }}
               placeholder="Search Title...  (* Case Sensitive)"
               variant="standard"
+              defaultValue={searchValue}
               onChange={(e) => {
                 setTitle(searchtitles);
                 setMessage(searchmessages);
                 setSearchtext(e.target.value);
+                if (checkundefinednull(e.target.value)) {
+                  params.delete("searchKey");
+                } else {
+                  params.set("searchKey", e.target.value);
+                }
+                window.history.pushState({}, "", `?${params.toString()}`);
+                console.log(window.location.search);
               }}
               onFocus={() => {
                 setSearchiconcolor("rgb(94, 53, 177)");
@@ -243,10 +262,12 @@ function Dahboard() {
         </div>
 
         <div>
-          {message !== undefined ? (
+          {checkundefinednull(message) || checkundefinednull(title) ? (
+            <MessageLoader />
+          ) : message?.length !== 0 && title?.length !== 0 ? (
             <TodoMessagesMapping messa={message} title={title} />
           ) : (
-            <MessageLoader />
+            <NoResults />
           )}
         </div>
       </div>
