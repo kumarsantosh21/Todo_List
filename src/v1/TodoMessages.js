@@ -5,11 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
 import { app } from "../originpages/Client";
-import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import SaveIcon from "@mui/icons-material/Save";
 import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
 import SingleMessageLoader from "./SingleMessageLoader";
-import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { styled } from "@mui/material/styles";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -18,7 +18,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-const TodoMessages = ({ messagetext, title }) => {
+const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
   const [expand, setExpand] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
@@ -208,9 +208,15 @@ const TodoMessages = ({ messagetext, title }) => {
           justifyContent: "center",
         }}
       >
-        <div style={{ flex: "70%", textAlign: "left", cursor: "text" }}>
+        <div
+          style={{
+            flex: "100%",
+            cursor: "text",
+            padding: "0px 20px 0px 0px",
+          }}
+        >
           <Typography
-            sx={{ marginBottom: "10px", fontWeight: "bold", fontSize: "18px" }}
+            sx={{ marginBottom: "10px", fontWeight: "bold", fontSize: "16px" }}
           >
             {title}
           </Typography>
@@ -226,7 +232,7 @@ const TodoMessages = ({ messagetext, title }) => {
               outline: "none",
               resize: "none",
               fontFamily: "revert",
-              fontSize: "16px",
+              fontSize: "14px",
               cursor: "text",
             }}
             maxRows={expand}
@@ -236,120 +242,124 @@ const TodoMessages = ({ messagetext, title }) => {
             }}
           />
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            flex: "25%",
-            textAlign: "right",
-          }}
-        >
-          <TooltipColor
-            disabled={dis || text === ""}
-            sx={{
-              "& .MuiTooltip-arrow": {
-                color: "rgb(237, 231, 246)",
-              },
+        <div style={{}}>
+          <div
+            style={{
+              display: "flex",
             }}
-            arrow
-            title="Click to Save"
-            TransitionComponent={Zoom}
           >
-            <IconButton
-              id={messagetext + "ok"}
+            <TooltipColor
               sx={{
-                ...ButtonIconStyle,
-                //  display: "none",
-                margin: "0px",
+                "& .MuiTooltip-arrow": {
+                  color: "rgb(237, 231, 246)",
+                },
               }}
-              onClick={handleOk}
+              arrow
+              title="Edit"
+              TransitionComponent={Zoom}
             >
-              <BookmarkAddedIcon />
-            </IconButton>
-          </TooltipColor>
+              <IconButton
+                id={messagetext}
+                sx={ButtonIconStyle}
+                onClick={handleEdit}
+              >
+                <EditIcon />
+              </IconButton>
+            </TooltipColor>
+            <TooltipColor
+              disabled={dis || text === ""}
+              sx={{
+                "& .MuiTooltip-arrow": {
+                  color: "rgb(237, 231, 246)",
+                },
+              }}
+              arrow
+              title="Click to Save"
+              TransitionComponent={Zoom}
+            >
+              <IconButton
+                id={messagetext + "ok"}
+                sx={{
+                  ...ButtonIconStyle,
+                  //  display: "none",
+                  margin: "0px",
+                }}
+                onClick={handleOk}
+              >
+                <SaveIcon />
+              </IconButton>
+            </TooltipColor>
 
-          <TooltipColor
-            id={messagetext + "tool"}
-            sx={{
-              "& .MuiTooltip-arrow": {
-                color: "rgb(237, 231, 246)",
-              },
-            }}
-            arrow
-            title={
-              expand === 3 ? "Click to Expand More" : "Click to Expand Less"
-            }
-            TransitionComponent={Zoom}
-          >
-            <IconButton
-              id={messagetext + "copy"}
-              sx={ButtonIconStyle}
-              onClick={expandMoreorLess}
+            <TooltipColor
+              sx={{
+                "& .MuiTooltip-arrow": {
+                  color: "rgb(237, 231, 246)",
+                },
+              }}
+              arrow
+              title="Delete"
+              TransitionComponent={Zoom}
             >
-              {expand === 3 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-            </IconButton>
-          </TooltipColor>
-
-          <TooltipColor
-            id={messagetext + "tool"}
-            sx={{
-              "& .MuiTooltip-arrow": {
-                color: "rgb(237, 231, 246)",
-              },
+              <IconButton
+                id={messagetext}
+                sx={ButtonIconStyle}
+                onClick={handleDelete}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </TooltipColor>
+          </div>
+          <div
+            style={{
+              display: "flex",
             }}
-            arrow
-            title={copy}
-            TransitionComponent={Zoom}
           >
-            <IconButton
-              id={messagetext + "copy"}
-              sx={ButtonIconStyle}
-              onClick={handleCopy}
+            {" "}
+            <TooltipColor
+              id={messagetext + "tool"}
+              sx={{
+                "& .MuiTooltip-arrow": {
+                  color: "rgb(237, 231, 246)",
+                },
+              }}
+              arrow
+              title={
+                expand === 3 ? "Click to Expand More" : "Click to Expand Less"
+              }
+              TransitionComponent={Zoom}
             >
-              {copy === "Copy to Clipboard" ? (
-                <ContentPasteGoIcon />
-              ) : (
-                <CheckCircleOutlineIcon />
-              )}
-            </IconButton>
-          </TooltipColor>
-
-          <TooltipColor
-            sx={{
-              "& .MuiTooltip-arrow": {
-                color: "rgb(237, 231, 246)",
-              },
-            }}
-            arrow
-            title="Edit"
-            TransitionComponent={Zoom}
-          >
-            <IconButton
-              id={messagetext}
-              sx={ButtonIconStyle}
-              onClick={handleEdit}
+              <IconButton
+                id={messagetext + "copy"}
+                sx={ButtonIconStyle}
+                onClick={expandMoreorLess}
+              >
+                {expand === 3 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+              </IconButton>
+            </TooltipColor>
+            <TooltipColor
+              id={messagetext + "tool"}
+              sx={{
+                "& .MuiTooltip-arrow": {
+                  color: "rgb(237, 231, 246)",
+                },
+              }}
+              arrow
+              title={copy}
+              TransitionComponent={Zoom}
             >
-              <EditIcon />
-            </IconButton>
-          </TooltipColor>
-          <TooltipColor
-            sx={{
-              "& .MuiTooltip-arrow": {
-                color: "rgb(237, 231, 246)",
-              },
-            }}
-            arrow
-            title="Delete"
-            TransitionComponent={Zoom}
-          >
-            <IconButton
-              id={messagetext}
-              sx={ButtonIconStyle}
-              onClick={handleDelete}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </TooltipColor>
+              <IconButton
+                id={messagetext + "copy"}
+                sx={ButtonIconStyle}
+                onClick={handleCopy}
+              >
+                {copy === "Copy to Clipboard" ? (
+                  <ContentCopyIcon />
+                ) : (
+                  <CheckCircleOutlineIcon />
+                )}
+              </IconButton>
+            </TooltipColor>
+          </div>
         </div>
       </div>
       <Backdrop

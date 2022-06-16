@@ -4,12 +4,19 @@ import Zoom from "@mui/material/Zoom";
 import styled from "@mui/material/styles/styled";
 import IconButton from "@mui/material/IconButton";
 
-const Tooltips = ({ title, icon, onClick }) => {
+const Tooltips = ({
+  title,
+  icon,
+  onClick,
+  dynamicbgcolor,
+  dynamiccolor,
+  arrow,
+}) => {
   const iconStyles = {
     borderRadius: "6px",
     "&:hover": {
-      color: "rgb(94, 53, 177)",
-      background: "rgb(237, 231, 246)",
+      color: dynamiccolor ?? "rgb(94, 53, 177)",
+      background: dynamicbgcolor ?? "rgb(237, 231, 246)",
     },
   };
   const TooltipColor = styled(({ className, ...props }) => (
@@ -32,7 +39,7 @@ const Tooltips = ({ title, icon, onClick }) => {
             color: "rgb(237, 231, 246)",
           },
         }}
-        arrow
+        arrow={arrow ?? true}
         title={title}
         TransitionComponent={Zoom}
       >

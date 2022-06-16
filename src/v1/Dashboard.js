@@ -191,7 +191,7 @@ function Dahboard() {
         style={{
           margin:
             screenSize >= 1050
-              ? "170px 200px 150px 250px"
+              ? "170px 120px 150px 250px"
               : "170px 20px 150px 20px",
           borderRadius: "10px",
           boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
@@ -249,7 +249,7 @@ function Dahboard() {
                   params.set("searchKey", e.target.value);
                 }
                 window.history.pushState({}, "", `?${params.toString()}`);
-                console.log(window.location.search);
+                // console.log(window.location.search);
               }}
               onFocus={() => {
                 setSearchiconcolor("rgb(94, 53, 177)");
