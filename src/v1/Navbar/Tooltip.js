@@ -11,9 +11,11 @@ const Tooltips = ({
   dynamicbgcolor,
   dynamiccolor,
   arrow,
+  color,
 }) => {
   const iconStyles = {
     borderRadius: "6px",
+    color: color ? color : "",
     "&:hover": {
       color: dynamiccolor ?? "rgb(94, 53, 177)",
       background: dynamicbgcolor ?? "rgb(237, 231, 246)",

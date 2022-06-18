@@ -24,6 +24,7 @@ const CreateNewTodo = () => {
   const [newtitle, setNewtitle] = React.useState();
   const [titletext, setTitletext] = React.useState();
   const [screenSize, setScreensize] = React.useState(window.innerWidth);
+  const [manualLoading, setManualLoading] = React.useState();
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -57,6 +58,12 @@ const CreateNewTodo = () => {
         message: newmessage,
         title: newtitle,
       },
+    },
+    onCompleted: () => {
+      setManualLoading(true);
+      setTimeout(() => {
+        setManualLoading(false);
+      }, 1000);
     },
   });
 
@@ -117,7 +124,7 @@ const CreateNewTodo = () => {
       document.getElementById("total").style.display = "";
     }
   }, [state]);
-  if (loading) {
+  if (loading || manualLoading) {
     return (
       <>
         <div
@@ -157,7 +164,10 @@ const CreateNewTodo = () => {
                     setState(!state);
                   }}
                 >
-                  Add New List <AddIcon sx={{ marginLeft: "5px" }} />
+                  <Typography sx={{ fontSize: "12px" }}>
+                    Add New List
+                  </Typography>
+                  <AddIcon sx={{ marginLeft: "5px" }} />
                 </Fab>
               </div>
             </div>

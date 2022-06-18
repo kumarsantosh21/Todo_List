@@ -230,7 +230,6 @@ function Dahboard() {
           >
             <TextField
               id="searchfieldtextfield"
-              autoFocus
               fullWidth
               InputProps={{
                 // disableUnderline: true,

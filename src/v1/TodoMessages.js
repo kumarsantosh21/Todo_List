@@ -28,6 +28,7 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
   const [backdrop, setBackdrop] = React.useState();
   const [titles, setTitles] = React.useState();
   const [newtitle, setNewtitle] = React.useState();
+  const [manualLoading, setManualLoading] = React.useState();
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: app.currentUser._profile.data.email,
@@ -51,6 +52,12 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
         message: newmessage,
         title: newtitle,
       },
+    },
+    onCompleted: () => {
+      setManualLoading(true);
+      setTimeout(() => {
+        setManualLoading(false);
+      }, 1000);
     },
   });
 
@@ -190,7 +197,7 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
      
   `);
 
-  if (loading) {
+  if (loading || manualLoading) {
     return (
       <>
         <SingleMessageLoader />
@@ -329,7 +336,7 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
               TransitionComponent={Zoom}
             >
               <IconButton
-                id={messagetext + "copy"}
+                id={messagetext + "expand"}
                 sx={ButtonIconStyle}
                 onClick={expandMoreorLess}
               >

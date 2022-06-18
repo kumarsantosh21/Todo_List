@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -20,19 +20,98 @@ import Switch from "@mui/material/Switch";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { app } from "../originpages/Client";
+import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
+import MessageLoader from "./MessageLoader";
+import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
+import ConfirmDialogbox from "./ConfirmDialogbox";
 
 const TodoMessagesMapper = ({ messa, title }) => {
   const messagedata = messa;
+  const titles = title;
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [copy, setCopy] = React.useState("Copy to Clipboard");
+  const [newmessage, setNewmessage] = React.useState();
+  const [newtitle, setNewtitle] = React.useState();
+  const [manualLoading, setManualLoading] = React.useState();
+  const [dialogstate, setDialogstate] = React.useState(false);
 
+  const [MESSAGES, { data }] = useLazyQuery(GET_MESSAGES, {
+    variables: {
+      usernam: app.currentUser._profile.data.email,
+    },
+    onCompleted: (mesdata) => {
+      // console.log("completed");
+    },
+  });
+
+  const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
+    variables: {
+      username: app.currentUser._profile.data.email,
+      updates: {
+        message: newmessage,
+        title: newtitle,
+      },
+    },
+    onCompleted: () => {
+      setManualLoading(true);
+      setTimeout(() => {
+        setManualLoading(false);
+      }, 1000);
+    },
+  });
+  React.useEffect(() => {
+    MESSAGES();
+  }, [MESSAGES]);
+
+  React.useEffect(() => {
+    const test = async () => {
+      if (newmessage !== undefined) {
+        await UPDATE_MESSAGES();
+        MESSAGES();
+        setSelected([]);
+      }
+    };
+    test();
+  }, [newmessage]);
+
+  React.useEffect(() => {
+    selected.map((item) => {
+      if (!messagedata.includes(item)) {
+        const index = selected.indexOf(item);
+        if (index !== -1) {
+          let newselect;
+          newselect = selected.filter((word) => word !== item);
+
+          setSelected(newselect);
+        }
+      }
+
+      return selected;
+    });
+  });
+
+  const Keyframes = styled("span")({
+    "@keyframes spin": {
+      " 0% ": { transform: " rotate(0deg)" },
+      "100%": { transform: " rotate(360deg)" },
+    },
+    animation: manualLoading || loading ? "spin 600ms  infinite ease-out" : "",
+  });
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: "rgb(237, 231, 246)",
+    },
+  }));
   // old todomessagemapping
   const Todoblock = messagedata.map((data, index) => {
     const titles = title?.[index];
@@ -47,7 +126,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
     );
   });
   const objects = [];
-  console.log(messagedata);
+
   for (let x = 0; x < messagedata?.length; x++) {
     objects[x] = {
       name: messagedata[x],
@@ -110,8 +189,11 @@ const TodoMessagesMapper = ({ messa, title }) => {
 
     return (
       <TableHead sx={{}}>
-        <TableRow>
-          <TableCell padding="checkbox">
+        <TableRow sx={{}}>
+          <TableCell
+            padding="checkbox"
+            sx={{ background: "rgb(237, 231, 246)" }}
+          >
             <Checkbox
               color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -131,10 +213,11 @@ const TodoMessagesMapper = ({ messa, title }) => {
                   color: "rgb(94, 53, 177)",
                 },
               }}
+              disableRipple
             />
           </TableCell>
           {headCells.map((headCell) => (
-            <TableCell
+            <StyledTableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
@@ -144,7 +227,12 @@ const TodoMessagesMapper = ({ messa, title }) => {
                 variant="h6"
                 sx={{ fontWeight: "bold", margin: "20px" }}
               >
-                {headCell.label}
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>{headCell.label}</div>
+                  <div style={{ marginRight: "25px" }}>Actions</div>
+                </div>
               </Typography>
               {/* <TableSortLabel
                 active={orderBy === headCell.id}
@@ -160,7 +248,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
                   </Box>
                 ) : null}
               </TableSortLabel> */}
-            </TableCell>
+            </StyledTableCell>
           ))}
         </TableRow>
       </TableHead>
@@ -178,7 +266,27 @@ const TodoMessagesMapper = ({ messa, title }) => {
 
   const EnhancedTableToolbar = (props) => {
     const { numSelected } = props;
+    const handleCopy = () => {
+      const content = selected.join("\n\n\n\n\n\n");
+      navigator.clipboard.writeText(content).then(
+        function () {
+          setCopy("Copied!");
+          setTimeout(() => {
+            setCopy("Copy to Clipboard");
+          }, 5000);
+        },
+        function () {
+          setCopy("Failed to Copy!");
+          setTimeout(() => {
+            setCopy("Copy to Clipboard");
+          }, 5000);
+        }
+      );
+    };
 
+    const handleDelete = () => {
+      setDialogstate(true);
+    };
     return (
       <Toolbar
         sx={{
@@ -187,13 +295,13 @@ const TodoMessagesMapper = ({ messa, title }) => {
 
           bgcolor: numSelected > 0 ? "rgb(237, 231, 246)" : "",
 
-          margin: "20px 20px 0px 20px",
+          margin: "10px 25px 25px 25px",
           borderRadius: "8px",
         }}
       >
         {numSelected > 0 ? (
           <Typography
-            sx={{ flex: "1 1 100%" }}
+            sx={{ flex: "1 1 100%", paddingLeft: "20px" }}
             color="inherit"
             variant="subtitle1"
             component="div"
@@ -202,7 +310,11 @@ const TodoMessagesMapper = ({ messa, title }) => {
           </Typography>
         ) : (
           <Typography
-            sx={{ flex: "1 1 100%", color: "rgb(94, 53, 177)" }}
+            sx={{
+              flex: "1 1 100%",
+              color: "rgb(94, 53, 177)",
+              paddingLeft: "20px",
+            }}
             variant="h6"
             id="tableTitle"
             component="div"
@@ -212,28 +324,57 @@ const TodoMessagesMapper = ({ messa, title }) => {
         )}
 
         {numSelected > 0 ? (
-          <div style={{ display: "flex" }}>
-            <TooltipColor
-              title="Copy"
-              icon={<ContentCopyIcon />}
-              onClick={() => {}}
-              dynamicbgcolor={"white"}
-              arrow={false}
-            />
-            <TooltipColor
-              title="Delete"
-              icon={<DeleteIcon />}
-              onClick={() => {}}
-              dynamicbgcolor={"white"}
-              arrow={false}
-            />
+          <div style={{ marginRight: "20px" }}>
+            <div style={{ display: "flex" }}>
+              <TooltipColor
+                title={copy}
+                icon={
+                  copy === "Copy to Clipboard" ? (
+                    <ContentCopyIcon />
+                  ) : (
+                    <CheckCircleOutlineIcon />
+                  )
+                }
+                onClick={handleCopy}
+                dynamicbgcolor={"white"}
+                arrow={false}
+              />
+              <TooltipColor
+                title="Delete"
+                icon={<DeleteIcon />}
+                onClick={handleDelete}
+                dynamicbgcolor={"white"}
+                arrow={false}
+              />
+            </div>
           </div>
         ) : (
-          <TooltipColor
-            title="Refresh List"
-            icon={<RefreshIcon />}
-            onClick={() => {}}
-          />
+          <div style={{ marginRight: "20px" }}>
+            <TooltipColor
+              title="Refresh List"
+              icon={
+                <Keyframes>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <RefreshIcon />
+                  </div>
+                </Keyframes>
+              }
+              onClick={() => {
+                setManualLoading(true);
+                MESSAGES();
+                setTimeout(() => {
+                  setManualLoading(false);
+                }, 300);
+              }}
+              color={manualLoading || loading ? "rgb(94, 53, 177)" : ""}
+            />
+          </div>
         )}
       </Toolbar>
     );
@@ -254,13 +395,14 @@ const TodoMessagesMapper = ({ messa, title }) => {
       // adding all elements to array
       const newSelecteds = rows.map((n) => n.name);
       setSelected(newSelecteds);
-      console.log(newSelecteds);
+      // console.log(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
   const handleClick = (event, name) => {
+    // marking checkboxs logic
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
@@ -280,7 +422,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
         selected.slice(selectedIndex + 1)
       );
     }
-    console.log(newSelected);
+    // console.log(newSelected);
     setSelected(newSelected);
   };
 
@@ -303,97 +445,154 @@ const TodoMessagesMapper = ({ messa, title }) => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  console.log(Math.max(0, (1 + page) * rowsPerPage - rows.length));
+  const handleDialogClose = () => {
+    setDialogstate(false);
+  };
+  const handleConfirmActionClick = () => {
+    let notdeletedmessages = messagedata;
+    let notdeletedtitle = titles;
+    selected.map((id) => {
+      notdeletedmessages = notdeletedmessages.filter((word) => word !== id);
+      const index = messagedata.indexOf(id);
+      if (index !== -1) {
+        const deletedtitle = titles[index];
+        notdeletedtitle = notdeletedtitle.filter(
+          (word) => word !== deletedtitle
+        );
+      }
 
+      return notdeletedmessages;
+    });
+
+    // console.log(notdeletedmessages);
+    // console.log(notdeletedtitle);
+
+    setNewtitle(notdeletedtitle);
+    setNewmessage(notdeletedmessages);
+    setDialogstate(false);
+  };
   return (
     <>
-      <hr />
+      {/* <hr /> */}
 
       {/* {Todoblock} */}
 
       <EnhancedTableToolbar numSelected={selected.length} />
-      <TableContainer>
-        <Table aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows.length}
-          />
-          <TableBody>
-            {rows?.map((row, index) => {
-              const isItemSelected = isSelected(row.name);
-              const labelId = `enhanced-table-checkbox-${index}`;
-
-              return (
-                <TableRow
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={row.name}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      onClick={(event) => handleClick(event, row.name)}
-                      checked={isItemSelected}
-                      inputProps={{
-                        "aria-labelledby": labelId,
-                      }}
-                      sx={{
-                        color: "black",
-                        margin: "0px 15px",
-                        "&.Mui-checked": {
-                          color: "rgb(94, 53, 177)",
-                        },
-                      }}
-                      onChange={(e) => {
-                        console.log(e.target.checked);
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    omcponent="th"
-                    id={labelId}
-                    scope="row"
-                    padding="none"
-                  >
-                    <TodoMessages
-                      key={row.name}
-                      messagetext={row.name}
-                      title={title[index]}
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: (dense ? 33 : 53) * emptyRows,
-                }}
+      <div
+        style={{
+          margin: "10px 25px 25px 25px",
+          border: "2px solid black",
+          borderRadius: "8px",
+          overflow: "hidden",
+        }}
+      >
+        {" "}
+        {manualLoading || loading ? (
+          <MessageLoader />
+        ) : (
+          <>
+            <TableContainer>
+              <Table
+                aria-labelledby="tableTitle"
+                size={dense ? "small" : "medium"}
+                sx={{ borderRadius: "8px" }}
               >
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
 
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
+                <TableBody>
+                  {rows
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row.name);
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      const titleindex = messagedata.indexOf(row.name);
+
+                      return (
+                        <TableRow
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.name}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              onClick={(event) => handleClick(event, row.name)}
+                              checked={isItemSelected}
+                              inputProps={{
+                                "aria-labelledby": labelId,
+                              }}
+                              sx={{
+                                color: "black",
+                                margin: "0px 15px",
+                                "&.Mui-checked": {
+                                  color: "rgb(94, 53, 177)",
+                                },
+                              }}
+                              disableRipple
+                            />
+                          </TableCell>
+                          <TableCell
+                            omcponent="th"
+                            id={labelId}
+                            scope="row"
+                            padding="none"
+                          >
+                            <TodoMessages
+                              key={row.name}
+                              messagetext={row.name}
+                              title={titles[titleindex]}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow
+                      style={{
+                        height: (dense ? 33 : 53) * emptyRows,
+                      }}
+                    >
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              sx={{ margin: "10px" }}
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+
+            {/* <FormControlLabel
+            control={<Switch checked={dense} onChange={handleChangeDense} />}
+            label="Dense padding"
+          /> </> */}
+          </>
+        )}
+      </div>
+      <ConfirmDialogbox
+        dialogstate={dialogstate}
+        handleClose={handleDialogClose}
+        handleConfirmActionClick={handleConfirmActionClick}
+      />
     </>
   );
 };
