@@ -31,6 +31,8 @@ function Dahboard() {
   const [searchiconcolor, setSearchiconcolor] = React.useState("");
   const [createto, setCreateto] = React.useState(false);
   const [screenSize, setScreensize] = React.useState(window.innerWidth);
+  const [date, setDate] = React.useState();
+  const [searchdate, setSearchdate] = React.useState();
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -51,13 +53,16 @@ function Dahboard() {
       usernam: app?.currentUser?._profile?.data?.email,
     },
     onCompleted: (mesdata) => {
-      // console.log("mesdata", mesdata.data[0].message);
+      // console.log("mesdata", mesdata);
 
       const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
       const title = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
+      const date = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.lastmodified));
 
       setMessage(data);
       setSearchmessages(data);
+      setDate(date);
+      setSearchdate(date);
       // console.log(message);
       setTitle(title);
       setSearchtitles(title);
@@ -88,6 +93,7 @@ function Dahboard() {
         username: userData,
         message: [],
         title: [],
+        lastmodified: [],
       },
     },
   });
@@ -156,6 +162,17 @@ function Dahboard() {
 
       setMessage(filmessages);
 
+      let fildate = [];
+      // finding messages with indexes
+      for (let i = 0; i < searchdate?.length; i++) {
+        // console.log(sertest, sertest.includes(i), searchdate[i]);
+        if (sertest.includes(i)) {
+          fildate = [...fildate, searchdate[i]];
+        }
+      }
+
+      setDate(fildate);
+      // console.log(fildate);
       // console.log("insidesearchtext", searchtext);
       // console.log("insidetitle", title);
       // console.log("insidemessages", message);
@@ -241,6 +258,7 @@ function Dahboard() {
               onChange={(e) => {
                 setTitle(searchtitles);
                 setMessage(searchmessages);
+                setDate(searchdate);
                 setSearchtext(e.target.value);
                 if (checkundefinednull(e.target.value)) {
                   params.delete("searchKey");
@@ -261,10 +279,18 @@ function Dahboard() {
         </div>
 
         <div>
-          {checkundefinednull(message) || checkundefinednull(title) ? (
+          {checkundefinednull(message) ||
+          checkundefinednull(title) ||
+          checkundefinednull(date) ? (
             <MessageLoader />
-          ) : message?.length !== 0 && title?.length !== 0 ? (
-            <TodoMessagesMapping messa={message} title={title} />
+          ) : message?.length !== 0 &&
+            title?.length !== 0 &&
+            date?.length !== 0 ? (
+            <TodoMessagesMapping
+              messa={message}
+              title={title}
+              lastmodifieddate={date}
+            />
           ) : (
             <NoResults />
           )}

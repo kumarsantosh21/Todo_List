@@ -12,6 +12,7 @@ const Tooltips = ({
   dynamiccolor,
   arrow,
   color,
+  placement,
 }) => {
   const iconStyles = {
     borderRadius: "6px",
@@ -44,6 +45,7 @@ const Tooltips = ({
         arrow={arrow ?? true}
         title={title}
         TransitionComponent={Zoom}
+        placement={placement ?? "bottom"}
       >
         <IconButton sx={iconStyles} onClick={onClick}>
           {icon}

@@ -16,9 +16,15 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
+import moment from "moment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
+const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
+  const tolocaldate = moment
+    .utc(recentupdateddate)
+    .local()
+    .format("MMMM Do YYYY, h:mm a");
+  // moment.utc(recentupdateddate).local().format("MMMM Do YYYY, h:mm:ss a");
   const [expand, setExpand] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
@@ -29,6 +35,8 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
   const [titles, setTitles] = React.useState();
   const [newtitle, setNewtitle] = React.useState();
   const [manualLoading, setManualLoading] = React.useState();
+  const [newdate, setNewdate] = React.useState();
+  const [date, setDate] = React.useState();
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: app.currentUser._profile.data.email,
@@ -38,7 +46,8 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
 
       const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
       const tit = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
-
+      const date = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.lastmodified));
+      setDate(date);
       setMessage(data);
       // console.log(message);
       setTitles(tit);
@@ -51,6 +60,7 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
       updates: {
         message: newmessage,
         title: newtitle,
+        lastmodified: newdate,
       },
     },
     onCompleted: () => {
@@ -103,6 +113,9 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
       if (index !== -1) {
         const deletedtitle = titles[index];
         const notdeletedtitle = titles.filter((word) => word !== deletedtitle);
+        const deleteddate = date[index];
+        const notdeleteddate = date.filter((word) => word !== deleteddate);
+        setNewdate(notdeleteddate);
         setNewtitle(notdeletedtitle);
       }
       // if id is unique then no need of above logic
@@ -130,6 +143,8 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
     // console.log(presentValue);
 
     let valuesNow = message;
+    let titlenow = titles;
+    let datenow = date;
     // slicing added id
     const repeated = message.filter((word) => word === text);
     if (
@@ -145,10 +160,28 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
         const index = message.indexOf(presentValue);
 
         if (index !== -1) {
-          valuesNow[index] = text;
+          // valuesNow[index] = text;
+          const shoulddeletemessage = message[index];
+          const shoulddeletetitleandreadd = titles[index];
+          const shoulddeletedate = date[index];
+          const notdeletedmessages = message.filter(
+            (word) => word !== shoulddeletemessage
+          );
+          const notdeletedtitles = titles.filter(
+            (word) => word !== shoulddeletetitleandreadd
+          );
+          const notdeleteddates = date.filter(
+            (word) => word !== shoulddeletedate
+          );
+          const currentdate = new Date().toISOString();
+          datenow = [currentdate, ...notdeleteddates];
+          valuesNow = [text, ...notdeletedmessages];
+          titlenow = [shoulddeletetitleandreadd, ...notdeletedtitles];
         }
         // console.log(valuesNow);
         // updating query with the present values
+        setNewdate(datenow);
+        setNewtitle(titlenow);
         setNewmessage(valuesNow);
         setDis(true);
       }
@@ -223,9 +256,18 @@ const TodoMessages = ({ messagetext, title, checkboxcomponent }) => {
           }}
         >
           <Typography
-            sx={{ marginBottom: "10px", fontWeight: "bold", fontSize: "16px" }}
+            sx={{
+              marginBottom: "10px",
+              fontWeight: "bold",
+              fontSize: "16px",
+              display: "flex",
+            }}
           >
-            {title}
+            {title}&emsp; {" -- "} &emsp;{"Last modified:"}
+            <Typography sx={{ fontWeight: 500, fontSize: "14px" }}>
+              &nbsp;
+              {tolocaldate}
+            </Typography>
           </Typography>
           <TextareaAutosize
             id={messagetext + "text"}

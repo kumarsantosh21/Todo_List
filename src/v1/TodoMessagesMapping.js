@@ -28,10 +28,13 @@ import MessageLoader from "./MessageLoader";
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import ConfirmDialogbox from "./ConfirmDialogbox";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import Badge from "@mui/material/Badge";
 
-const TodoMessagesMapper = ({ messa, title }) => {
+const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const messagedata = messa;
   const titles = title;
+  const datedata = lastmodifieddate;
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -44,6 +47,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
   const [newtitle, setNewtitle] = React.useState();
   const [manualLoading, setManualLoading] = React.useState();
   const [dialogstate, setDialogstate] = React.useState(false);
+  const [newdate, setNewdate] = React.useState();
 
   const [MESSAGES, { data }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -60,6 +64,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
       updates: {
         message: newmessage,
         title: newtitle,
+        lastmodified: newdate,
       },
     },
     onCompleted: () => {
@@ -85,8 +90,9 @@ const TodoMessagesMapper = ({ messa, title }) => {
   }, [newmessage]);
 
   React.useEffect(() => {
+    // removing element from array after single deletion
     selected.map((item) => {
-      if (!messagedata.includes(item)) {
+      if (!titles.includes(item)) {
         const index = selected.indexOf(item);
         if (index !== -1) {
           let newselect;
@@ -132,7 +138,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
       name: messagedata[x],
     };
   }
-
+  // objects.reverse();
   const rows = objects;
 
   function descendingComparator(a, b, orderBy) {
@@ -266,8 +272,15 @@ const TodoMessagesMapper = ({ messa, title }) => {
 
   const EnhancedTableToolbar = (props) => {
     const { numSelected } = props;
+
     const handleCopy = () => {
-      const content = selected.join("\n\n\n\n\n\n");
+      let messages = [];
+      selected.map((select) => {
+        const index = titles.indexOf(select);
+        messages = [...messages, messagedata[index]];
+        return messages;
+      });
+      const content = messages.join("\n\n\n\n\n\n");
       navigator.clipboard.writeText(content).then(
         function () {
           setCopy("Copied!");
@@ -327,6 +340,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
           <div style={{ marginRight: "20px" }}>
             <div style={{ display: "flex" }}>
               <TooltipColor
+                placement="top"
                 title={copy}
                 icon={
                   copy === "Copy to Clipboard" ? (
@@ -340,6 +354,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
                 arrow={false}
               />
               <TooltipColor
+                placement="top"
                 title="Delete"
                 icon={<DeleteIcon />}
                 onClick={handleDelete}
@@ -350,30 +365,58 @@ const TodoMessagesMapper = ({ messa, title }) => {
           </div>
         ) : (
           <div style={{ marginRight: "20px" }}>
-            <TooltipColor
-              title="Refresh List"
-              icon={
-                <Keyframes>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <RefreshIcon />
-                  </div>
-                </Keyframes>
-              }
-              onClick={() => {
-                setManualLoading(true);
-                MESSAGES();
-                setTimeout(() => {
-                  setManualLoading(false);
-                }, 300);
-              }}
-              color={manualLoading || loading ? "rgb(94, 53, 177)" : ""}
-            />
+            <div style={{ display: "flex" }}>
+              <div style={{ marginRight: "5px" }}>
+                <TooltipColor
+                  title="Filter"
+                  color={"rgb(94, 53, 177)"}
+                  icon={
+                    <Badge
+                      badgeContent={1}
+                      color="secondary"
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          color: "rgb(94, 53, 177)",
+                          backgroundColor: "rgb(237, 231, 246)",
+                          zIndex: "0",
+                        },
+                      }}
+                    >
+                      <FilterAltIcon />
+                    </Badge>
+                  }
+                  // onClick={handleFilter}
+                  dynamicbgcolor={"white"}
+                  placement="top"
+                />
+              </div>
+
+              <TooltipColor
+                placement="top"
+                title="Refresh List"
+                icon={
+                  <Keyframes>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <RefreshIcon />
+                    </div>
+                  </Keyframes>
+                }
+                onClick={() => {
+                  setManualLoading(true);
+                  MESSAGES();
+                  setTimeout(() => {
+                    setManualLoading(false);
+                  }, 300);
+                }}
+                color={manualLoading || loading ? "rgb(94, 53, 177)" : ""}
+              />
+            </div>
           </div>
         )}
       </Toolbar>
@@ -393,7 +436,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       // adding all elements to array
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = titles.map((n) => n);
       setSelected(newSelecteds);
       // console.log(newSelecteds);
       return;
@@ -452,26 +495,32 @@ const TodoMessagesMapper = ({ messa, title }) => {
   const handleConfirmActionClick = () => {
     let notdeletedmessages = messagedata;
     let notdeletedtitle = titles;
+    let notdeleteddates = datedata;
     selected.map((id) => {
-      notdeletedmessages = notdeletedmessages.filter((word) => word !== id);
-      const index = messagedata.indexOf(id);
+      notdeletedtitle = notdeletedtitle.filter((word) => word !== id);
+      const index = titles.indexOf(id);
       if (index !== -1) {
-        const deletedtitle = titles[index];
-        notdeletedtitle = notdeletedtitle.filter(
-          (word) => word !== deletedtitle
+        const deletedmessage = messagedata[index];
+        notdeletedmessages = notdeletedmessages.filter(
+          (word) => word !== deletedmessage
+        );
+        const deleteddate = datedata[index];
+        notdeleteddates = notdeleteddates.filter(
+          (word) => word !== deleteddate
         );
       }
 
-      return notdeletedmessages;
+      return notdeletedtitle;
     });
 
     // console.log(notdeletedmessages);
     // console.log(notdeletedtitle);
-
+    setNewdate(notdeleteddates);
     setNewtitle(notdeletedtitle);
     setNewmessage(notdeletedmessages);
     setDialogstate(false);
   };
+
   return (
     <>
       {/* <hr /> */}
@@ -514,9 +563,9 @@ const TodoMessagesMapper = ({ messa, title }) => {
                       page * rowsPerPage + rowsPerPage
                     )
                     .map((row, index) => {
-                      const isItemSelected = isSelected(row.name);
-                      const labelId = `enhanced-table-checkbox-${index}`;
                       const titleindex = messagedata.indexOf(row.name);
+                      const isItemSelected = isSelected(titles[titleindex]);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
                         <TableRow
@@ -528,7 +577,9 @@ const TodoMessagesMapper = ({ messa, title }) => {
                           <TableCell padding="checkbox">
                             <Checkbox
                               color="primary"
-                              onClick={(event) => handleClick(event, row.name)}
+                              onClick={(event) =>
+                                handleClick(event, titles[titleindex])
+                              }
                               checked={isItemSelected}
                               inputProps={{
                                 "aria-labelledby": labelId,
@@ -553,6 +604,7 @@ const TodoMessagesMapper = ({ messa, title }) => {
                               key={row.name}
                               messagetext={row.name}
                               title={titles[titleindex]}
+                              recentupdateddate={datedata[titleindex]}
                             />
                           </TableCell>
                         </TableRow>

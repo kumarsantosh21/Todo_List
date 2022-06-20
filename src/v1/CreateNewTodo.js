@@ -25,6 +25,9 @@ const CreateNewTodo = () => {
   const [titletext, setTitletext] = React.useState();
   const [screenSize, setScreensize] = React.useState(window.innerWidth);
   const [manualLoading, setManualLoading] = React.useState();
+  const [newdate, setNewdate] = React.useState();
+  const [date, setDate] = React.useState();
+
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -44,7 +47,8 @@ const CreateNewTodo = () => {
 
       const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
       const title = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
-
+      const date = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.lastmodified));
+      setDate(date);
       setMessage(data);
       setTitle(title);
       // console.log(message);
@@ -57,6 +61,7 @@ const CreateNewTodo = () => {
       updates: {
         message: newmessage,
         title: newtitle,
+        lastmodified: newdate,
       },
     },
     onCompleted: () => {
@@ -75,7 +80,10 @@ const CreateNewTodo = () => {
     } else {
       const newtit = [titletext, ...title];
       const newme = [text, ...message];
+      const currentdate = new Date().toISOString();
+      const updatecurrentdatelist = [currentdate, ...date];
       // console.log("newme", newme);
+      setNewdate(updatecurrentdatelist);
       setNewmessage(newme);
       setNewtitle(newtit);
 
