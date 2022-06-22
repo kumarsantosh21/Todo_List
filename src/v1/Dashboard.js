@@ -145,7 +145,7 @@ function Dahboard() {
         words?.includes(searchtext)
       );
 
-      console.log(searchmessages);
+      // console.log(searchmessages);
       let messageindexes = [];
       // finding indexes so we can use messages
       for (let j = 0; j < newsearchmessages?.length; j++) {
@@ -156,7 +156,7 @@ function Dahboard() {
           ),
         ];
       }
-      console.log(messageindexes);
+      // console.log(messageindexes);
       let titleindexs = [];
       // finding indexes so we can use messages
       for (let j = 0; j < searches?.length; j++) {
@@ -165,11 +165,11 @@ function Dahboard() {
           searchtitles.findIndex((element) => element === searches[j]),
         ];
       }
-      console.log(titleindexs);
+      // console.log(titleindexs);
 
       let sertest = [...new Set([...titleindexs, ...messageindexes])];
 
-      console.log(sertest);
+      // console.log(sertest);
 
       let filtitle = [];
       // finding messages with indexes
