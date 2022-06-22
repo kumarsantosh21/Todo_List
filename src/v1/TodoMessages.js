@@ -193,20 +193,29 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
     const presentid = e.currentTarget.id;
     const presentValue = presentid.slice(0, presentid.length - 4);
     // console.log("copy", presentValue);
-    navigator.clipboard.writeText(presentValue).then(
-      function () {
-        setCopy("Copied!");
-        setTimeout(() => {
-          setCopy("Copy to Clipboard");
-        }, 5000);
-      },
-      function () {
-        setCopy("Failed to Copy!");
-        setTimeout(() => {
-          setCopy("Copy to Clipboard");
-        }, 5000);
-      }
-    );
+    const index = message.indexOf(presentValue);
+    if (index !== -1) {
+      const timing = moment
+        .utc(date[index])
+        .local()
+        .format("MMMM Do YYYY, h:mm a");
+      const title = titles[index];
+      const clipboardvalue = `${title}         Last Modified:${timing} \n\n${presentValue}`;
+      navigator.clipboard.writeText(clipboardvalue).then(
+        function () {
+          setCopy("Copied!");
+          setTimeout(() => {
+            setCopy("Copy to Clipboard");
+          }, 5000);
+        },
+        function () {
+          setCopy("Failed to Copy!");
+          setTimeout(() => {
+            setCopy("Copy to Clipboard");
+          }, 5000);
+        }
+      );
+    }
   };
 
   const expandMoreorLess = () => {

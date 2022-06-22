@@ -12,12 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
-import Paper from "@mui/material/Paper";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -26,12 +21,10 @@ import { app } from "../originpages/Client";
 import { UPDATE_USER_MESSAGES, GET_MESSAGES } from "./graphql";
 import MessageLoader from "./MessageLoader";
 import { styled } from "@mui/material/styles";
-import { visuallyHidden } from "@mui/utils";
 import ConfirmDialogbox from "./ConfirmDialogbox";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Badge from "@mui/material/Badge";
-import Popper from "@mui/material/Popper";
-import Box from "@mui/material/Box";
+import moment from "moment";
 
 const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const messagedata = messa;
@@ -280,7 +273,15 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
       let messages = [];
       selected.map((select) => {
         const index = titles.indexOf(select);
-        messages = [...messages, messagedata[index]];
+
+        const timing = moment
+          .utc(datedata[index])
+          .local()
+          .format("MMMM Do YYYY, h:mm a");
+        const title = titles[index];
+        const presentValue = messagedata[index];
+        const clipboardvalue = `${title}         Last Modified:${timing} \n\n${presentValue}`;
+        messages = [...messages, clipboardvalue];
         return messages;
       });
       const content = messages.join("\n\n\n\n\n\n");
