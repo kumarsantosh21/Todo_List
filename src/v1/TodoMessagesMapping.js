@@ -30,6 +30,8 @@ import { visuallyHidden } from "@mui/utils";
 import ConfirmDialogbox from "./ConfirmDialogbox";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Badge from "@mui/material/Badge";
+import Popper from "@mui/material/Popper";
+import Box from "@mui/material/Box";
 
 const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const messagedata = messa;
@@ -48,6 +50,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const [manualLoading, setManualLoading] = React.useState();
   const [dialogstate, setDialogstate] = React.useState(false);
   const [newdate, setNewdate] = React.useState();
+  const [sortorder, setSortorder] = React.useState(false);
 
   const [MESSAGES, { data }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -131,15 +134,15 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
       </>
     );
   });
-  const objects = [];
+  let objects = [];
 
   for (let x = 0; x < messagedata?.length; x++) {
     objects[x] = {
       name: messagedata[x],
     };
   }
-  // objects.reverse();
-  const rows = objects;
+
+  const rows = sortorder ? objects.reverse() : objects;
 
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -300,6 +303,11 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
     const handleDelete = () => {
       setDialogstate(true);
     };
+
+    const handleClickFilter = () => {
+      setSortorder(!sortorder);
+    };
+
     return (
       <Toolbar
         sx={{
@@ -368,11 +376,15 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
             <div style={{ display: "flex" }}>
               <div style={{ marginRight: "5px" }}>
                 <TooltipColor
-                  title="Filter"
-                  color={"rgb(94, 53, 177)"}
+                  title={
+                    sortorder
+                      ? "Click to filter in New to Old order"
+                      : "Click to filter in Old to New order"
+                  }
+                  color={sortorder ? "rgb(94, 53, 177)" : ""}
                   icon={
                     <Badge
-                      badgeContent={1}
+                      badgeContent={sortorder ? 1 : 0}
                       color="secondary"
                       sx={{
                         "& .MuiBadge-badge": {
@@ -385,7 +397,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                       <FilterAltIcon />
                     </Badge>
                   }
-                  // onClick={handleFilter}
+                  onClick={handleClickFilter}
                   dynamicbgcolor={"white"}
                   placement="top"
                 />
@@ -488,7 +500,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-  console.log(Math.max(0, (1 + page) * rowsPerPage - rows.length));
+
   const handleDialogClose = () => {
     setDialogstate(false);
   };

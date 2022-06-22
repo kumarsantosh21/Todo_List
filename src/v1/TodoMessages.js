@@ -261,10 +261,11 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
               fontWeight: "bold",
               fontSize: "16px",
               display: "flex",
+              alignItems: "center",
             }}
           >
             {title}&emsp; {" -- "} &emsp;{"Last modified:"}
-            <Typography sx={{ fontWeight: 500, fontSize: "14px" }}>
+            <Typography sx={{ fontWeight: 500, fontSize: "12px" }}>
               &nbsp;
               {tolocaldate}
             </Typography>
