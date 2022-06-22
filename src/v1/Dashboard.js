@@ -141,16 +141,46 @@ function Dahboard() {
         words?.includes(searchtext)
       );
 
-      setTitle(searches);
+      const newsearchmessages = searchmessages?.filter((words) =>
+        words?.includes(searchtext)
+      );
 
-      let sertest = [];
+      console.log(searchmessages);
+      let messageindexes = [];
+      // finding indexes so we can use messages
+      for (let j = 0; j < newsearchmessages?.length; j++) {
+        messageindexes = [
+          ...messageindexes,
+          searchmessages.findIndex(
+            (element) => element === newsearchmessages[j]
+          ),
+        ];
+      }
+      console.log(messageindexes);
+      let titleindexs = [];
       // finding indexes so we can use messages
       for (let j = 0; j < searches?.length; j++) {
-        sertest = [
-          ...sertest,
+        titleindexs = [
+          ...titleindexs,
           searchtitles.findIndex((element) => element === searches[j]),
         ];
       }
+      console.log(titleindexs);
+
+      let sertest = [...new Set([...titleindexs, ...messageindexes])];
+
+      console.log(sertest);
+
+      let filtitle = [];
+      // finding messages with indexes
+      for (let i = 0; i < searchtitles?.length; i++) {
+        // console.log(sertest, sertest.includes(i), searchmessages[i]);
+        if (sertest.includes(i)) {
+          filtitle = [...filtitle, searchtitles[i]];
+        }
+      }
+
+      setTitle(filtitle);
       let filmessages = [];
       // finding messages with indexes
       for (let i = 0; i < searchmessages?.length; i++) {
@@ -252,7 +282,7 @@ function Dahboard() {
                 // disableUnderline: true,
                 sx: { color: "black", fontWeight: "bold" },
               }}
-              placeholder="Search Title...  (* Case Sensitive)"
+              placeholder="Search Title or Message...  (* Case Sensitive)"
               variant="standard"
               defaultValue={searchValue}
               onChange={(e) => {
