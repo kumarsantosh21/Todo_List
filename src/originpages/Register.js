@@ -27,7 +27,7 @@ const Register = () => {
   const [progress, setProgress] = useState(true);
   const [errorhandler, setErrorhandler] = useState(false);
   const [restate, setRestate] = useState();
-  const [count, setCount] = useState(30);
+  const [count, setCount] = useState(0);
   const [redisable, setRedisable] = useState();
   let valid;
 
@@ -147,15 +147,15 @@ const Register = () => {
     // here users resend email for confirmation
     const check = await resendmail(username);
     if (check === "success") {
+      setCount(30);
       setRestate(1);
-
       const interval = setInterval(() => {
         setCount((count) => count - 1);
       }, 1000);
 
       setTimeout(() => {
         clearInterval(interval);
-        setCount(30);
+
         setRedisable(false);
       }, 30000);
       window.scroll({

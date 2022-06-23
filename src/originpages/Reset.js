@@ -20,7 +20,7 @@ function Reset() {
   const [errormessage, setErrormessage] = useState();
   const [screenSize, setScreensize] = useState(window.innerWidth);
   const [progress, setProgress] = useState(true);
-  const [count, setCount] = useState(30);
+  const [count, setCount] = useState(0);
   let valid;
 
   // for validation
@@ -84,6 +84,7 @@ function Reset() {
     // to get reset mail to user
     valid = await reset(username);
     if (valid === "success") {
+      setCount(30);
       setErrormessage(2);
       const interval = setInterval(() => {
         setCount((count) => count - 1);
@@ -92,7 +93,6 @@ function Reset() {
       setTimeout(() => {
         clearInterval(interval);
         setDisable(false);
-        setCount(30);
       }, 30000);
     }
     if (valid === "notfound") {

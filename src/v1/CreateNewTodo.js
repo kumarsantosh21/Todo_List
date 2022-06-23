@@ -75,7 +75,14 @@ const CreateNewTodo = () => {
   const handleClick = () => {
     const titrepeated = title.filter((word) => word === titletext);
     const repeated = message.filter((word) => word === text);
-    if (repeated.length > 0 || titrepeated.length > 0) {
+    const timerepeated = date.filter(
+      (word) => word === new Date().toISOString()
+    );
+    if (
+      repeated.length > 0 ||
+      titrepeated.length > 0 ||
+      timerepeated.length > 0
+    ) {
       setBackdrop(true);
     } else {
       const newtit = [titletext, ...title];

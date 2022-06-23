@@ -17,6 +17,7 @@ import TodoMessagesMapping from "./TodoMessagesMapping";
 import TextField from "@mui/material/TextField";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import checkundefinednull from "./validators/checkundefinednull";
+import ReloadDialogbox from "./ReloadDialogbox";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function Dahboard() {
   const [screenSize, setScreensize] = React.useState(window.innerWidth);
   const [date, setDate] = React.useState();
   const [searchdate, setSearchdate] = React.useState();
+  const [reloadstate, setReloadstate] = React.useState(false);
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -212,6 +214,13 @@ function Dahboard() {
   // console.log("outsidetitle", title);
   // console.log("outsidemessages", message);
 
+  React.useEffect(() => {
+    // calling dialog to prevent from data duplication
+    setTimeout(() => {
+      setReloadstate(true);
+    }, 900000);
+  }, []);
+
   if (loading) {
     return (
       <div>
@@ -227,7 +236,9 @@ function Dahboard() {
   // console.log("skeleton", skeleton);
   // console.log("outsidenew", newData);
   // console.log("message", message);
-
+  const handleReloadClick = () => {
+    window.location.reload();
+  };
   return (
     <>
       <Navbar />
@@ -326,7 +337,10 @@ function Dahboard() {
           )}
         </div>
       </div>
-
+      <ReloadDialogbox
+        dialogstate={reloadstate}
+        handleReloadClick={handleReloadClick}
+      />
       <Footer />
     </>
   );
