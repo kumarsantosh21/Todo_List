@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SelectModeContext } from "./SelectModeContext";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
@@ -31,6 +32,9 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   const userid = BigInt(
     hashCode(app?.currentUser?._profile?.data?.email)
   ).toString();
+
+  const contextValue = useContext(SelectModeContext);
+
   const [expand, setExpand] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
@@ -93,9 +97,10 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
 
   const ButtonIconStyle = {
     borderRadius: "6px",
+    color: contextValue.mode ? "white" : "black",
     "&:hover": {
-      color: "rgb(94, 53, 177)",
-      background: "rgb(237, 231, 246)",
+      color: contextValue.mode ? "black" : "rgb(94, 53, 177)",
+      background: contextValue.mode ? "white" : "rgb(237, 231, 246)",
     },
   };
   // console.log("sep", messagetext);
@@ -277,6 +282,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
               fontSize: "16px",
               display: "flex",
               alignItems: "center",
+              color: contextValue.mode ? "white" : "black",
             }}
           >
             {title}&emsp; {" -- "} &emsp;{"Last modified:"}
@@ -289,8 +295,8 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
             id={messagetext + "text"}
             disabled={dis}
             style={{
-              background: "white",
-              color: "rgb(94, 53, 177)",
+              background: contextValue.mode ? "black" : "white",
+              color: contextValue.mode ? "white" : "rgb(94, 53, 177)",
               width: "100%",
               border: "none",
               // overflow: "auto",

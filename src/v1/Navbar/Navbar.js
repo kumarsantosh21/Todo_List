@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { DaImg } from "../../assets";
 import AppBar from "@mui/material/AppBar";
 // import { makeStyles } from "@mui/styles";
@@ -15,6 +15,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "@mui/material/Button";
 import { app } from "../../originpages";
 import LogoutIcon from "@mui/icons-material/Logout";
+import CheckboxModeSelect from "../CheckboxModeSelect";
+import { SelectModeContext } from "../SelectModeContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -39,6 +41,14 @@ const Navbar = () => {
       color: "rgb(94, 53, 177)",
       background: "rgb(237, 231, 246)",
     },
+  };
+  const contextValue = useContext(SelectModeContext);
+  const handleModeClick = (e) => {
+    if (e.target.checked) {
+      contextValue.setMode(true);
+    } else {
+      contextValue.setMode(false);
+    }
   };
   return (
     <>
@@ -138,6 +148,10 @@ const Navbar = () => {
           <div style={{ display: "grid", margin: "20px" }}>
             <NavButtonMapper />
           </div>
+          <CheckboxModeSelect
+            handleModeClick={handleModeClick}
+            label={contextValue.mode}
+          />
           <div></div>
           <Button
             sx={{ ...ButtonIconStyle, textTransform: "none" }}

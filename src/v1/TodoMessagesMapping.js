@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SelectModeContext } from "./SelectModeContext";
 import Checkbox from "@mui/material/Checkbox";
 import TodoMessages from "./TodoMessages";
 import TooltipColor from "./Navbar/Tooltip";
@@ -36,6 +37,8 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const userid = BigInt(
     hashCode(app?.currentUser?._profile?.data?.email)
   ).toString();
+  const contextValue = useContext(SelectModeContext);
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -127,7 +130,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   });
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: "rgb(237, 231, 246)",
+      backgroundColor: contextValue.mode ? "black" : "rgb(237, 231, 246)",
     },
   }));
   // old todomessagemapping
@@ -210,7 +213,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
         <TableRow sx={{}}>
           <TableCell
             padding="checkbox"
-            sx={{ background: "rgb(237, 231, 246)" }}
+            sx={{
+              background: contextValue.mode ? "black" : "rgb(237, 231, 246)",
+            }}
           >
             <Checkbox
               color="primary"
@@ -221,14 +226,14 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                 "aria-label": "select all messages",
               }}
               sx={{
-                color: "black",
+                color: contextValue.mode ? "white" : "black",
                 margin: "0px 15px",
 
                 "&.Mui-checked": {
-                  color: "rgb(94, 53, 177)",
+                  color: contextValue.mode ? "white" : "rgb(94, 53, 177)",
                 },
                 "&.MuiCheckbox-indeterminate": {
-                  color: "rgb(94, 53, 177)",
+                  color: contextValue.mode ? "white" : "rgb(94, 53, 177)",
                 },
               }}
               disableRipple
@@ -243,7 +248,11 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
             >
               <Typography
                 variant="h6"
-                sx={{ fontWeight: "bold", margin: "20px" }}
+                sx={{
+                  fontWeight: "bold",
+                  margin: "20px",
+                  color: contextValue.mode ? "white" : "black",
+                }}
               >
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -603,7 +612,12 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                           tabIndex={-1}
                           key={row.name}
                         >
-                          <TableCell padding="checkbox">
+                          <TableCell
+                            padding="checkbox"
+                            sx={{
+                              background: contextValue.mode ? "black" : "white",
+                            }}
+                          >
                             <Checkbox
                               color="primary"
                               onClick={(event) =>
@@ -614,16 +628,21 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                                 "aria-labelledby": labelId,
                               }}
                               sx={{
-                                color: "black",
+                                color: contextValue.mode ? "white" : "black",
                                 margin: "0px 15px",
                                 "&.Mui-checked": {
-                                  color: "rgb(94, 53, 177)",
+                                  color: contextValue.mode
+                                    ? "white"
+                                    : "rgb(94, 53, 177)",
                                 },
                               }}
                               disableRipple
                             />
                           </TableCell>
                           <TableCell
+                            sx={{
+                              background: contextValue.mode ? "black" : "white",
+                            }}
                             omcponent="th"
                             id={labelId}
                             scope="row"
@@ -641,6 +660,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                     })}
                   {emptyRows > 0 && (
                     <TableRow
+                      sx={{
+                        background: contextValue.mode ? "black" : "white",
+                      }}
                       style={{
                         height: (dense ? 33 : 53) * emptyRows,
                       }}
@@ -652,7 +674,10 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
               </Table>
             </TableContainer>
             <TablePagination
-              sx={{ margin: "10px" }}
+              sx={{
+                background: contextValue.mode ? "black" : "white",
+                color: contextValue.mode ? "white" : "black",
+              }}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={rows.length}

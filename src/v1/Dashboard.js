@@ -19,6 +19,7 @@ import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import checkundefinednull from "./validators/checkundefinednull";
 import ReloadDialogbox from "./ReloadDialogbox";
 import hashCode from "./Hashingstring";
+import SelectModeContextProvider from "./SelectModeContext";
 
 function Dahboard() {
   // eslint-disable-next-line no-undef
@@ -246,107 +247,109 @@ function Dahboard() {
   };
   return (
     <>
-      <Navbar />
-      {createto && screenSize >= 1050 ? <CreateNewTodo /> : null}
+      <SelectModeContextProvider>
+        <Navbar />
+        {createto && screenSize >= 1050 ? <CreateNewTodo /> : null}
 
-      <div
-        id="total"
-        style={{
-          margin:
-            screenSize >= 1050
-              ? "170px 120px 150px 250px"
-              : "170px 20px 150px 20px",
-          borderRadius: "10px",
-          boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
-          overflow: "hidden",
-        }}
-      >
-        {createto && screenSize < 1050 ? <CreateNewTodo /> : null}
         <div
+          id="total"
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "20px 10px 10px",
+            margin:
+              screenSize >= 1050
+                ? "170px 120px 150px 250px"
+                : "170px 20px 150px 20px",
+            borderRadius: "10px",
+            boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
+            overflow: "hidden",
           }}
         >
-          <div
-            style={{ textAlign: "center", flex: "5%", padding: "10px 20px" }}
-          >
-            <ContentPasteSearchIcon
-              sx={{
-                fontSize: "40px",
-                cursor: "pointer",
-                color: searchiconcolor,
-              }}
-              onClick={() => {
-                document.getElementById("searchfieldtextfield").focus();
-              }}
-            />
-          </div>
+          {createto && screenSize < 1050 ? <CreateNewTodo /> : null}
           <div
             style={{
-              textAlign: "center",
-              flex: "95%",
-              padding: "10px 20px 20px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "20px 10px 10px",
             }}
           >
-            <TextField
-              id="searchfieldtextfield"
-              fullWidth
-              InputProps={{
-                // disableUnderline: true,
-                sx: { color: "black", fontWeight: "bold" },
+            <div
+              style={{ textAlign: "center", flex: "5%", padding: "10px 20px" }}
+            >
+              <ContentPasteSearchIcon
+                sx={{
+                  fontSize: "40px",
+                  cursor: "pointer",
+                  color: searchiconcolor,
+                }}
+                onClick={() => {
+                  document.getElementById("searchfieldtextfield").focus();
+                }}
+              />
+            </div>
+            <div
+              style={{
+                textAlign: "center",
+                flex: "95%",
+                padding: "10px 20px 20px",
               }}
-              placeholder="Search Title or Message...  (* Case Sensitive)"
-              variant="standard"
-              defaultValue={searchValue}
-              onChange={(e) => {
-                setTitle(searchtitles);
-                setMessage(searchmessages);
-                setDate(searchdate);
-                setSearchtext(e.target.value);
-                if (checkundefinednull(e.target.value)) {
-                  params.delete("searchKey");
-                } else {
-                  params.set("searchKey", e.target.value);
-                }
-                window.history.pushState({}, "", `?${params.toString()}`);
-                // console.log(window.location.search);
-              }}
-              onFocus={() => {
-                setSearchiconcolor("rgb(94, 53, 177)");
-              }}
-              onBlur={() => {
-                setSearchiconcolor("");
-              }}
-            />
+            >
+              <TextField
+                id="searchfieldtextfield"
+                fullWidth
+                InputProps={{
+                  // disableUnderline: true,
+                  sx: { color: "black", fontWeight: "bold" },
+                }}
+                placeholder="Search Title or Message...  (* Case Sensitive)"
+                variant="standard"
+                defaultValue={searchValue}
+                onChange={(e) => {
+                  setTitle(searchtitles);
+                  setMessage(searchmessages);
+                  setDate(searchdate);
+                  setSearchtext(e.target.value);
+                  if (checkundefinednull(e.target.value)) {
+                    params.delete("searchKey");
+                  } else {
+                    params.set("searchKey", e.target.value);
+                  }
+                  window.history.pushState({}, "", `?${params.toString()}`);
+                  // console.log(window.location.search);
+                }}
+                onFocus={() => {
+                  setSearchiconcolor("rgb(94, 53, 177)");
+                }}
+                onBlur={() => {
+                  setSearchiconcolor("");
+                }}
+              />
+            </div>
+          </div>
+
+          <div>
+            {checkundefinednull(message) ||
+            checkundefinednull(title) ||
+            checkundefinednull(date) ? (
+              <MessageLoader />
+            ) : message?.length !== 0 &&
+              title?.length !== 0 &&
+              date?.length !== 0 ? (
+              <TodoMessagesMapping
+                messa={message}
+                title={title}
+                lastmodifieddate={date}
+              />
+            ) : (
+              <NoResults />
+            )}
           </div>
         </div>
-
-        <div>
-          {checkundefinednull(message) ||
-          checkundefinednull(title) ||
-          checkundefinednull(date) ? (
-            <MessageLoader />
-          ) : message?.length !== 0 &&
-            title?.length !== 0 &&
-            date?.length !== 0 ? (
-            <TodoMessagesMapping
-              messa={message}
-              title={title}
-              lastmodifieddate={date}
-            />
-          ) : (
-            <NoResults />
-          )}
-        </div>
-      </div>
-      <ReloadDialogbox
-        dialogstate={reloadstate}
-        handleReloadClick={handleReloadClick}
-      />
-      <Footer />
+        <ReloadDialogbox
+          dialogstate={reloadstate}
+          handleReloadClick={handleReloadClick}
+        />
+        <Footer />
+      </SelectModeContextProvider>
     </>
   );
 }

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import SettinIcon from "@mui/icons-material/Settings";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
+import CheckboxModeSelect from "../CheckboxModeSelect";
+import { SelectModeContext } from "../SelectModeContext";
+import Typography from "@mui/material/Typography";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Keyframes = styled("span")({
   "@keyframes spin": {
@@ -29,6 +32,17 @@ const SettingsIcon = () => {
       color: "rgb(94, 53, 177)",
       background: "rgb(237, 231, 246)",
     },
+  };
+  const contextValue = useContext(SelectModeContext);
+  const handleModeClick = (e) => {
+    if (e.target.checked) {
+      contextValue.setMode(true);
+    } else {
+      contextValue.setMode(false);
+    }
+  };
+  const handleSwipableDrawerClose = () => {
+    setOpen(false);
   };
   return (
     <>
@@ -60,7 +74,36 @@ const SettingsIcon = () => {
         // onClose={toggleDrawer(anchor, false)}
         // onOpen={toggleDrawer(anchor, true)}
       >
-        <div style={{ width: "450px" }}>Development in progress...</div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            margin: "10px",
+          }}
+        >
+          <Typography style={{ fontWeight: "600", fontSize: "20px" }}>
+            Settings
+          </Typography>
+          <IconButton
+            sx={{
+              marginLeft: "200px",
+              borderRadius: "6px",
+              "&:hover": {
+                color: "rgb(94, 53, 177)",
+                background: "rgb(237, 231, 246)",
+              },
+            }}
+            onClick={handleSwipableDrawerClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+
+        <CheckboxModeSelect
+          handleModeClick={handleModeClick}
+          label={contextValue.mode}
+        />
       </SwipeableDrawer>
     </>
   );
