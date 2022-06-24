@@ -25,12 +25,17 @@ import ConfirmDialogbox from "./ConfirmDialogbox";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Badge from "@mui/material/Badge";
 import moment from "moment";
+import hashCode from "./Hashingstring";
 
 const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const messagedata = messa;
   const titles = title;
   const datedata = lastmodifieddate;
 
+  // eslint-disable-next-line no-undef
+  const userid = BigInt(
+    hashCode(app?.currentUser?._profile?.data?.email)
+  ).toString();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -47,7 +52,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
 
   const [MESSAGES, { data }] = useLazyQuery(GET_MESSAGES, {
     variables: {
-      usernam: app.currentUser._profile.data.email,
+      usernam: userid,
     },
     onCompleted: (mesdata) => {
       // console.log("completed");
@@ -56,7 +61,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
 
   const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
     variables: {
-      username: app.currentUser._profile.data.email,
+      username: userid,
       updates: {
         message: newmessage,
         title: newtitle,

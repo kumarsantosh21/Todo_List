@@ -18,8 +18,13 @@ import TextField from "@mui/material/TextField";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import checkundefinednull from "./validators/checkundefinednull";
 import ReloadDialogbox from "./ReloadDialogbox";
+import hashCode from "./Hashingstring";
 
 function Dahboard() {
+  // eslint-disable-next-line no-undef
+  const userid = BigInt(
+    hashCode(app?.currentUser?._profile?.data?.email)
+  ).toString();
   const navigate = useNavigate();
   const [skeleton, setSkeleton] = React.useState();
   const [newData, setNewData] = React.useState();
@@ -52,7 +57,7 @@ function Dahboard() {
   // Fetching messages of the user if user exists
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
-      usernam: app?.currentUser?._profile?.data?.email,
+      usernam: userid,
     },
     onCompleted: (mesdata) => {
       // console.log("mesdata", mesdata);
@@ -103,10 +108,10 @@ function Dahboard() {
     Fetc();
     if (skeleton !== undefined) {
       const name = skeleton.user_name.user;
-      if (!name.includes(app?.currentUser?._profile?.data?.email)) {
-        const db = [...name, app?.currentUser?._profile?.data?.email];
+      if (!name.includes(userid)) {
+        const db = [...name, userid];
         setNewData(db);
-        setUserData(app?.currentUser?._profile?.data?.email);
+        setUserData(userid);
       } else {
         MESSAGES();
         setCreateto(true);

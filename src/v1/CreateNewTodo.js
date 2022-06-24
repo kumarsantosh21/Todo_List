@@ -13,8 +13,13 @@ import MessageLoader from "./MessageLoader";
 import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import hashCode from "./Hashingstring";
 
 const CreateNewTodo = () => {
+  // eslint-disable-next-line no-undef
+  const userid = BigInt(
+    hashCode(app?.currentUser?._profile?.data?.email)
+  ).toString();
   const [state, setState] = React.useState(false);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
@@ -40,7 +45,7 @@ const CreateNewTodo = () => {
   }, [screenSize]);
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
-      usernam: app.currentUser._profile.data.email,
+      usernam: userid,
     },
     onCompleted: (mesdata) => {
       // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
@@ -57,7 +62,7 @@ const CreateNewTodo = () => {
 
   const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
     variables: {
-      username: app.currentUser._profile.data.email,
+      username: userid,
       updates: {
         message: newmessage,
         title: newtitle,

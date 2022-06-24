@@ -18,6 +18,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import hashCode from "./Hashingstring";
 
 const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   const tolocaldate = moment
@@ -25,6 +26,11 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
     .local()
     .format("MMMM Do YYYY, h:mm a");
   // moment.utc(recentupdateddate).local().format("MMMM Do YYYY, h:mm:ss a");
+
+  // eslint-disable-next-line no-undef
+  const userid = BigInt(
+    hashCode(app?.currentUser?._profile?.data?.email)
+  ).toString();
   const [expand, setExpand] = React.useState(3);
   const [message, setMessage] = React.useState();
   const [newmessage, setNewmessage] = React.useState();
@@ -39,7 +45,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   const [date, setDate] = React.useState();
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
-      usernam: app.currentUser._profile.data.email,
+      usernam: userid,
     },
     onCompleted: (mesdata) => {
       // console.log("mesdatacreatenewtoso", mesdata.data[0].message);
@@ -56,7 +62,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
 
   const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
     variables: {
-      username: app.currentUser._profile.data.email,
+      username: userid,
       updates: {
         message: newmessage,
         title: newtitle,
