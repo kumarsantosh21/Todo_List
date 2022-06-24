@@ -15,6 +15,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { GoogleImg } from "../assets";
 import Button from "@mui/material/Button";
 import checkundefinednull from "../v1/validators/checkundefinednull";
+import Typography from "@mui/material/Typography";
 
 const Login = () => {
   const [disable, setDisable] = useState(false);
@@ -352,7 +353,7 @@ const Login = () => {
               }}
             />
           </div>
-          <div
+          {/* <div
             style={{
               display: "flex",
               alignItems: "center",
@@ -388,7 +389,37 @@ const Login = () => {
             >
               Login in with Google
             </Button>
-          </div>
+          </div> */}
+          <Button
+            onClick={gclick}
+            style={{
+              color: "rgb(92, 108, 117)",
+              background: "white",
+              textTransform: "none",
+              borderRadius: "6px",
+              border: "1px solid rgb(92, 108, 117)",
+              margin: "0px 0px 0px 33px",
+            }}
+            sx={{
+              "&:hover": {
+                boxShadow: "rgb(232 236 235) 0px 0px 0px 3px",
+              },
+            }}
+          >
+            <img
+              src={GoogleImg}
+              alt="G_image"
+              style={{
+                width: "30px",
+                height: "30px",
+                verticalAlign: "-webkit-baseline-middle",
+              }}
+            />
+            &emsp;
+            <Typography sx={{ fontWeight: 600 }}>
+              Login in with Google
+            </Typography>
+          </Button>
         </Stack>
       </form>
     </>
