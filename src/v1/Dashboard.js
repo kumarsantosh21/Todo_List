@@ -58,6 +58,9 @@ function Dahboard() {
       // console.log("incoming", incomingdata);
       setSkeleton(incomingdata);
     },
+    onError: (e) => {
+      console.log(e);
+    },
   });
   // Fetching messages of the user if user exists
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
@@ -78,6 +81,9 @@ function Dahboard() {
       // console.log(message);
       setTitle(title);
       setSearchtitles(title);
+    },
+    onError: (e) => {
+      console.log(e);
     },
   });
 

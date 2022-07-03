@@ -61,6 +61,11 @@ const CreateNewTodo = () => {
       setTitle(title);
       // console.log(message);
     },
+    onError: (e) => {
+      UseSnackbar("Something went Wrong", "error");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      console.log(e);
+    },
   });
 
   const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
@@ -80,6 +85,11 @@ const CreateNewTodo = () => {
         setManualLoading(false);
         document.getElementById("total").style.display = "";
       }, 1000);
+    },
+    onError: (e) => {
+      UseSnackbar("Something went Wrong", "error");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      console.log(e);
     },
   });
 

@@ -63,6 +63,11 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
       // console.log(message);
       setTitles(tit);
     },
+    onError: (e) => {
+      UseSnackbar("Something went Wrong", "error");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      console.log(e);
+    },
   });
 
   const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
@@ -80,6 +85,11 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
       setTimeout(() => {
         setManualLoading(false);
       }, 1000);
+    },
+    onError: (e) => {
+      UseSnackbar("Something went Wrong", "error");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      console.log(e);
     },
   });
 

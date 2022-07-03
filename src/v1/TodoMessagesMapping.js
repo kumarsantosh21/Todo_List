@@ -28,6 +28,7 @@ import Badge from "@mui/material/Badge";
 import moment from "moment";
 import hashCode from "./Hashingstring";
 import UseSnackbar from "./Snackbar/useSnackbar";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const messagedata = messa;
@@ -61,6 +62,11 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
     onCompleted: (mesdata) => {
       // console.log("completed");
     },
+    onError: (e) => {
+      UseSnackbar("Something went Wrong", "error");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      console.log(e);
+    },
   });
 
   const [UPDATE_MESSAGES, { loading }] = useMutation(UPDATE_USER_MESSAGES, {
@@ -79,6 +85,11 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
       setTimeout(() => {
         setManualLoading(false);
       }, 1000);
+    },
+    onError: (e) => {
+      UseSnackbar("Something went Wrong", "error");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      console.log(e);
     },
   });
   React.useEffect(() => {
@@ -296,6 +307,43 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
 
   const EnhancedTableToolbar = (props) => {
     const { numSelected } = props;
+    const handleDownload = () => {
+      UseSnackbar("Download Started", "success");
+      contextValue.handleSnackMode(!contextValue.snackmode);
+      function download(filename, text) {
+        var pom = document.createElement("a");
+        pom.setAttribute(
+          "href",
+          "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+        );
+        pom.setAttribute("download", filename);
+
+        if (document.createEvent) {
+          var event = document.createEvent("MouseEvents");
+          event.initEvent("click", true, true);
+          pom.dispatchEvent(event);
+        } else {
+          pom.click();
+        }
+      }
+
+      let messages = [];
+      selected.map((select) => {
+        const index = titles.indexOf(select);
+
+        const timing = moment
+          .utc(datedata[index])
+          .local()
+          .format("MMMM Do YYYY, h:mm a");
+        const title = titles[index];
+        const presentValue = messagedata[index];
+        const clipboardvalue = `${title}         Last Modified:${timing} \n\n${presentValue}`;
+        messages = [...messages, clipboardvalue];
+        return messages;
+      });
+      const content = messages.join("\n\n\n\n\n\n");
+      download("TodoListData.txt", content);
+    };
 
     const handleCopy = () => {
       let messages = [];
@@ -323,6 +371,8 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
           }, 5000);
         },
         function () {
+          UseSnackbar("Items Copied Failed", "error");
+          contextValue.handleSnackMode(!contextValue.snackmode);
           setCopy("Failed to Copy!");
           setTimeout(() => {
             setCopy("Copy to Clipboard");
@@ -383,6 +433,14 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
         {numSelected > 0 ? (
           <div style={{ marginRight: "20px" }}>
             <div style={{ display: "flex" }}>
+              <TooltipColor
+                placement="top"
+                title="Download the Selected Items"
+                icon={<FileDownloadIcon />}
+                onClick={handleDownload}
+                dynamicbgcolor={"white"}
+                arrow={false}
+              />
               <TooltipColor
                 placement="top"
                 title={copy}
