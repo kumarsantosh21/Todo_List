@@ -21,7 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-src/originpages/Client.js
-src/index.js
-src/auth_mongoconfig.json
-src/auth_config.json
+# src/originpages/Client.js
+# src/index.js
+# src/auth_mongoconfig.json
+# src/auth_config.json

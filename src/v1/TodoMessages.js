@@ -20,6 +20,7 @@ import Typography from "@mui/material/Typography";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import hashCode from "./Hashingstring";
+import UseSnackbar from "./Snackbar/useSnackbar";
 
 const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   const tolocaldate = moment
@@ -74,6 +75,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
       },
     },
     onCompleted: () => {
+      contextValue.handleSnackMode(!contextValue.snackmode);
       setManualLoading(true);
       setTimeout(() => {
         setManualLoading(false);
@@ -105,6 +107,10 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   };
   // console.log("sep", messagetext);
   const handleDelete = (e) => {
+    UseSnackbar(
+      "Item Deleted Successfully. Deleted Items cannot be Restored .",
+      "warning"
+    );
     // console.log(e.currentTarget.id);
     // placing not deleted words in array
     const index = message.indexOf(e.currentTarget.id);
@@ -149,6 +155,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
     // console.log(e.currentTarget.id);
   };
   const handleOk = (e) => {
+    UseSnackbar("Message Saved Successfully", "success");
     const presentid = e.currentTarget.id;
     const presentValue = presentid.slice(0, presentid.length - 2);
     // console.log(presentValue);
@@ -199,6 +206,8 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
     }
   };
   const handleCopy = (e) => {
+    UseSnackbar("Item Copied Successfully", "success");
+    contextValue.handleSnackMode(!contextValue.snackmode);
     // slicing added id
 
     const presentid = e.currentTarget.id;

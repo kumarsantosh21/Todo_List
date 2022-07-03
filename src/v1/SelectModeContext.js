@@ -4,8 +4,13 @@ export const SelectModeContext = createContext();
 
 const SelectModeContextProvider = ({ children }) => {
   const [mode, setMode] = useState(false);
+  const [snackmode, setSnackmode] = useState(false);
   const handleMode = (value) => {
     setMode(value);
+  };
+
+  const handleSnackMode = () => {
+    setSnackmode(!snackmode);
   };
 
   return (
@@ -14,6 +19,9 @@ const SelectModeContextProvider = ({ children }) => {
         mode,
         setMode,
         handleMode,
+        snackmode,
+        setSnackmode,
+        handleSnackMode,
       }}
     >
       {children}

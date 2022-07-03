@@ -27,6 +27,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Badge from "@mui/material/Badge";
 import moment from "moment";
 import hashCode from "./Hashingstring";
+import UseSnackbar from "./Snackbar/useSnackbar";
 
 const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   const messagedata = messa;
@@ -72,6 +73,8 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
       },
     },
     onCompleted: () => {
+      UseSnackbar("Items Deleted Successfully", "success");
+      contextValue.handleSnackMode(!contextValue.snackmode);
       setManualLoading(true);
       setTimeout(() => {
         setManualLoading(false);
@@ -312,6 +315,8 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
       const content = messages.join("\n\n\n\n\n\n");
       navigator.clipboard.writeText(content).then(
         function () {
+          UseSnackbar("Items Copied Successfully", "success");
+          contextValue.handleSnackMode(!contextValue.snackmode);
           setCopy("Copied!");
           setTimeout(() => {
             setCopy("Copy to Clipboard");
@@ -327,6 +332,11 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
     };
 
     const handleDelete = () => {
+      UseSnackbar(
+        "Deleted Items cannot be Restored . So proceed with Caution",
+        "warning"
+      );
+      contextValue.handleSnackMode(!contextValue.snackmode);
       setDialogstate(true);
     };
 

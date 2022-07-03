@@ -13,6 +13,7 @@ import Client, {
   app,
   mailconfirmation,
   resendmail,
+  cache,
 } from "./Client";
 export {
   Login,
@@ -30,4 +31,5 @@ export {
   EmailConfirmation,
   mailconfirmation,
   resendmail,
+  cache,
 };

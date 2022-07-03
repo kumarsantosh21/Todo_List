@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,6 +14,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import hashCode from "./Hashingstring";
+import { SelectModeContext } from "./SelectModeContext";
+import UseSnackbar from "./Snackbar/useSnackbar";
 
 const CreateNewTodo = () => {
   // eslint-disable-next-line no-undef
@@ -43,6 +45,7 @@ const CreateNewTodo = () => {
       window.removeEventListener("resize", setDimension);
     };
   }, [screenSize]);
+  const contextValue = useContext(SelectModeContext);
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: userid,
@@ -70,9 +73,12 @@ const CreateNewTodo = () => {
       },
     },
     onCompleted: () => {
+      UseSnackbar("New List Added", "success");
+      contextValue.handleSnackMode(!contextValue.snackmode);
       setManualLoading(true);
       setTimeout(() => {
         setManualLoading(false);
+        document.getElementById("total").style.display = "";
       }, 1000);
     },
   });
@@ -111,6 +117,7 @@ const CreateNewTodo = () => {
   React.useEffect(() => {
     const test = async () => {
       if (newmessage !== undefined) {
+        document.getElementById("total").style.display = "none";
         await UPDATE_MESSAGES();
         MESSAGES();
       }
@@ -145,6 +152,7 @@ const CreateNewTodo = () => {
     }
   }, [state]);
   if (loading || manualLoading) {
+    document.getElementById("total").style.display = "none";
     return (
       <>
         <div
