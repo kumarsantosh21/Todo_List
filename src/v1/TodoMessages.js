@@ -314,7 +314,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
             id={messagetext + "text"}
             disabled={dis}
             style={{
-              background: contextValue.mode ? "black" : "white",
+              background: contextValue.mode ? "transparent" : "white",
               color: contextValue.mode ? "white" : "rgb(94, 53, 177)",
               width: "100%",
               border: "none",

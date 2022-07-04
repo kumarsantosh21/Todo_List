@@ -144,7 +144,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
   });
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: contextValue.mode ? "black" : "rgb(237, 231, 246)",
+      backgroundColor: contextValue.mode
+        ? "rgb(0, 30, 60)"
+        : "rgb(237, 231, 246)",
     },
   }));
   // old todomessagemapping
@@ -228,7 +230,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
           <TableCell
             padding="checkbox"
             sx={{
-              background: contextValue.mode ? "black" : "rgb(237, 231, 246)",
+              background: contextValue.mode
+                ? "rgb(0, 30, 60)"
+                : "rgb(237, 231, 246)",
             }}
           >
             <Checkbox
@@ -683,7 +687,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                           <TableCell
                             padding="checkbox"
                             sx={{
-                              background: contextValue.mode ? "black" : "white",
+                              background: contextValue.mode
+                                ? "rgb(0, 30, 60)"
+                                : "white",
                             }}
                           >
                             <Checkbox
@@ -709,7 +715,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                           </TableCell>
                           <TableCell
                             sx={{
-                              background: contextValue.mode ? "black" : "white",
+                              background: contextValue.mode
+                                ? "rgb(0, 30, 60)"
+                                : "white",
                             }}
                             omcponent="th"
                             id={labelId}
@@ -729,7 +737,9 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
                   {emptyRows > 0 && (
                     <TableRow
                       sx={{
-                        background: contextValue.mode ? "black" : "white",
+                        background: contextValue.mode
+                          ? "rgb(0, 30, 60)"
+                          : "white",
                       }}
                       style={{
                         height: (dense ? 33 : 53) * emptyRows,
@@ -743,8 +753,8 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
             </TableContainer>
             <TablePagination
               sx={{
-                background: contextValue.mode ? "black" : "white",
-                color: contextValue.mode ? "white" : "black",
+                background: contextValue.mode ? "rgb(0, 30, 60)" : "white",
+                color: contextValue.mode ? "white" : "rgb(0, 30, 60)",
               }}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
