@@ -22,6 +22,7 @@ import hashCode from "./Hashingstring";
 import SelectModeContextProvider from "./SelectModeContext";
 import { SnackbarProvider } from "notistack";
 import { Snackbar, useSnackbar } from "./Snackbar";
+import { Alert } from "santosh-ui-components";
 
 function Dahboard() {
   useSnackbar(`Welcome ${app?.currentUser?._profile?.data?.email}`, "info");
@@ -246,7 +247,16 @@ function Dahboard() {
   }
   if (error) {
     console.log(error);
-    return <div>encountered an error</div>;
+    return (
+      <Alert
+        children="Something went Wrong"
+        hasAction
+        actionText="Reload"
+        actionButtonFunciton={() => {
+          window.location.reload();
+        }}
+      />
+    );
   }
   // console.log(data);
   // console.log("skeleton", skeleton);
