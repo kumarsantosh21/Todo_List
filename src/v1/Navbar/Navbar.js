@@ -45,9 +45,9 @@ const Navbar = () => {
   const contextValue = useContext(SelectModeContext);
   const handleModeClick = (e) => {
     if (e.target.checked) {
-      contextValue.setMode(true);
+      contextValue.handleMode(true);
     } else {
-      contextValue.setMode(false);
+      contextValue.handleMode(false);
     }
   };
   return (

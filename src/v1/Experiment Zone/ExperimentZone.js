@@ -4,6 +4,7 @@ import { Alert } from "santosh-ui-components";
 import checkundefinednull from "../validators/checkundefinednull";
 
 export default function ExperimentZone() {
+  document.title = "Todo - ExperimentZone";
   if (checkundefinednull(app?.currentUser?._profile?.data?.email)) {
     return (
       <Alert

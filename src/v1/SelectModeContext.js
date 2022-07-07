@@ -1,12 +1,19 @@
 import React, { createContext, useState } from "react";
-
+import checkundefinednull from "./validators/checkundefinednull";
 export const SelectModeContext = createContext();
 
 const SelectModeContextProvider = ({ children }) => {
-  const [mode, setMode] = useState(false);
+  let previousMode = false;
+  if (typeof Storage !== "undefined") {
+    if (!checkundefinednull(localStorage.getItem("mode"))) {
+      previousMode = "true" === localStorage.getItem("mode");
+    }
+  }
+  const [mode, setMode] = useState(previousMode);
   const [snackmode, setSnackmode] = useState(false);
   const handleMode = (value) => {
     setMode(value);
+    localStorage.setItem("mode", value);
   };
 
   const handleSnackMode = () => {
