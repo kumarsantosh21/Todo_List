@@ -25,13 +25,17 @@ import { Snackbar, useSnackbar } from "./Snackbar";
 import { Alert } from "santosh-ui-components";
 
 function Dahboard() {
+  const navigate = useNavigate();
+  if (checkundefinednull(app?.currentUser?._profile?.data?.email)) {
+    window.location.pathname = "/login";
+  }
   useSnackbar(`Welcome ${app?.currentUser?._profile?.data?.email}`, "info");
   document.title = "Todo - Dashboard";
   // eslint-disable-next-line no-undef
   const userid = BigInt(
     hashCode(app?.currentUser?._profile?.data?.email)
   ).toString();
-  const navigate = useNavigate();
+
   const [skeleton, setSkeleton] = React.useState();
   const [newData, setNewData] = React.useState();
   const [userData, setUserData] = React.useState();
