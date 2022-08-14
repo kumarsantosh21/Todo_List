@@ -40,6 +40,7 @@ ReactDOM.render(
           <Route path="/v1/experimentzone" element={<ExperimentZone />} />
           <Route path="/v1/navbar" element={<Navbar />} />
           <Route path="/emailconfirmation" element={<Navbar />} />
+          <Route path="*" element={<div>Page not found</div>} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
