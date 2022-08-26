@@ -96,17 +96,17 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
     MESSAGES();
   }, [MESSAGES]);
 
-  React.useEffect(() => {
-    if (!window.location.origin.includes("3000")) {
-      const interval = setInterval(() => {
-        MESSAGES();
-      }, 10000);
+  // React.useEffect(() => {
+  //   if (!window.location.origin.includes("3000")) {
+  //     const interval = setInterval(() => {
+  //       MESSAGES();
+  //     }, 10000);
 
-      setTimeout(() => {
-        clearInterval(interval);
-      }, 900000);
-    }
-  }, []);
+  //     setTimeout(() => {
+  //       clearInterval(interval);
+  //     }, 900000);
+  //   }
+  // }, []);
   React.useEffect(() => {
     const test = async () => {
       if (newmessage !== undefined) {

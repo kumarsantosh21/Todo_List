@@ -235,12 +235,12 @@ function Dahboard() {
   // console.log("outsidetitle", title);
   // console.log("outsidemessages", message);
 
-  React.useEffect(() => {
-    // calling dialog to prevent from data duplication
-    setTimeout(() => {
-      setReloadstate(true);
-    }, 900000);
-  }, []);
+  // React.useEffect(() => {
+  //   // calling dialog to prevent from data duplication
+  //   setTimeout(() => {
+  //     setReloadstate(true);
+  //   }, 900000);
+  // }, []);
 
   if (loading) {
     return (

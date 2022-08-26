@@ -21,14 +21,9 @@ import moment from "moment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import hashCode from "./Hashingstring";
 import UseSnackbar from "./Snackbar/useSnackbar";
+import localDateFunction from "./date";
 
 const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
-  const tolocaldate = moment
-    .utc(recentupdateddate)
-    .local()
-    .format("MMMM Do YYYY, h:mm a");
-  // moment.utc(recentupdateddate).local().format("MMMM Do YYYY, h:mm:ss a");
-
   // eslint-disable-next-line no-undef
   const userid = BigInt(
     hashCode(app?.currentUser?._profile?.data?.email)
@@ -48,6 +43,17 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   const [manualLoading, setManualLoading] = React.useState();
   const [newdate, setNewdate] = React.useState();
   const [date, setDate] = React.useState();
+  const [displayDate, setDisplayDate] = React.useState(
+    localDateFunction(recentupdateddate)
+  );
+
+  React.useEffect(() => {
+    const timeRefreshInterval = setInterval(() => {
+      setDisplayDate(localDateFunction(recentupdateddate));
+    }, 1000);
+    return () => clearInterval(timeRefreshInterval);
+  }, [recentupdateddate]);
+
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
       usernam: userid,
@@ -230,8 +236,9 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
         .local()
         .format("MMMM Do YYYY, h:mm a");
       const title = titles[index];
+      // below line is in already there in one row select feature
       const clipboardvalue = `${title}         Last Modified:${timing} \n\n${presentValue}`;
-      navigator.clipboard.writeText(clipboardvalue).then(
+      navigator.clipboard.writeText(presentValue).then(
         function () {
           setCopy("Copied!");
           setTimeout(() => {
@@ -302,12 +309,16 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
               display: "flex",
               alignItems: "center",
               color: contextValue.mode ? "white" : "black",
+              // whiteSpace: "nowrap",
             }}
           >
-            {title}&emsp; {" -- "} &emsp;{"Last modified:"}
+            {title}&emsp; {" -- "} &emsp;
+            <Typography sx={{ fontWeight: 500, fontSize: "14px" }}>
+              {"Last modified:"}
+            </Typography>
             <Typography sx={{ fontWeight: 500, fontSize: "12px" }}>
               &nbsp;
-              {tolocaldate}
+              {displayDate}
             </Typography>
           </Typography>
           <TextareaAutosize
