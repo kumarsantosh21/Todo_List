@@ -132,6 +132,20 @@ const Login = () => {
     formail: errors?.formail ? "Please provide valid email" : "",
   };
   // console.log(username, pass);
+  const multiplyValue =
+    disable ||
+    progress ||
+    checkundefinednull(username) ||
+    checkundefinednull(pass) ||
+    errors.formail
+      ? 80
+      : 0;
+  const button = document.getElementById("loading_button");
+  button?.addEventListener("mouseover", function () {
+    button.style.left = `${Math.ceil((Math.random() + 0.1) * multiplyValue)}%`;
+    button.style.top = `${Math.ceil((Math.random() + 0.1) * multiplyValue)}%`;
+  });
+
   return (
     <>
       <form>
@@ -247,16 +261,18 @@ const Login = () => {
             }}
           >
             <LoadingButton
-              disabled={
-                disable ||
-                progress ||
-                checkundefinednull(username) ||
-                checkundefinednull(pass) ||
-                errors.formail
-              }
+              id="loading_button"
+              // disabled={
+              //   disable ||
+              //   progress ||
+              //   checkundefinednull(username) ||
+              //   checkundefinednull(pass) ||
+              //   errors.formail
+              // }
               loading={disable || progress}
               loadingPosition="end"
               style={{
+                zIndex: "1",
                 color: "white",
                 backgroundColor:
                   disable ||
@@ -267,9 +283,45 @@ const Login = () => {
                     ? " #ffb3ff"
                     : "#b300b3",
                 width: screenSize >= 1100 ? "110px" : "100%",
+                position:
+                  disable ||
+                  progress ||
+                  checkundefinednull(username) ||
+                  checkundefinednull(pass) ||
+                  errors.formail
+                    ? "absolute"
+                    : "",
+
+                transition: ".5s",
+                left:
+                  disable ||
+                  progress ||
+                  checkundefinednull(username) ||
+                  checkundefinednull(pass) ||
+                  errors.formail
+                    ? null
+                    : 0,
+                top:
+                  disable ||
+                  progress ||
+                  checkundefinednull(username) ||
+                  checkundefinednull(pass) ||
+                  errors.formail
+                    ? null
+                    : 0,
               }}
               variant="contained"
-              onClick={handleClick}
+              onClick={
+                disable ||
+                progress ||
+                checkundefinednull(username) ||
+                checkundefinednull(pass) ||
+                errors.formail
+                  ? (e) => {
+                      e.preventDefault();
+                    }
+                  : handleClick
+              }
               endIcon={<LoginIcon />}
               type="submit"
             >
