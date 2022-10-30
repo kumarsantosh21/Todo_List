@@ -71,7 +71,7 @@ const Footer = () => {
                 const shareData = {
                   title: "Todo List",
                   text: "Store everything like notepad but Online and More features!",
-                  url: "https://testingdb-cxxuf.mongodbstitch.com/",
+                  url: "https://todolist-ljlbv.mongodbstitch.com/",
                   //   files: [],
                 };
 
