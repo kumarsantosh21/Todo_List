@@ -10,6 +10,7 @@ import APP_ID from "../auth_mongoconfig.json";
 export const app = new Realm.App(APP_ID.appid);
 // For login already exist user
 export async function getValidAccessToken(username, pass) {
+  console.log(app);
   try {
     if (!app.currentUser) {
       await app.logIn(Realm.Credentials.emailPassword(username, pass));
