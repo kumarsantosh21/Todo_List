@@ -24,7 +24,7 @@ export default function ExperimentZone() {
       <button
         onClick={() => {
           document.getElementById("root").style.display = "none";
-          document.getElementById("driveApi").style.display = "";
+          document.getElementById("googleDocApi").style.display = "";
         }}
       >
         Start BackUp

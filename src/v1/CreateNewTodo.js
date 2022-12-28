@@ -183,160 +183,159 @@ const CreateNewTodo = () => {
   return (
     <>
       {screenSize >= 1050 ? (
-        <ClickAwayListener onClickAway={handleClose}>
-          <div
-            style={{
-              display: "flex",
-              position: "fixed",
-              marginTop: state ? "192px" : "30px",
-            }}
-          >
-            {" "}
-            <div style={{}}>
-              <div>
-                <Fab
-                  color="primary"
-                  variant="extended"
-                  sx={{ ...floatingStyle, height: "none" }}
-                  onClick={() => {
-                    setState(!state);
-                  }}
-                >
-                  <Typography sx={{ fontSize: "12px" }}>
-                    Add New List
-                  </Typography>
-                  <AddIcon sx={{ marginLeft: "5px" }} />
-                </Fab>
-              </div>
-            </div>
-            <Slide direction="left" in={state} mountOnEnter unmountOnExit>
-              <div
-                style={{
-                  border: "2px solid rgb(94, 53, 177)",
-                  color: "rgb(94, 53, 177)",
-                  background: "white",
-                  borderRadius: "6px",
-                  zIndex: "1",
-                  width: "780px",
-                  padding: "10px 16px 5px 16px",
-                  marginLeft: "18%",
+        //   <ClickAwayListener
+        //  onClickAway={handleClose}
+        //   >
+        <div
+          style={{
+            display: "flex",
+            position: "fixed",
+            marginTop: state ? "192px" : "30px",
+          }}
+        >
+          {" "}
+          <div style={{}}>
+            <div>
+              <Fab
+                color="primary"
+                variant="extended"
+                sx={{ ...floatingStyle, height: "none" }}
+                onClick={() => {
+                  setState(!state);
                 }}
               >
-                <TextField
-                  autoFocus
-                  placeholder="Title"
-                  variant="standard"
-                  fullWidth
-                  onChange={(e) => {
-                    setTitletext(e.target.value);
-                  }}
-                  InputProps={{
-                    // disableUnderline: true,
-                    sx: { color: "black", fontWeight: "bold" },
-                  }}
-                />
-                <TextField
-                  placeholder="Message"
-                  variant="standard"
-                  rows={10}
-                  fullWidth
-                  multiline
-                  sx={{
-                    marginTop: "5px",
-                    "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
-                      backgroundColor: "white",
-                      width: "10px",
+                <Typography sx={{ fontSize: "12px" }}>Add New List</Typography>
+                <AddIcon sx={{ marginLeft: "5px" }} />
+              </Fab>
+            </div>
+          </div>
+          <Slide direction="left" in={state} mountOnEnter unmountOnExit>
+            <div
+              style={{
+                border: "2px solid rgb(94, 53, 177)",
+                color: "rgb(94, 53, 177)",
+                background: "white",
+                borderRadius: "6px",
+                zIndex: "1",
+                width: "780px",
+                padding: "10px 16px 5px 16px",
+                marginLeft: "18%",
+              }}
+            >
+              <TextField
+                autoFocus
+                placeholder="Title"
+                variant="standard"
+                fullWidth
+                onChange={(e) => {
+                  setTitletext(e.target.value);
+                }}
+                InputProps={{
+                  // disableUnderline: true,
+                  sx: { color: "black", fontWeight: "bold" },
+                }}
+              />
+              <TextField
+                placeholder="Message"
+                variant="standard"
+                rows={10}
+                fullWidth
+                multiline
+                sx={{
+                  marginTop: "5px",
+                  "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+                    backgroundColor: "white",
+                    width: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+                    borderRadius: 8,
+                    backgroundColor: "rgb(237, 231, 246)",
+                    minHeight: 24,
+                    border: "none",
+                  },
+                  "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
+                    {
+                      // backgroundColor: "red",
                     },
-                    "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb":
-                      {
-                        borderRadius: 8,
-                        backgroundColor: "rgb(237, 231, 246)",
-                        minHeight: 24,
-                        border: "none",
-                      },
-                    "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
-                      {
-                        // backgroundColor: "red",
-                      },
-                    "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
-                      {
-                        // backgroundColor: "red",
-                      },
-                    "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
-                      {
-                        backgroundColor: "rgb(94, 53, 177)",
-                        cursor: "unset",
-                      },
-                    "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner":
-                      {
-                        // backgroundColor: "#2b2b2b",
-                      },
-                  }}
-                  onChange={(e) => {
-                    setText(e.target.value);
-                  }}
-                  InputProps={{
-                    disableUnderline: true,
-                    sx: { color: "rgb(94, 53, 177)" },
-                  }}
-                />
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
+                  "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
+                    {
+                      // backgroundColor: "red",
+                    },
+                  "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
+                    {
+                      backgroundColor: "rgb(94, 53, 177)",
+                      cursor: "unset",
+                    },
+                  "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner":
+                    {
+                      // backgroundColor: "#2b2b2b",
+                    },
+                }}
+                onChange={(e) => {
+                  setText(e.target.value);
+                }}
+                InputProps={{
+                  disableUnderline: true,
+                  sx: { color: "rgb(94, 53, 177)" },
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <IconButton
+                  onClick={handleClick}
+                  disabled={
+                    text === undefined ||
+                    text === "" ||
+                    titletext === undefined ||
+                    titletext === ""
+                  }
+                  sx={{
+                    height: "40px",
+                    width: "90px",
+                    // marginLeft: "585px",
+                    marginRight: "10px",
+                    marginBottom: "15px",
+                    border: "1px solid rgb(94, 53, 177)",
+                    borderRadius: "6px",
+                    color: "rgb(94, 53, 177)",
+                    "&:hover": {
+                      background: "rgb(237, 231, 246)",
+                    },
                   }}
                 >
-                  <IconButton
-                    onClick={handleClick}
-                    disabled={
-                      text === undefined ||
-                      text === "" ||
-                      titletext === undefined ||
-                      titletext === ""
-                    }
-                    sx={{
-                      height: "40px",
-                      width: "90px",
-                      // marginLeft: "585px",
-                      marginRight: "10px",
-                      marginBottom: "15px",
-                      border: "1px solid rgb(94, 53, 177)",
-                      borderRadius: "6px",
-                      color: "rgb(94, 53, 177)",
-                      "&:hover": {
-                        background: "rgb(237, 231, 246)",
-                      },
-                    }}
-                  >
-                    Add <AddIcon sx={{ marginLeft: "5px" }} />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      setState(false);
-                    }}
-                    sx={{
-                      height: "40px",
-                      width: "100px",
-                      // marginLeft: "585px",
-                      marginRight: "10px",
-                      marginBottom: "15px",
-                      border: "1px solid rgb(94, 53, 177)",
-                      borderRadius: "6px",
-                      color: "rgb(94, 53, 177)",
-                      "&:hover": {
-                        background: "rgb(237, 231, 246)",
-                      },
-                    }}
-                  >
-                    Close <CloseIcon sx={{ marginLeft: "5px" }} />
-                  </IconButton>
-                </div>
+                  Add <AddIcon sx={{ marginLeft: "5px" }} />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    setState(false);
+                  }}
+                  sx={{
+                    height: "40px",
+                    width: "100px",
+                    // marginLeft: "585px",
+                    marginRight: "10px",
+                    marginBottom: "15px",
+                    border: "1px solid rgb(94, 53, 177)",
+                    borderRadius: "6px",
+                    color: "rgb(94, 53, 177)",
+                    "&:hover": {
+                      background: "rgb(237, 231, 246)",
+                    },
+                  }}
+                >
+                  Close <CloseIcon sx={{ marginLeft: "5px" }} />
+                </IconButton>
               </div>
-            </Slide>
-          </div>
-        </ClickAwayListener>
-      ) : null}
+            </div>
+          </Slide>
+        </div>
+      ) : // </ClickAwayListener>
+      null}
       {screenSize < 1050 ? (
         <>
           <div

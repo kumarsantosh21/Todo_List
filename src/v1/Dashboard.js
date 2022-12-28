@@ -7,7 +7,7 @@ import Navbar from "./Navbar/Navbar";
 import Footer from "./Navbar/Footer";
 import {
   GET_USERS,
-  UPDATE_USERS,
+  INSERT_USER_MAIN,
   INSERT_NEW_USER_FOR_DATA,
   GET_MESSAGES,
 } from "./graphql";
@@ -37,7 +37,7 @@ function Dahboard() {
   ).toString();
 
   const [skeleton, setSkeleton] = React.useState();
-  const [newData, setNewData] = React.useState();
+  const [newData, setNewData] = React.useState(false);
   const [userData, setUserData] = React.useState();
   const [message, setMessage] = React.useState();
   const [title, setTitle] = React.useState();
@@ -56,6 +56,9 @@ function Dahboard() {
 
   // For fetching first user or  old user
   const [Fetc, { loading, error, data }] = useLazyQuery(GET_USERS, {
+    variables: {
+      usernam: userid,
+    },
     onCompleted: (data) => {
       // console.log("oncomplete", data);
       const incomingdata = JSON.parse(JSON.stringify(data));
@@ -101,11 +104,16 @@ function Dahboard() {
   }, [screenSize]);
 
   // update user if the user logins for the first time
-  const [UPDATEUSERS] = useMutation(UPDATE_USERS, {
+  const [INSERT_USER_CLOUD] = useMutation(INSERT_USER_MAIN, {
     variables: {
-      cloud: "mongo",
-      updates: {
-        user: newData,
+      datas: {
+        cloudstatus: "",
+        cloudbackup: "",
+        username: userid,
+        accesstoken: "",
+        docid: "",
+        cloudbackupday: "",
+        doclength: "",
       },
     },
   });
@@ -117,28 +125,32 @@ function Dahboard() {
         message: [],
         title: [],
         lastmodified: [],
+        backupstatus: "",
       },
     },
   });
   React.useEffect(() => {
-    Fetc();
-    if (skeleton !== undefined) {
-      const name = skeleton.user_name.user;
-      if (!name.includes(userid)) {
-        const db = [...name, userid];
-        setNewData(db);
-        setUserData(userid);
-      } else {
+    if (userid) {
+      Fetc();
+    }
+
+    if (skeleton) {
+      if (skeleton?.user_name?.username) {
         MESSAGES();
         setCreateto(true);
+      } else {
+        setNewData(true);
+        setUserData(userid);
       }
     }
-  }, [skeleton, Fetc, MESSAGES]);
+  }, [skeleton, userid]);
   React.useEffect(() => {
-    if (newData !== undefined) {
-      UPDATEUSERS();
+    if (newData && userid) {
+      INSERT_USER_CLOUD();
+    } else {
+      console.log("user not found");
     }
-  }, [newData, UPDATEUSERS]);
+  }, [newData]);
 
   React.useEffect(() => {
     const load = async () => {
@@ -251,6 +263,11 @@ function Dahboard() {
   }
   if (error) {
     console.log(error);
+    if (error.toString().includes("401")) {
+      // app.currentUser.logOut();
+      // navigate("/");
+      // window.location.reload();
+    }
     return (
       <Alert
         children="Something went Wrong"
@@ -353,6 +370,7 @@ function Dahboard() {
                   }}
                 />
               </div>
+              <button onClick={window["handleAuthClick"]}>Start backup</button>
             </div>
 
             <div>

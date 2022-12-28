@@ -39,9 +39,9 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <div id="driveApi" style="display: none">
-      <p>Drive API Quickstart</p>
-      <button id="driveCancel" onclick="handleCancel()">Cancel</button>
+    <div id="googleDocApi" style="display: none">
+      <p>GoogleDoc API Quickstart</p>
+      <button id="googleDocCancel" onclick="handleCancel()">Cancel</button>
 
       <!--Add buttons to initiate auth sequence and sign out-->
       <button id="authorize_button" onclick="handleAuthClick()">
@@ -66,7 +66,7 @@
 
       // Discovery doc URL for APIs used by the quickstart
       const DISCOVERY_DOC =
-        "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest";
+        "https://docs.googleapis.com/$discovery/rest?version=v1";
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
@@ -81,7 +81,7 @@
 
       function handleCancel() {
         document.getElementById("root").style.display = "";
-        document.getElementById("driveApi").style.display = "none";
+        document.getElementById("googleDocApi").style.display = "none";
       }
       /**
        * Callback after api.js is loaded.
@@ -141,9 +141,9 @@
           document.getElementById("authorize_button").innerText = "Refresh";
           await listFiles();
           console.log(gapi.client.getToken());
-          console.log(gapi);
+          localStorage.setItem("token", JSON.stringify(gapi.client.getToken()));
+          console.log(localStorage.getItem("token"));
         };
-
         if (gapi.client.getToken() === null) {
           // Prompt the user to select a Google Account and ask for consent to share their data
           // when establishing a new session.

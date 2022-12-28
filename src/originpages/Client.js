@@ -1,23 +1,20 @@
 import * as Realm from "realm-web";
-import {
-  ApolloClient,
-  ApolloProvider,
-  HttpLink,
-  InMemoryCache,
-} from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import APP_ID from "../auth_mongoconfig.json";
 
 export const app = new Realm.App(APP_ID.appid);
 // For login already exist user
 export async function getValidAccessToken(username, pass) {
-  console.log(app);
+  // console.log(app);
   try {
     if (!app.currentUser) {
       await app.logIn(Realm.Credentials.emailPassword(username, pass));
     } else {
       // An already logged in user's access token might be stale. To guarantee that the token is
       // valid, we refresh the user's custom data which also refreshes their access token.
-      await app.currentUser.refreshCustomData();
+
+      // await app.currentUser.refreshCustomData();
+
       // console.log(app.currentUser.accessToken);
       // console.log(app.currentUser._profile.data.email);
       // console.log(app.currentUser);
