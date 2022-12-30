@@ -12,27 +12,33 @@ const Snackbar = () => {
   };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const { snack } = cache.readQuery({
-    query: GET_SNACKBAR_MESSAGE,
-  });
   // console.log(snack);
+  let snack;
   const contextValue = useContext(SelectModeContext);
-  React.useEffect(() => {
-    enqueueSnackbar("what is this", {
-      anchorOrigin: { horizontal: "right", vertical: "top" },
-      content: () => (
-        <div>
-          <SnackbarBody
-            props={snack}
-            handleClose={(ev, reason, key) => {
-              closeSnackbar(key);
-            }}
-          />
-        </div>
-      ),
-      autoHideDuration: 6000,
-      onClose: handleClose,
+  if (contextValue.snackmode !== "initial") {
+    snack = cache.readQuery({
+      query: GET_SNACKBAR_MESSAGE,
     });
+  }
+
+  React.useEffect(() => {
+    if (contextValue.snackmode !== "initial") {
+      enqueueSnackbar("what is this", {
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+        content: () => (
+          <div>
+            <SnackbarBody
+              props={snack?.snack}
+              handleClose={(ev, reason, key) => {
+                closeSnackbar(key);
+              }}
+            />
+          </div>
+        ),
+        autoHideDuration: 6000,
+        onClose: handleClose,
+      });
+    }
   }, [contextValue.snackmode]);
 
   return <div></div>;

@@ -13,7 +13,7 @@ export async function getValidAccessToken(username, pass) {
       // An already logged in user's access token might be stale. To guarantee that the token is
       // valid, we refresh the user's custom data which also refreshes their access token.
 
-      // await app.currentUser.refreshCustomData();
+      await app.currentUser.refreshCustomData();
 
       // console.log(app.currentUser.accessToken);
       // console.log(app.currentUser._profile.data.email);

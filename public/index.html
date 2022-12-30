@@ -127,6 +127,12 @@
         }
       }
 
+      function handleGoogleRevoke() {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          gapi.client.setToken(null);
+        }
+      }
       /**
        *  Sign in the user upon button click.
        */
@@ -140,9 +146,11 @@
             "visible";
           document.getElementById("authorize_button").innerText = "Refresh";
           await listFiles();
-          console.log(gapi.client.getToken());
-          localStorage.setItem("token", JSON.stringify(gapi.client.getToken()));
-          console.log(localStorage.getItem("token"));
+          localStorage.setItem(
+            "docaccesstoken",
+            JSON.stringify(gapi.client.getToken())
+          );
+          console.log(localStorage.getItem("docaccesstoken"));
         };
         if (gapi.client.getToken() === null) {
           // Prompt the user to select a Google Account and ask for consent to share their data
@@ -150,7 +158,7 @@
           tokenClient.requestAccessToken({ prompt: "consent" });
         } else {
           // Skip display of account chooser and consent dialog for an existing session.
-          console.log(gapi.client.getToken());
+
           tokenClient.requestAccessToken({ prompt: "" });
         }
       }

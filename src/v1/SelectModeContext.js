@@ -10,7 +10,7 @@ const SelectModeContextProvider = ({ children }) => {
     }
   }
   const [mode, setMode] = useState(previousMode);
-  const [snackmode, setSnackmode] = useState(false);
+  const [snackmode, setSnackmode] = useState("initial");
   const handleMode = (value) => {
     setMode(value);
     localStorage.setItem("mode", value);

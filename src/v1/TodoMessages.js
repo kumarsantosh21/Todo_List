@@ -83,6 +83,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
         message: newmessage,
         title: newtitle,
         lastmodified: newdate,
+        backupstatus: "0",
       },
     },
     onCompleted: () => {

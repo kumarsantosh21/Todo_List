@@ -75,6 +75,7 @@ const CreateNewTodo = () => {
         message: newmessage,
         title: newtitle,
         lastmodified: newdate,
+        backupstatus: "0",
       },
     },
     onCompleted: () => {
@@ -84,6 +85,9 @@ const CreateNewTodo = () => {
       setTimeout(() => {
         setManualLoading(false);
         document.getElementById("total").style.display = "";
+        if (screenSize < 1050) {
+          document.getElementById("dashboard_loading").style.display = "none";
+        }
       }, 1000);
     },
     onError: (e) => {
@@ -128,6 +132,10 @@ const CreateNewTodo = () => {
     const test = async () => {
       if (newmessage !== undefined) {
         document.getElementById("total").style.display = "none";
+        if (screenSize < 1050) {
+          document.getElementById("dashboard_loading").style.display = "";
+        }
+
         await UPDATE_MESSAGES();
         MESSAGES();
       }
@@ -159,10 +167,17 @@ const CreateNewTodo = () => {
       document.getElementById("total").style.display = "none";
     } else {
       document.getElementById("total").style.display = "";
+      if (screenSize < 1050) {
+        document.getElementById("dashboard_loading").style.display = "none";
+      }
     }
   }, [state]);
   if (loading || manualLoading) {
     document.getElementById("total").style.display = "none";
+    if (screenSize < 1050) {
+      document.getElementById("dashboard_loading").style.display = "";
+    }
+
     return (
       <>
         <div

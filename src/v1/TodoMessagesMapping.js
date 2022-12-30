@@ -76,6 +76,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
         message: newmessage,
         title: newtitle,
         lastmodified: newdate,
+        backupstatus: "0",
       },
     },
     onCompleted: () => {

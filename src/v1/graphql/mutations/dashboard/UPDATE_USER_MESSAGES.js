@@ -6,9 +6,11 @@ export const UPDATE_USER_MESSAGES = gql`
     $updates: DatumUpdateInput!
   ) {
     updateOneDatum(query: { username: $username }, set: $updates) {
+      _id
       username
       message
       title
+      backupstatus
     }
   }
 `;
