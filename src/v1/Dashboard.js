@@ -10,6 +10,7 @@ import {
   INSERT_USER_MAIN,
   INSERT_NEW_USER_FOR_DATA,
   GET_MESSAGES,
+  UPDATE_USER_NAME_BACKUP,
 } from "./graphql";
 import CreateNewTodo from "./CreateNewTodo";
 import MessageLoader from "./MessageLoader";
@@ -29,7 +30,7 @@ function Dahboard() {
   if (checkundefinednull(app?.currentUser?._profile?.data?.email)) {
     window.location.pathname = "/login";
   }
-  useSnackbar(`Welcome ${app?.currentUser?._profile?.data?.email}`, "info");
+  // useSnackbar(`Welcome ${app?.currentUser?._profile?.data?.email}`, "info");
   document.title = "Todo - Dashboard";
   // eslint-disable-next-line no-undef
   const userid = BigInt(
@@ -37,6 +38,7 @@ function Dahboard() {
   ).toString();
 
   const [skeleton, setSkeleton] = React.useState();
+  const [backupstatus, setBackupstatus] = React.useState();
   const [newData, setNewData] = React.useState(false);
   const [userData, setUserData] = React.useState();
   const [message, setMessage] = React.useState();
@@ -50,6 +52,7 @@ function Dahboard() {
   const [date, setDate] = React.useState();
   const [searchdate, setSearchdate] = React.useState();
   const [reloadstate, setReloadstate] = React.useState(false);
+  const [cloudState, setCloudState] = React.useState();
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -70,6 +73,14 @@ function Dahboard() {
       console.log(e);
     },
   });
+  const [UPDATE_CLOUD, {}] = useMutation(UPDATE_USER_NAME_BACKUP, {
+    onCompleted: () => {
+      Fetc();
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
   // Fetching messages of the user if user exists
   const [MESSAGES, { mesdata }] = useLazyQuery(GET_MESSAGES, {
     variables: {
@@ -77,7 +88,9 @@ function Dahboard() {
     },
     onCompleted: (mesdata) => {
       // console.log("mesdata", mesdata);
-
+      const bkupstatus = JSON.parse(
+        JSON.stringify(mesdata?.data?.[0]?.backupstatus)
+      );
       const data = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.message));
       const title = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.title));
       const date = JSON.parse(JSON.stringify(mesdata?.data?.[0]?.lastmodified));
@@ -89,6 +102,7 @@ function Dahboard() {
       // console.log(message);
       setTitle(title);
       setSearchtitles(title);
+      setBackupstatus(bkupstatus);
     },
     onError: (e) => {
       console.log(e);
@@ -103,17 +117,18 @@ function Dahboard() {
     };
   }, [screenSize]);
 
-  // update user if the user logins for the first time
+  // insert cloud data if the user logins for the first time
   const [INSERT_USER_CLOUD] = useMutation(INSERT_USER_MAIN, {
     variables: {
       datas: {
-        cloudstatus: "",
-        cloudbackup: "",
         username: userid,
         accesstoken: "",
         docid: "",
-        cloudbackupday: "",
-        doclength: "",
+        accountstatus: "",
+        backupstatus: "",
+        lastbackupdate: "",
+        lastrestoredate: "",
+        restorestatus: "",
       },
     },
   });
@@ -254,6 +269,39 @@ function Dahboard() {
   //   }, 900000);
   // }, []);
 
+  // getting token for backup
+  const backupFunction = () => {
+    window["handleGoogleRevoke"]();
+    // if (skeleton) {
+    //   if (localStorage.getItem("docaccesstoken")) {
+    //     const acctoken = JSON.parse(localStorage.getItem("docaccesstoken"));
+    //     console.log(acctoken?.access_token);
+    //     if (skeleton?.user_name?.cloudstatus === "") {
+    //       UPDATE_CLOUD({
+    //         updates: {
+    //           cloudbackup: "started",
+    //           accesstoken: acctoken,
+    //           cloudstatus: "newaccount",
+    //         },
+    //       });
+    //     } else {
+    //       UPDATE_CLOUD({
+    //         updates: {
+    //           cloudbackup: "started",
+    //           accesstoken: acctoken,
+    //           cloudstatus: "oldaccount",
+    //         },
+    //       });
+    //     }
+
+    //     console.log("removing token");
+    //     // localStorage.removeItem("docaccesstoken");
+    //   } else {
+    //     window["handleAuthClick"]();
+    //   }
+    // }
+  };
+
   if (loading) {
     return (
       <div>
@@ -263,10 +311,10 @@ function Dahboard() {
   }
   if (error) {
     console.log(error);
-    if (error.toString().includes("401")) {
-      // app.currentUser.logOut();
-      // navigate("/");
-      // window.location.reload();
+    if (error.toString().includes("status code 401")) {
+      app.currentUser.logOut();
+      navigate("/");
+      window.location.reload();
     }
     return (
       <Alert
@@ -292,6 +340,7 @@ function Dahboard() {
         <SnackbarProvider maxSnack={3}>
           <Snackbar />
           <Navbar />
+
           {createto && screenSize >= 1050 ? <CreateNewTodo /> : null}
           <div
             id="total"
@@ -305,6 +354,13 @@ function Dahboard() {
               overflow: "hidden",
             }}
           >
+            {backupstatus === "0" ? (
+              <div>
+                Recent Changes not backedup. please backup your data to Google
+                restore.if you do not want to delete your data permanently
+              </div>
+            ) : null}
+            {skeleton?.user_name?.username}
             {createto && screenSize < 1050 ? <CreateNewTodo /> : null}
             <div
               style={{
@@ -370,7 +426,9 @@ function Dahboard() {
                   }}
                 />
               </div>
-              <button onClick={window["handleAuthClick"]}>Start backup</button>
+              <button id="startBackupFunction" onClick={backupFunction}>
+                Start backup
+              </button>
             </div>
 
             <div>
@@ -391,6 +449,22 @@ function Dahboard() {
               )}
             </div>
           </div>
+
+          <div
+            id="dashboard_loading"
+            style={{
+              margin: "200px 30px 50px 30px",
+              borderRadius: "10px",
+              boxShadow: "4px 16px 44px rgb(3 23 111 / 20%)",
+              overflow: "hidden",
+              display: "none",
+            }}
+          >
+            <div>
+              <MessageLoader />
+            </div>
+          </div>
+
           <ReloadDialogbox
             dialogstate={reloadstate}
             handleReloadClick={handleReloadClick}

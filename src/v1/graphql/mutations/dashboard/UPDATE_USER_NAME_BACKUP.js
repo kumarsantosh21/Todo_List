@@ -7,13 +7,14 @@ export const UPDATE_USER_NAME_BACKUP = gql`
   ) {
     updateOneUser_name(query: { username: $username }, set: $updates) {
       _id
-      cloudstatus
-      cloudbackup
       username
       accesstoken
       docid
-      cloudbackupday
-      doclength
+      accountstatus
+      backupstatus
+      lastbackupdate
+      lastrestoredate
+      restorestatus
     }
   }
 `;
