@@ -7,6 +7,7 @@ export const INSERT_NEW_USER_FOR_DATA = gql`
       username
       message
       title
+      lastmodified
       backupstatus
     }
   }

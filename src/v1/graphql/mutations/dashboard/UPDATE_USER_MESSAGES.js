@@ -10,6 +10,7 @@ export const UPDATE_USER_MESSAGES = gql`
       username
       message
       title
+      lastmodified
       backupstatus
     }
   }
