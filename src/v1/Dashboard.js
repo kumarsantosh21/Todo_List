@@ -272,7 +272,7 @@ function Dahboard() {
   // getting token for backup
   const backupAndRestoreFunction = (status) => {
     if (skeleton) {
-      if (localStorage.getItem("docaccesstoken" && userid)) {
+      if (localStorage.getItem("docaccesstoken") && userid) {
         const accesstoken = JSON.parse(localStorage.getItem("docaccesstoken"));
 
         UPDATE_CLOUD({
