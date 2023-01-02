@@ -124,7 +124,7 @@ function Dahboard() {
         username: userid,
         accesstoken: "",
         docid: "",
-        accountstatus: "",
+        accountstatus: "newaccount",
         backupstatus: "",
         lastbackupdate: "",
         lastrestoredate: "",
