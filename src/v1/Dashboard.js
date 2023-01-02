@@ -270,36 +270,26 @@ function Dahboard() {
   // }, []);
 
   // getting token for backup
-  const backupFunction = () => {
-    window["handleGoogleRevoke"]();
-    // if (skeleton) {
-    //   if (localStorage.getItem("docaccesstoken")) {
-    //     const acctoken = JSON.parse(localStorage.getItem("docaccesstoken"));
-    //     console.log(acctoken?.access_token);
-    //     if (skeleton?.user_name?.cloudstatus === "") {
-    //       UPDATE_CLOUD({
-    //         updates: {
-    //           cloudbackup: "started",
-    //           accesstoken: acctoken,
-    //           cloudstatus: "newaccount",
-    //         },
-    //       });
-    //     } else {
-    //       UPDATE_CLOUD({
-    //         updates: {
-    //           cloudbackup: "started",
-    //           accesstoken: acctoken,
-    //           cloudstatus: "oldaccount",
-    //         },
-    //       });
-    //     }
+  const backupAndRestoreFunction = (status) => {
+    if (skeleton) {
+      if (localStorage.getItem("docaccesstoken" && userid)) {
+        const accesstoken = JSON.parse(localStorage.getItem("docaccesstoken"));
 
-    //     console.log("removing token");
-    //     // localStorage.removeItem("docaccesstoken");
-    //   } else {
-    //     window["handleAuthClick"]();
-    //   }
-    // }
+        UPDATE_CLOUD({
+          variables: {
+            username: userid,
+            updates: {
+              [status]: "initiated",
+              accesstoken: accesstoken?.access_token,
+            },
+          },
+        });
+        localStorage.removeItem("docaccesstoken");
+        window["handleGoogleRevoke"]();
+      } else {
+        window["handleAuthClick"](status);
+      }
+    }
   };
 
   if (loading) {
@@ -426,8 +416,21 @@ function Dahboard() {
                   }}
                 />
               </div>
-              <button id="startBackupFunction" onClick={backupFunction}>
+              <button
+                id="startBackupFunction"
+                onClick={() => {
+                  backupAndRestoreFunction("backupstatus");
+                }}
+              >
                 Start backup
+              </button>
+              <button
+                id="startRestoreFunction"
+                onClick={() => {
+                  backupAndRestoreFunction("restorestatus");
+                }}
+              >
+                Start restore
               </button>
             </div>
 

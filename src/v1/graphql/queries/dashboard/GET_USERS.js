@@ -4,13 +4,14 @@ export const GET_USERS = gql`
   query GET_USERS($usernam: String!) {
     user_name(query: { username: $usernam }) {
       _id
-      cloudstatus
-      cloudbackup
       username
       accesstoken
       docid
-      cloudbackupday
-      doclength
+      accountstatus
+      backupstatus
+      lastbackupdate
+      lastrestoredate
+      restorestatus
     }
   }
 `;

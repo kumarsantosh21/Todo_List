@@ -136,7 +136,11 @@
       /**
        *  Sign in the user upon button click.
        */
-      function handleAuthClick() {
+      function handleAuthClick(status) {
+        const functionName =
+          status === "backupstatus"
+            ? "startBackupFunction"
+            : "startRestoreFunction";
         tokenClient.callback = async (resp) => {
           if (resp.error !== undefined) {
             console.log(resp);
@@ -145,12 +149,12 @@
           document.getElementById("signout_button").style.visibility =
             "visible";
           document.getElementById("authorize_button").innerText = "Refresh";
-          await listFiles();
+          // await listFiles();
           localStorage.setItem(
             "docaccesstoken",
             JSON.stringify(gapi.client.getToken())
           );
-          console.log(localStorage.getItem("docaccesstoken"));
+          document.getElementById(functionName).click(status);
         };
         if (gapi.client.getToken() === null) {
           // Prompt the user to select a Google Account and ask for consent to share their data
