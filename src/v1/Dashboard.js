@@ -27,7 +27,9 @@ import { Alert } from "santosh-ui-components";
 import BackupPage from "./Backup and Restore Pages/BackupPage";
 import RestorePage from "./Backup and Restore Pages/RestorePage";
 import CompletedPage from "./Backup and Restore Pages/CompletedPage";
+import NoFileFound from "./Backup and Restore Pages//NoFileFound";
 import Button from "@mui/material/Button";
+import moment from "moment";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -359,13 +361,9 @@ function Dahboard() {
       <CompletedPage completedText={"Restore"} state={"R"} getUsers={Fetc} />
     );
   } else if (skeleton?.user_name?.backupstatus === "not found") {
-    return (
-      <CompletedPage completedText={"Restore"} state={"R"} getUsers={Fetc} />
-    );
+    return <NoFileFound completedText={"Backup"} state={"B"} />;
   } else if (skeleton?.user_name?.restorestatus === "not found") {
-    return (
-      <CompletedPage completedText={"Restore"} state={"R"} getUsers={Fetc} />
-    );
+    return <NoFileFound completedText={"Restore"} state={"R"} />;
   } else if (
     skeleton?.user_name?.backupstatus !== "" ||
     skeleton?.user_name?.restorestatus !== ""
@@ -521,6 +519,32 @@ function Dahboard() {
                 loading...
               </div>
             )}
+            <div
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: "16px",
+              }}
+            >
+              {skeleton?.user_name?.lastbackupdate && (
+                <div>
+                  Last backedup at &nbsp;
+                  {moment
+                    .utc(skeleton?.user_name?.lastbackupdate)
+                    .local()
+                    .format("MMMM Do YYYY, h:mm a")}
+                </div>
+              )}
+              {skeleton?.user_name?.lastrestoredate && (
+                <div>
+                  Last restored at &nbsp;
+                  {moment
+                    .utc(skeleton?.user_name?.lastrestoredate)
+                    .local()
+                    .format("MMMM Do YYYY, h:mm a")}
+                </div>
+              )}
+            </div>
             <div>
               {checkundefinednull(message) ||
               checkundefinednull(title) ||
