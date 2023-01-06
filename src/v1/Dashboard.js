@@ -24,6 +24,10 @@ import SelectModeContextProvider from "./SelectModeContext";
 import { SnackbarProvider } from "notistack";
 import { Snackbar, useSnackbar } from "./Snackbar";
 import { Alert } from "santosh-ui-components";
+import BackupPage from "./Backup and Restore Pages/BackupPage";
+import RestorePage from "./Backup and Restore Pages/RestorePage";
+import CompletedPage from "./Backup and Restore Pages/CompletedPage";
+import Button from "@mui/material/Button";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -37,6 +41,17 @@ function Dahboard() {
     hashCode(app?.currentUser?._profile?.data?.email)
   ).toString();
 
+  const ButtonStyle = {
+    textTransform: "none",
+    margin: "0px 15px",
+    borderRadius: "6px",
+    color: "rgb(94, 53, 177)",
+    fontWeight: 600,
+    "&:hover": {
+      color: "rgb(94, 53, 177)",
+      background: "rgb(237, 231, 246)",
+    },
+  };
   const [skeleton, setSkeleton] = React.useState();
   const [backupstatus, setBackupstatus] = React.useState();
   const [newData, setNewData] = React.useState(false);
@@ -324,6 +339,59 @@ function Dahboard() {
   const handleReloadClick = () => {
     window.location.reload();
   };
+
+  const textMapper = {
+    "": "Welcome to TODO application",
+    0: "Recent Changes not backedup . Please back it up to prevent Data Loss",
+    1: "Your Data is BackedUp uptodate",
+  };
+
+  if (skeleton?.user_name?.backupstatus === "initiated") {
+    return <BackupPage />;
+  } else if (skeleton?.user_name?.restorestatus === "initiated") {
+    return <RestorePage />;
+  } else if (skeleton?.user_name?.backupstatus === "completed") {
+    return (
+      <CompletedPage completedText={"Backup"} state={"B"} getUsers={Fetc} />
+    );
+  } else if (skeleton?.user_name?.restorestatus === "completed") {
+    return (
+      <CompletedPage completedText={"Restore"} state={"R"} getUsers={Fetc} />
+    );
+  } else if (skeleton?.user_name?.backupstatus === "not found") {
+    return (
+      <CompletedPage completedText={"Restore"} state={"R"} getUsers={Fetc} />
+    );
+  } else if (skeleton?.user_name?.restorestatus === "not found") {
+    return (
+      <CompletedPage completedText={"Restore"} state={"R"} getUsers={Fetc} />
+    );
+  } else if (
+    skeleton?.user_name?.backupstatus !== "" ||
+    skeleton?.user_name?.restorestatus !== ""
+  ) {
+    return (
+      <>
+        <div
+          style={{
+            textAlign: "center",
+          }}
+        >
+          <div style={{ fontSize: "24px", fontWeight: "bold", color: "red" }}>
+            {skeleton?.user_name?.backupstatus}
+          </div>
+          <div style={{ fontSize: "24px", fontWeight: "bold", color: "red" }}>
+            {skeleton?.user_name?.restorestatus}
+          </div>
+          <div>
+            please contact <b>santoorvlss4321@gmail.com</b> to solve the above
+            error.
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <SelectModeContextProvider>
@@ -344,13 +412,6 @@ function Dahboard() {
               overflow: "hidden",
             }}
           >
-            {backupstatus === "0" ? (
-              <div>
-                Recent Changes not backedup. please backup your data to Google
-                restore.if you do not want to delete your data permanently
-              </div>
-            ) : null}
-            {skeleton?.user_name?.username}
             {createto && screenSize < 1050 ? <CreateNewTodo /> : null}
             <div
               style={{
@@ -416,24 +477,50 @@ function Dahboard() {
                   }}
                 />
               </div>
-              <button
-                id="startBackupFunction"
-                onClick={() => {
-                  backupAndRestoreFunction("backupstatus");
-                }}
-              >
-                Start backup
-              </button>
-              <button
-                id="startRestoreFunction"
-                onClick={() => {
-                  backupAndRestoreFunction("restorestatus");
-                }}
-              >
-                Start restore
-              </button>
+              {backupstatus === "0" ? (
+                <Button
+                  sx={ButtonStyle}
+                  id="startBackupFunction"
+                  onClick={() => {
+                    backupAndRestoreFunction("backupstatus");
+                  }}
+                >
+                  Start backup
+                </Button>
+              ) : null}
+              {skeleton?.user_name?.lastrestoredate !== "" ? (
+                <Button
+                  sx={ButtonStyle}
+                  id="startRestoreFunction"
+                  onClick={() => {
+                    backupAndRestoreFunction("restorestatus");
+                  }}
+                >
+                  Start restore
+                </Button>
+              ) : null}
             </div>
-
+            {backupstatus !== undefined ? (
+              <div
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                }}
+              >
+                {textMapper[backupstatus]}
+              </div>
+            ) : (
+              <div
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                }}
+              >
+                loading...
+              </div>
+            )}
             <div>
               {checkundefinednull(message) ||
               checkundefinednull(title) ||
