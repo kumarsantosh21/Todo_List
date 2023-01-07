@@ -125,7 +125,7 @@ const TodoMessages = ({ messagetext, title, recentupdateddate }) => {
   // console.log("sep", messagetext);
   const handleDelete = (e) => {
     UseSnackbar(
-      "Item Deleted Successfully. Deleted Items cannot be Restored .",
+      "Item Deleted Successfully. Deleted Items can be Restored, if data is backedup.",
       "warning"
     );
     // console.log(e.currentTarget.id);

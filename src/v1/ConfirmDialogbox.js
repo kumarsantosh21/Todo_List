@@ -63,8 +63,7 @@ const ConfirmDialogbox = ({
       <DialogContent>
         <DialogContentText>
           <Typography sx={{ marginTop: "20px" }}>
-            The data will be {<b>permanently Deleted from Database</b>}.This
-            Action cannot be reverted.
+            Are you sure you want to {<b>Delete multiple items</b>}.
           </Typography>
         </DialogContentText>
       </DialogContent>

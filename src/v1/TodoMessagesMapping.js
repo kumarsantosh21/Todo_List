@@ -388,7 +388,7 @@ const TodoMessagesMapper = ({ messa, title, lastmodifieddate }) => {
 
     const handleDelete = () => {
       UseSnackbar(
-        "Deleted Items cannot be Restored . So proceed with Caution",
+        "Deleted Items can be Restored, if data is backedup.",
         "warning"
       );
       contextValue.handleSnackMode(!contextValue.snackmode);
