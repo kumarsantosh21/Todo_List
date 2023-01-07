@@ -346,7 +346,7 @@ function Dahboard() {
   const textMapper = {
     "": "Welcome to TODO application",
     0: "Recent Changes not backedup . Please back it up to prevent Data Loss",
-    1: "Your Data is BackedUp uptodate",
+    1: "Your Data is Backedup upto now",
   };
 
   if (skeleton?.user_name?.backupstatus === "initiated") {
