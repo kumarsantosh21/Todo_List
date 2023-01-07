@@ -30,6 +30,8 @@ import CompletedPage from "./Backup and Restore Pages/CompletedPage";
 import NoFileFound from "./Backup and Restore Pages//NoFileFound";
 import Button from "@mui/material/Button";
 import moment from "moment";
+import BackupIcon from "@mui/icons-material/Backup";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ function Dahboard() {
 
   const ButtonStyle = {
     textTransform: "none",
-    margin: "0px 15px",
+    padding: "10px 20px",
     borderRadius: "6px",
     color: "rgb(94, 53, 177)",
     fontWeight: 600,
@@ -69,7 +71,6 @@ function Dahboard() {
   const [date, setDate] = React.useState();
   const [searchdate, setSearchdate] = React.useState();
   const [reloadstate, setReloadstate] = React.useState(false);
-  const [cloudState, setCloudState] = React.useState();
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
@@ -483,10 +484,10 @@ function Dahboard() {
                     backupAndRestoreFunction("backupstatus");
                   }}
                 >
-                  Start backup
+                  Backup&nbsp; <BackupIcon />
                 </Button>
               ) : null}
-              {skeleton?.user_name?.lastrestoredate !== "" ? (
+              {skeleton?.user_name?.lastbackupdate !== "" ? (
                 <Button
                   sx={ButtonStyle}
                   id="startRestoreFunction"
@@ -494,7 +495,7 @@ function Dahboard() {
                     backupAndRestoreFunction("restorestatus");
                   }}
                 >
-                  Start restore
+                  Restore&nbsp; <RestoreIcon />
                 </Button>
               ) : null}
             </div>
