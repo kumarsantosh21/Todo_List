@@ -27,7 +27,7 @@ const BackupPage = ({}) => {
   React.useEffect(() => {
     setTimeout(() => {
       Fetc();
-    }, 10000);
+    }, 5000);
   }, []);
 
   const Keyframes = styled("span")({
