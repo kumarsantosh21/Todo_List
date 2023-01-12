@@ -21,7 +21,7 @@ const RestorePage = ({}) => {
     onError: (e) => {
       console.log(e);
     },
-    pollInterval: 10000,
+    pollInterval: 5000,
   });
 
   React.useEffect(() => {
