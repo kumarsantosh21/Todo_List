@@ -31,7 +31,6 @@ const Login = () => {
   const setDimension = () => {
     setScreensize(window.innerWidth);
   };
-
   const useStyles = makeStyles({
     stackstyles: {
       margin: screenSize >= 700 ? "5% 28%" : "none",
@@ -46,6 +45,7 @@ const Login = () => {
     image: {
       width: "70%",
       paddingLeft: "16%",
+      cursor: "pointer",
     },
     forgetpassword: {
       lineHeight: "36px",
@@ -160,7 +160,14 @@ const Login = () => {
               <LinearProgress />
             </Box>
           ) : null}
-          <img className={classes.image} src={Login3} alt={"Todo"} />
+          <img
+            className={classes.image}
+            src={Login3}
+            alt={"Todo"}
+            onClick={() => {
+              navigate("/login");
+            }}
+          />
           <div className={classes.signup}>
             Don't have an account?{" "}
             <a style={{ color: "#0000ee" }} href="/signup">
@@ -262,17 +269,16 @@ const Login = () => {
           >
             <LoadingButton
               id="loading_button"
-              // disabled={
-              //   disable ||
-              //   progress ||
-              //   checkundefinednull(username) ||
-              //   checkundefinednull(pass) ||
-              //   errors.formail
-              // }
+              disabled={
+                disable ||
+                progress ||
+                checkundefinednull(username) ||
+                checkundefinednull(pass) ||
+                errors.formail
+              }
               loading={disable || progress}
               loadingPosition="end"
               style={{
-                zIndex: "1",
                 color: "white",
                 backgroundColor:
                   disable ||
@@ -283,45 +289,9 @@ const Login = () => {
                     ? " #ffb3ff"
                     : "#b300b3",
                 width: screenSize >= 1100 ? "110px" : "100%",
-                position:
-                  disable ||
-                  progress ||
-                  checkundefinednull(username) ||
-                  checkundefinednull(pass) ||
-                  errors.formail
-                    ? "absolute"
-                    : "",
-
-                transition: ".5s",
-                left:
-                  disable ||
-                  progress ||
-                  checkundefinednull(username) ||
-                  checkundefinednull(pass) ||
-                  errors.formail
-                    ? null
-                    : 0,
-                top:
-                  disable ||
-                  progress ||
-                  checkundefinednull(username) ||
-                  checkundefinednull(pass) ||
-                  errors.formail
-                    ? null
-                    : 0,
               }}
               variant="contained"
-              onClick={
-                disable ||
-                progress ||
-                checkundefinednull(username) ||
-                checkundefinednull(pass) ||
-                errors.formail
-                  ? (e) => {
-                      e.preventDefault();
-                    }
-                  : handleClick
-              }
+              onClick={handleClick}
               endIcon={<LoginIcon />}
               type="submit"
             >
@@ -372,7 +342,7 @@ const Login = () => {
               display: "flex",
               alignItems: "center",
               width: "96%",
-              margin: "25px 0px 25px 23px",
+              margin: "25px 0px 0px 23px",
             }}
           >
             <div
@@ -442,6 +412,22 @@ const Login = () => {
               Login in with Google
             </Button>
           </div> */}
+
+          <Typography sx={{ padding: "0px 0px 10px 33px" }}>
+            By signing up or login and continuing, you agree to our
+            <a
+              target="_blank"
+              style={{
+                color: "#0000ee",
+                textDecoration: "none",
+                fontSize: "16px",
+              }}
+              href="/termsandprivacy"
+            >
+              {" "}
+              Terms of Service and Privacy Policy.
+            </a>
+          </Typography>
           <Button
             onClick={gclick}
             style={{
@@ -468,9 +454,7 @@ const Login = () => {
               }}
             />
             &emsp;
-            <Typography sx={{ fontWeight: 600 }}>
-              Login in with Google
-            </Typography>
+            <Typography sx={{ fontWeight: 600 }}>Login with Google</Typography>
           </Button>
         </Stack>
       </form>

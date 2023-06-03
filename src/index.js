@@ -21,6 +21,7 @@ import {
   GoogleAuth,
   EmailConfirmation,
 } from "./originpages";
+import TermsandPrivcay from "./v1/Terms and Privacy policy/TermsandPrivacy";
 // import { Loading } from "./assets/Loaders";
 // import reportWebVitals from './reportWebVitals';
 
@@ -40,6 +41,7 @@ ReactDOM.render(
           <Route path="/v1/experimentzone" element={<ExperimentZone />} />
           <Route path="/v1/navbar" element={<Navbar />} />
           <Route path="/emailconfirmation" element={<Navbar />} />
+          <Route path="/termsandprivacy" element={<TermsandPrivcay />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Routes>
       </BrowserRouter>

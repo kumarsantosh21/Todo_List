@@ -13,8 +13,12 @@ import LinearProgress from "@mui/material/LinearProgress";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Typography from "@mui/material/Typography";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import { useNavigate } from "react-router-dom";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [disable, setDisable] = useState(false);
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
@@ -29,6 +33,7 @@ const Register = () => {
   const [restate, setRestate] = useState();
   const [count, setCount] = useState(0);
   const [redisable, setRedisable] = useState();
+  const [terms, setTerms] = useState(false);
   let valid;
 
   // for validation
@@ -64,6 +69,7 @@ const Register = () => {
     image: {
       width: "70%",
       paddingLeft: "16%",
+      cursor: "pointer",
     },
     forgetpassword: {
       lineHeight: "36px",
@@ -225,7 +231,14 @@ const Register = () => {
               <LinearProgress />
             </Box>
           ) : null}
-          <img className={classes.image} src={Login3} alt={"Todo"} />
+          <img
+            className={classes.image}
+            src={Login3}
+            alt={"Todo"}
+            onClick={() => {
+              navigate("/login");
+            }}
+          />
           <Typography className={classes.signup}>
             Register your account here{" "}
           </Typography>
@@ -357,6 +370,33 @@ const Register = () => {
               }}
             />
           </Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={terms}
+                onClick={() => {
+                  setTerms(!terms);
+                }}
+              />
+            }
+            label={
+              <Typography>
+                I have read{" "}
+                <a
+                  target="_blank"
+                  style={{
+                    color: "#0000ee",
+                    textDecoration: "none",
+                    fontSize: "16px",
+                  }}
+                  href="/termsandprivacy"
+                >
+                  {" "}
+                  Terms of Service and Privacy Policy.
+                </a>
+              </Typography>
+            }
+          />
           <div style={{ textAlign: "right" }}>
             <LoadingButton
               disabled={
@@ -366,7 +406,8 @@ const Register = () => {
                 repass === "" ||
                 errors.forpass ||
                 username === "" ||
-                errors.formail
+                errors.formail ||
+                !terms
               }
               loading={disable || progress}
               loadingPosition="end"
@@ -379,7 +420,8 @@ const Register = () => {
                   repass === "" ||
                   errors.forpass ||
                   username === "" ||
-                  errors.formail
+                  errors.formail ||
+                  !terms
                     ? " #ffb3ff"
                     : "#b300b3",
                 width: "130px",

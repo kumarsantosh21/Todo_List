@@ -12,8 +12,10 @@ import LinearProgress from "@mui/material/LinearProgress";
 import MailIcon from "@mui/icons-material/Mail";
 import Typography from "@mui/material/Typography";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import { useNavigate } from "react-router-dom";
 
 function Reset() {
+  const navigate = useNavigate();
   const [disable, setDisable] = useState(false);
   const [username, setUsername] = useState("");
   const [personicon, setPersonicon] = useState(false);
@@ -55,6 +57,7 @@ function Reset() {
     image: {
       width: "70%",
       paddingLeft: "16%",
+      cursor: "pointer",
     },
     forgetpassword: {
       lineHeight: "36px",
@@ -137,7 +140,14 @@ function Reset() {
               <LinearProgress />
             </Box>
           ) : null}
-          <img className={classes.image} src={Login3} alt={"Todo"} />
+          <img
+            className={classes.image}
+            src={Login3}
+            alt={"Todo"}
+            onClick={() => {
+              navigate("/login");
+            }}
+          />
           <Typography className={classes.signup}>
             Reset your password{" "}
           </Typography>
