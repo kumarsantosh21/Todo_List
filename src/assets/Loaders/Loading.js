@@ -1,4 +1,3 @@
-import MainLoader from "./Duckloader.gif";
 import circularLoader from "./circularLoader.svg";
 
 const Loading = () => {
