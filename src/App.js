@@ -65,9 +65,9 @@ function App() {
               marginLeft: "2%",
             }}
           >
-            <img src={DaImg} alt="Todo" style={{}} />
+            <img src={DaImg} alt="Notepad" style={{}} />
             <Typography style={{ fontWeight: "600", fontSize: "20px" }}>
-              TODO
+              Notepad
             </Typography>
           </div>
           <div
@@ -78,6 +78,36 @@ function App() {
               margin: screenSize < 1050 ? "40px" : "",
             }}
           >
+            <div style={{ textAlign: "center" }}>
+              <a
+                href="/termsandprivacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
+              >
+                <Button
+                  sx={{ ...ButtonStyle, border: "none" }}
+                  variant="standard"
+                >
+                  Terms of Service
+                </Button>
+              </a>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <a
+                href="/termsandprivacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
+              >
+                <Button
+                  sx={{ ...ButtonStyle, border: "none" }}
+                  variant="standard"
+                >
+                  Privacy Policy
+                </Button>
+              </a>
+            </div>
             <div style={{ textAlign: "center" }}>
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=santoorvlss4321@gmail.com"
@@ -171,7 +201,7 @@ function App() {
                     marginLeft: "90px",
                   }}
                 >
-                  Todo List
+                  Notepad List
                 </h2>
                 <div
                   style={{
@@ -183,13 +213,13 @@ function App() {
                     marginLeft: "450px",
                   }}
                 >
-                  Stores data like notepad but in Cloud and Many features.
+                  Explore our web application's resilience with advanced backup and restore features
                 </div>
               </div>
             </div>
           </div>
         ) : null}
-      </div>
+          </div>
     </>
   );
 }

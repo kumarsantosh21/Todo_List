@@ -50,7 +50,7 @@ const Footer = () => {
               <Tooltips title="Contact Email" icon={<ContactMailIcon />} />
             </a>
             <a
-              href="https://github.com/santoorvlss"
+              href="https://github.com/kumarsantosh21"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -69,7 +69,7 @@ const Footer = () => {
               icon={<ShareIcon />}
               onClick={async () => {
                 const shareData = {
-                  title: "Todo List",
+                  title: "Notepad List",
                   text: "Store everything like notepad but Online and More features!",
                   url: "https://todolist-ljlbv.mongodbstitch.com/",
                   //   files: [],

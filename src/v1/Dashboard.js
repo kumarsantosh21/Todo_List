@@ -39,7 +39,7 @@ function Dahboard() {
     window.location.pathname = "/login";
   }
   // useSnackbar(`Welcome ${app?.currentUser?._profile?.data?.email}`, "info");
-  document.title = "Todo - Dashboard";
+  document.title = "Notepad - Dashboard";
   // eslint-disable-next-line no-undef
   const userid = BigInt(
     hashCode(app?.currentUser?._profile?.data?.email)
@@ -344,7 +344,7 @@ function Dahboard() {
   };
 
   const textMapper = {
-    "": "Welcome to TODO application",
+    "": "Welcome to Notepad application",
     0: "Recent Changes not backedup . Please back it up to prevent Data Loss",
     1: "Your Data is Backedup upto now",
   };

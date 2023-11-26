@@ -2,7 +2,7 @@ import React from "react";
 import "./tandpStyles.css";
 
 export default function TermsandPrivcay() {
-  document.title = "Todo - Terms and Privacy policy";
+  document.title = "Notepad - Terms and Privacy policy";
   return (
     <>
       <html>
@@ -14,7 +14,7 @@ export default function TermsandPrivcay() {
               <p>Acceptance of Terms:</p>
               <ul>
                 <li>
-                  By using our Todo List app and enabling the backup feature,
+                  By using our Notepad List app and enabling the backup feature,
                   you agree to comply with these Terms of Service.
                 </li>
               </ul>
@@ -25,7 +25,7 @@ export default function TermsandPrivcay() {
                 <li>
                   Our app offers a backup feature that allows you to link your
                   Google account and automatically write the content of your
-                  todo list to a Google Doc.
+                  notepad list to a Google Doc.
                 </li>
                 <li>
                   By enabling the backup feature, you grant our app permission
@@ -84,7 +84,7 @@ export default function TermsandPrivcay() {
                 <li>
                   We take reasonable measures to protect the security and
                   confidentiality of your data, including your access token and
-                  the content of your todo list.
+                  the content of your notepad list.
                 </li>
                 <li>
                   Your backup data stored in Google Docs is subject to Google's

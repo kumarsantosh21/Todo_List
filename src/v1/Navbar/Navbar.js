@@ -104,7 +104,7 @@ const Navbar = () => {
         >
           <img src={DaImg} alt="Todo" style={{}} />
           <Typography style={{ fontWeight: "600", fontSize: "20px" }}>
-            TODO
+            Notepad
           </Typography>
         </div>
         {screenSize >= 1050 ? (
