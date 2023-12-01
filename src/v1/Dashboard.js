@@ -499,6 +499,16 @@ function Dahboard() {
                 </Button>
               ) : null}
             </div>
+            <div
+                style={{
+                  textAlign: "center",
+                  fontSize: "16px",
+                  padding:"25px"
+                }}
+              >
+               Notepad app's use and transfer of information received from Google APIs to any other app will adhere 
+               to <a target="_blank" href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.
+              </div>
             {backupstatus !== undefined ? (
               <div
                 style={{
